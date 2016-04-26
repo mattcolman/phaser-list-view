@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {nearestMultiple, percentageBetween2} from './utils/math_utils'
+import MathUtils from './utils/math_utils'
 import 'gsap'
 
 // Pure logic scroller
@@ -11,8 +11,6 @@ class Scroller {
 
     this.game        = game
     this.clickObject = clickObject
-
-    window.Scroller = this
 
     let defaultOptions = {
       from : 0,
@@ -155,21 +153,6 @@ class Scroller {
     if (this.o.emitMoving) this.events.onInputMove.dispatch({pointer, x, y})
   }
 
-  // requestTarget(target, min, max, overflow) {
-  //   var diff = 0
-  //   var calculatedTarget = target
-  //   if (target > max) {
-  //     console.log('max')
-  //     diff = target - max
-  //     calculatedTarget = max + diff * (overflow-diff) / overflow
-  //   } else if (target < min) {
-  //     diff = min - target
-  //     calculatedTarget = min - diff*this.o.deceleration
-  //     calculatedTarget = Math.max(calculatedTarget, min - overflow)
-  //   }
-  //   return calculatedTarget
-  // }
-
   requestDiff(diff, target, min, max, overflow) {
     let scale = 0
     if (target > max) {
@@ -267,7 +250,7 @@ class Scroller {
     if (!this.o.snapping) {
       return target
     }
-    return nearestMultiple(target, this.o.snapStep)
+    return MathUtils.nearestMultiple(target, this.o.snapStep)
   }
 
   addMomentum(target, touchTime, offset) {
@@ -293,7 +276,7 @@ class Scroller {
   handleUpdate() {
     this.dispatchValues.step = this.diff // this is currently doesn't work with momentum
     this.dispatchValues.total = this.scrollObject[this.o.direction]
-    this.dispatchValues.percent = percentageBetween2(this.scrollObject[this.o.direction], this.o.from, this.o.to)
+    this.dispatchValues.percent = MathUtils.percentageBetween2(this.scrollObject[this.o.direction], this.o.from, this.o.to)
     this.events.onUpdate.dispatch(this.dispatchValues)
   }
 

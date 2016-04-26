@@ -43,6 +43,10 @@ class ListViewCore {
     if (this.o.autocull) this.cull()
   }
 
+  addMultiple(...children) {
+    children.forEach(this.add, this)
+  }
+
   remove() {
     // TODO
   }

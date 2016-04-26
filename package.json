@@ -2,7 +2,7 @@
   "name": "phaser-list-view",
   "version": "1.0.0",
   "description": "ListView class for Phaser. Great for making high scoreboards!",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "compile": "babel --presets es2015 -d lib/ src/",
     "prepublish": "npm run compile"
