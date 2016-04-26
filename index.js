@@ -1,1 +1,2 @@
-module.exports = require('./lib/list_view')
+import ListView from './build/scripts/listview'
+
