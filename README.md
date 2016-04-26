@@ -25,6 +25,7 @@ let listView = new ListView(this.game, parent, bounds, options)
 let items = this.createSomeDisplayObjectsAndReturnAnArray() // [Graphics, Image, Sprite]
 listView.addMultiple(...items)
 ```
+![](http://i.imgur.com/uVzCl0V.gif)
 
 ## SwipeCarousel Usage
 ```
