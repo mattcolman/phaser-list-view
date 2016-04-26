@@ -45,3 +45,8 @@ swipeCarousel.addMultiple(...photos)
 
 ## Scroller Usage
 // TODO
+
+## TODO
+- remove gsap dependancy and use Phaser.Tween instead
+- remove lodash dependancy
+- minify and compress code
