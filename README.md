@@ -48,6 +48,9 @@ swipeCarousel.addMultiple(...photos)
 ## Scroller Usage
 // TODO
 
+## Build
+`npm run compile`
+
 ## TODO
 - remove gsap dependancy and use Phaser.Tween instead
 - remove lodash dependancy
