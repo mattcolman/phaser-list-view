@@ -14,7 +14,7 @@ Perfect for high scoreboards.
 import {ListView} from 'phaser-list-view'
 
 let parent = this.world
-let bounds = Phaser.Rectangle(0, 0, 300, 400)
+let bounds = new Phaser.Rectangle(0, 0, 300, 400)
 let options = {
   direction: 'y',
   overflow: 100,
@@ -32,7 +32,7 @@ listView.addMultiple(...items)
 import {SwipeCarousel} from 'phaser-list-view'
 
 let parent = this.world
-let bounds = Phaser.Rectangle(0, 0, 300, 400)
+let bounds = new Phaser.Rectangle(0, 0, 300, 400)
 let options = {
   direction: 'x',
   overflow: 100,
