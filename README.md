@@ -25,7 +25,7 @@ let listView = new ListView(this.game, parent, bounds, options)
 let items = this.createSomeDisplayObjectsAndReturnAnArray() // [Graphics, Image, Sprite]
 listView.addMultiple(...items)
 ```
-![](http://i.imgur.com/uVzCl0V.gif)
+![](http://i.imgur.com/XgdgqYX.gif)
 
 ## SwipeCarousel Usage
 ```
@@ -43,6 +43,7 @@ let swipeCarousel = new SwipeCarousel(this.game, parent, bounds, options)
 let photos = this.getAnArrayOfImages() // [Image, Image, Image, Image]
 swipeCarousel.addMultiple(...photos)
 ```
+![](http://i.imgur.com/Sp5aE0H.gif)
 
 ## Scroller Usage
 // TODO
