@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import ListViewCore from './list_view_core'
 
-var Swiper = function(game, parent, bounds, options = {}) {
+var SwipeCarousel = function(game, parent, bounds, options = {}) {
 
   this.defaultOptions = {
     direction: 'x',
@@ -11,7 +11,10 @@ var Swiper = function(game, parent, bounds, options = {}) {
     snapping: true,
     overflow: 100,
     padding: 10,
-    swipeEnabled: true
+    swipeEnabled: true,
+    offset: {
+      x: 100
+    }
   }
 
   ListViewCore.call(this, game, parent, bounds, options)
@@ -19,7 +22,7 @@ var Swiper = function(game, parent, bounds, options = {}) {
   this.scroller.options.snapStep = bounds.width + this.o.padding
 }
 
-Swiper.prototype = Object.assign(Object.create(ListViewCore.prototype))
-Swiper.prototype.constructor = Swiper
+SwipeCarousel.prototype = Object.assign(Object.create(ListViewCore.prototype))
+SwipeCarousel.prototype.constructor = SwipeCarousel
 
-export default Swiper;
+export default SwipeCarousel;
