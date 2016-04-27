@@ -19,6 +19,8 @@ class ListViewCore {
     this.grp = this.game.add.group(parent)
     this.grp.position.set(bounds.x, bounds.y)
 
+    this.currentPosition = 0
+
     // [MC] - is masking the fastest option here? Cropping the texture may be faster?
     this.grp.mask = this._addMask(bounds)
 
@@ -27,7 +29,9 @@ class ListViewCore {
       from: 0,
       to: 0
     }, this.options))
-    this.scroller.events.onUpdate.add(this.update, this)
+    this.scroller.events.onUpdate.add((o)=> {
+      this.update(o.total)
+    })
   }
 
   add(child) {
@@ -40,6 +44,7 @@ class ListViewCore {
     this.grp.addChild(child)
 
     this.scroller.setFromTo(0, -this.grp[this.p.wh] + this.bounds[this.p.wh])
+    this.update(this.currentPosition)
     if (this.o.autocull) this.cull()
   }
 
@@ -55,19 +60,20 @@ class ListViewCore {
     // TODO
   }
 
-  update(o) {
-    this.grp[this.p.xy] = this.bounds[this.p.xy] + o.total
+  update(currentPosition) {
+    this.currentPosition = currentPosition
+    this.grp[this.p.xy] = this.bounds[this.p.xy] + currentPosition
     if (this.o.autocull) this.cull()
   }
 
   cull() {
     for (var i = 0; i < this.grp.children.length; i++) {
       let child = this.grp.children[i]
-      child.revive()
+      child.visible = true
       if (child[this.p.xy] + child[this.p.wh] + this.grp[this.p.xy] < this.bounds[this.p.xy]) {
-        child.kill()
+        child.visible = false
       } else if (child[this.p.xy] + this.grp[this.p.xy] > this.bounds[this.p.xy] + this.bounds[this.p.wh]) {
-        child.kill()
+        child.visible = false
       }
     }
   }
