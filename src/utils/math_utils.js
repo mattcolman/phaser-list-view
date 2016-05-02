@@ -15,6 +15,4 @@ var MathUtils = {
   }
 }
 
-window.MathUtils = MathUtils
-
 export default MathUtils
