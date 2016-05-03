@@ -3,6 +3,8 @@ import MathUtils from './utils/math_utils'
 import 'gsap'
 import Scroller from './scroller'
 
+var {radToDeg, degToRad} = Phaser.Math
+
 // Pure logic scroller
 // Originally adapted from http://yusyuslabs.com/tutorial-momentum-scrolling-inside-scrollable-area-with-phaser-js/
 //
@@ -15,7 +17,8 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
 
   handleDown(target, pointer) {
     let pt = new Phaser.Point(pointer.x, pointer.y)
-    this.centerPoint = this.clickObject.toGlobal(new Phaser.Point(this.clickObject.x, this.clickObject.y))
+    this.centerPoint = this.clickObject.toGlobal(new Phaser.Point(0, 0))
+    console.log('centerPoint', this.centerPoint)
     this.old = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(pt, this.centerPoint))
     this.fullDiffAngle = 0
 
@@ -28,7 +31,7 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
     // console.log('currentRotation is', radToDeg(currentRotation))
     var rotations = 0
 
-    this.diffRotation = this.oldRotation - currentRotation
+    this.diffRotation = this.old - currentRotation
     this.diffAngle = radToDeg(this.diffRotation)
 
     // console.log('currentAngle', Phaser.Math.radToDeg(currentAngle))
@@ -49,8 +52,8 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
 
 
     // this.diff = this.old - currentRotation
-
     this.diff = this.requestDiff(this.diffAngle, this.target, this.min, this.max, this.o.overflow)
+    // console.log('currentRotation', radToDeg(currentRotation))
 
     this.target -= this.diff
 

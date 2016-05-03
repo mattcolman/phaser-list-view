@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import Scroller from './scroller'
+import DirectionalScroller from './directional_scroller'
 
 class ListViewCore {
 
@@ -25,7 +25,7 @@ class ListViewCore {
     this.grp.mask = this._addMask(bounds)
 
     // we have to use a new mask instance for the click object or webgl ignores the mask
-    this.scroller = new Scroller(this.game, this._addMask(bounds), _.extend({
+    this.scroller = new DirectionalScroller(this.game, this._addMask(bounds), _.extend({
       from: 0,
       to: 0
     }, this.options))
