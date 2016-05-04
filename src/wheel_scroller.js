@@ -10,6 +10,7 @@ var {radToDeg, degToRad} = Phaser.Math
 //
 var WheelScroller = function(game, clickObject, options = {}) {
   options.direction = 'angle'
+  this.maskLimits = {angle: clickObject.width/2}
   Scroller.call(this, game, clickObject, options)
 }
 
@@ -18,8 +19,7 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
   handleDown(target, pointer) {
     let pt = new Phaser.Point(pointer.x, pointer.y)
     this.centerPoint = this.clickObject.toGlobal(new Phaser.Point(0, 0))
-    console.log('centerPoint', this.centerPoint)
-    this.old = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(pt, this.centerPoint))
+    this.old = this.down = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(pt, this.centerPoint))
     this.fullDiffAngle = 0
 
     Scroller.prototype.handleDown.call(this, target, pointer)
@@ -49,8 +49,6 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
       this.diffAngle = radToDeg(this.diffRotation)
     }
 
-
-
     // this.diff = this.old - currentRotation
     this.diff = this.requestDiff(this.diffAngle, this.target, this.min, this.max, this.o.overflow)
     // console.log('currentRotation', radToDeg(currentRotation))
@@ -62,7 +60,10 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
     //store timestamp for event
     this.o.time.move = this.game.time.time
 
-    this.acc = Math.min(Math.abs(this.diff/30), this.o.maxAcceleration)
+    let diameter = this.clickObject.width
+    let circumference = Math.PI * diameter
+    let sectorLength = circumference * (this.diff / 360)
+    this.acc = Math.min(Math.abs(sectorLength/30), this.o.maxAcceleration)
 
     //go ahead and move the block
     this.scrollObject[this.o.direction] = this.target
@@ -70,8 +71,13 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
 
     if (this.o.emitMoving) this.events.onInputMove.dispatch({pointer, x, y})
 
-
   },
+
+  handleUp(target, pointer) {
+    let pt = new Phaser.Point(pointer.x, pointer.y)
+    this.current = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(pt, this.centerPoint))
+    Scroller.prototype.handleUp.call(this, target, pointer)
+  }
 
 })
 

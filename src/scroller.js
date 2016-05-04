@@ -21,7 +21,7 @@ var Scroller = function(game, clickObject, options = {}) {
     overflow : 20,
     snapStep : 10,
     emitMoving : false,
-    duration : 1.5, // (s) duration of the inertial scrolling simulation.
+    duration : 2, // (s) duration of the inertial scrolling simulation.
     speedLimit : 3, // set maximum speed. Higher values will allow faster scroll (which comes down to a bigger offset for the duration of the momentum scroll) note: touch motion determines actual speed, this is just a limit.
     flickTimeThreshold : 100, // (ms) determines if a flick occurred: time between last updated movement @ touchmove and time @ touchend, if smaller than this value, trigger inertial scrolling
     offsetThreshold : 30, // (pixels) determines if calculated offset is above this threshold
@@ -33,7 +33,7 @@ var Scroller = function(game, clickObject, options = {}) {
     swipeEnabled : false,
     swipeThreshold: 5, // (pixels) must move this many pixels for a swipe action
     swipeTimeThreshold: 250, // (ms) determines if a swipe occurred: time between last updated movement @ touchmove and time @ touchend, if smaller than this value, trigger swipe
-
+    minDuration: .5
   }
 
   this.o = this.options = _.extend(defaultOptions, options)
@@ -47,9 +47,8 @@ var Scroller = function(game, clickObject, options = {}) {
   this.addListeners()
 
   this.scrollObject = {}
-  this.scrollObject[this.o.direction] = 0
+  this.scrollObject[this.o.direction] = this.o.from
 
-  this.maskLimits = {x: this.clickObject.width, y: this.clickObject.height}
   this.maxOffset  = this.maskLimits[this.o.direction] * this.o.speedLimit
 
   // set tween that will be re-used for moving scrolling sprite
@@ -175,7 +174,7 @@ Scroller.prototype = Object.create({
     }
 
     var o = {
-      swipeDistance: Math.abs(this.down - pointer[this.o.direction]),
+      swipeDistance: Math.abs(this.down - this.current),
       duration: 1,
       target: this.target,
       touchTime: this.o.time.up - this.o.time.move,
@@ -239,6 +238,7 @@ Scroller.prototype = Object.create({
   setDuration(o) {
     let distance = Math.abs(o.target - this.scrollObject[this.o.direction])
     o.duration = this.o.duration * distance / this.maxOffset
+    o.duration = Math.max(this.o.minDuration, o.duration)
     return o
   },
 

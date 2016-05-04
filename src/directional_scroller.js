@@ -7,6 +7,7 @@ import Scroller from './scroller'
 // Originally adapted from http://yusyuslabs.com/tutorial-momentum-scrolling-inside-scrollable-area-with-phaser-js/
 //
 var DirectionalScroller = function(game, clickObject, options = {}) {
+  this.maskLimits = {x: clickObject.width, y: clickObject.height}
   Scroller.call(this, game, clickObject, options)
 }
 
@@ -15,6 +16,11 @@ DirectionalScroller.prototype = Object.assign( Object.create(Scroller.prototype)
   handleDown(target, pointer) {
     this.old = this.down = pointer[this.o.direction]
     Scroller.prototype.handleDown.call(this, target, pointer)
+  },
+
+  handleUp(target, pointer) {
+    this.current = pointer[this.o.direction]
+    Scroller.prototype.handleUp.call(this, target, pointer)
   }
 
 })
