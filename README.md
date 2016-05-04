@@ -2,13 +2,17 @@
 
 ## Install
 `npm install phaser-list-view --save`
+https://www.npmjs.com/package/phaser-list-view
 
 ## API
-- **Scroller** : A pure logic scroller built for scrolling on the x and y axis. Includes iOS-like behaviour such as momentum, bounce-back and snapping.
-- **ListView** : An iOS-like ListView class. Uses Scroller for the input and outputs a ListView. Performance is good because we cull off-screen items.
+- **Scroller** : A pure logic scroller. Includes iOS-like behaviour such as momentum, bounce-back and snapping. Most likely you would use DirectionalScroller or WheelScroller over this base Scroller. But if you have custom needs you can use it.
+- **DirectionalScroller** : A pure logic scroller built for scrolling on the x and y axis. Extends the base Scroller class.
+- **WheelScroller** : A pure logic scroller built for scrolling around a circle. Extends the base Scroller class. 
+- **ListView** : An iOS-like ListView class. Uses DirectionalScroller for the input and outputs a ListView. Performance is good because we cull off-screen items.
 Perfect for high scoreboards.
-- **SwipeCarousel** : An iOS-like SwipeCarousel. Uses Scroller for the input and outputs a SwipeCarousel. Perfect for instructions screens, or a photo gallery.
+- **SwipeCarousel** : An iOS-like SwipeCarousel. Uses DirectionalScroller for the input and outputs a SwipeCarousel. Perfect for instructions screens, or a photo gallery.
 
+- 
 ## ListView Usage
 ```
 import {ListView} from 'phaser-list-view'
@@ -45,7 +49,9 @@ swipeCarousel.addMultiple(...photos)
 ```
 ![](http://i.imgur.com/Sp5aE0H.gif)
 
-## Scroller Usage
+## DirectionalScroller Usage
+// TODO
+## WheelScroller Usage
 // TODO
 
 ## Build
@@ -54,4 +60,5 @@ swipeCarousel.addMultiple(...photos)
 ## TODO
 - remove gsap dependancy and use Phaser.Tween instead
 - remove lodash dependancy
-- minify and compress code
+- Mouse wheel support
+- Methods for tweening to next and previous snapStep
