@@ -1,33 +1,30 @@
 import _ from 'lodash';
 import MathUtils from './utils/math_utils'
-import 'gsap'
 import Scroller from './scroller'
 
 var {radToDeg, degToRad} = Phaser.Math
+var _ptHelper = new Phaser.Point()
 
-// Pure logic scroller
-// Originally adapted from http://yusyuslabs.com/tutorial-momentum-scrolling-inside-scrollable-area-with-phaser-js/
-//
 var WheelScroller = function(game, clickObject, options = {}) {
   options.direction = 'angle'
   this.maskLimits = {angle: clickObject.width/2}
+  this.centerPoint = clickObject.toGlobal(new Phaser.Point(0, 0))
   Scroller.call(this, game, clickObject, options)
 }
 
 WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
 
   handleDown(target, pointer) {
-    let pt = new Phaser.Point(pointer.x, pointer.y)
-    this.centerPoint = this.clickObject.toGlobal(new Phaser.Point(0, 0))
-    this.old = this.down = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(pt, this.centerPoint))
+    _ptHelper.set(pointer.x, pointer.y)
+    this.old = this.down = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
     this.fullDiffAngle = 0
 
     Scroller.prototype.handleDown.call(this, target, pointer)
   },
 
   handleMove(pointer, x, y) {
-    let pt = new Phaser.Point(x, y)
-    var currentRotation = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(pt, this.centerPoint))
+    _ptHelper.set(x, y)
+    var currentRotation = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
     // console.log('currentRotation is', radToDeg(currentRotation))
     var rotations = 0
 
@@ -50,7 +47,7 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
     }
 
     // this.diff = this.old - currentRotation
-    this.diff = this.requestDiff(this.diffAngle, this.target, this.min, this.max, this.o.overflow)
+    this.diff = this._requestDiff(this.diffAngle, this.target, this.min, this.max, this.o.overflow)
     // console.log('currentRotation', radToDeg(currentRotation))
 
     this.target -= this.diff
@@ -74,8 +71,9 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
   },
 
   handleUp(target, pointer) {
-    let pt = new Phaser.Point(pointer.x, pointer.y)
-    this.current = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(pt, this.centerPoint))
+    _ptHelper.set(pointer.x, pointer.y)
+    this.current = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
+
     Scroller.prototype.handleUp.call(this, target, pointer)
   }
 

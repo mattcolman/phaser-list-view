@@ -2,8 +2,14 @@ import _ from 'lodash';
 import MathUtils from './utils/math_utils'
 import 'gsap'
 
+var _ptHelper = new Phaser.Point()
+
 // Pure logic scroller
 // Originally adapted from http://yusyuslabs.com/tutorial-momentum-scrolling-inside-scrollable-area-with-phaser-js/
+//
+// TODO
+// Bug with overflow setting to 0
+// Bug with infinite Wheel Scroller
 //
 var Scroller = function(game, clickObject, options = {}) {
 
@@ -63,18 +69,6 @@ var Scroller = function(game, clickObject, options = {}) {
 
 Scroller.prototype = Object.create({
 
-  setFromTo(_from, _to) {
-    this.o.from = _from
-    this.o.to = _to
-    this._updateMinMax()
-  },
-
-  _updateMinMax() {
-    this.min = Math.min(this.o.from, this.o.to)
-    this.max = Math.max(this.o.from, this.o.to)
-    this.length = Math.abs(this.max - this.min)
-  },
-
   addListeners() {
 
     this.events = {
@@ -104,6 +98,12 @@ Scroller.prototype = Object.create({
   destroy() {
   },
 
+  setFromTo(_from, _to) {
+    this.o.from = _from
+    this.o.to = _to
+    this._updateMinMax()
+  },
+
   handleDown(target, pointer) {
     // console.log('input down', pointer.y)
     this.target = this.requested = this.scrollObject[this.o.direction]
@@ -128,14 +128,14 @@ Scroller.prototype = Object.create({
   },
 
   handleMove(pointer, x, y) {
-    let o = {x, y}
-    this.diff = this.old - o[this.o.direction]
+    _ptHelper.set(x, y)
+    this.diff = this.old - _ptHelper[this.o.direction]
 
-    this.diff = this.requestDiff(this.diff, this.target, this.min, this.max, this.o.overflow)
+    this.diff = this._requestDiff(this.diff, this.target, this.min, this.max, this.o.overflow)
 
     this.target -= this.diff
 
-    this.old = o[this.o.direction]
+    this.old = _ptHelper[this.o.direction]
 
     //store timestamp for event
     this.o.time.move = this.game.time.time
@@ -149,19 +149,6 @@ Scroller.prototype = Object.create({
     if (this.o.emitMoving) this.events.onInputMove.dispatch({pointer, x, y})
   },
 
-  requestDiff(diff, target, min, max, overflow) {
-    let scale = 0
-    if (target > max) {
-      scale = (max+overflow-target) / overflow
-      diff *= scale
-    } else if (target < min) {
-      scale = -(min-overflow-target) / overflow
-      diff *= scale
-    }
-    return diff
-  },
-
-
   handleUp(target, pointer) {
     // console.log('end')
     this.game.input.deleteMoveCallback(this.handleMove, this)
@@ -174,44 +161,37 @@ Scroller.prototype = Object.create({
     }
 
     var o = {
-      swipeDistance: Math.abs(this.down - this.current),
       duration: 1,
-      target: this.target,
-      touchTime: this.o.time.up - this.o.time.move,
-      offset: 0,
-      pointer: pointer
+      target: this.target
     }
 
     // *** BOUNCING
     if (!this.o.bouncing) o.duration = .1
 
-    let duration = 1
-
     if (this.scrollObject[this.o.direction] > this.max) {
       this.target = this.max
-      this.doTween(duration, this.target)
+      this.doTween(o.duration, this.target)
 
     } else if (this.scrollObject[this.o.direction] < this.min) {
       this.target = this.min
-      this.doTween(duration, this.target)
+      this.doTween(o.duration, this.target)
 
     } else {
 
       // *** MOMENTUM
-      this.addMomentum(o)
+      this._addMomentum(o)
 
       // *** SWIPING
-      this.addSwiping(o)
+      this._addSwiping(o, pointer)
 
       // *** SNAPPING
-      this.snap(o)
+      this._addSnapping(o)
 
       // *** LIMITS
-      this.limit(o)
+      this._addLimits(o)
 
       // *** DURATION
-      this.setDuration(o)
-
+      this._calculateDuration(o)
 
       this.doTween(o.duration, o.target)
     }
@@ -220,9 +200,24 @@ Scroller.prototype = Object.create({
 
   },
 
-  addSwiping(o) {
-    if (this.o.swipeEnabled && this.o.time.up - this.o.time.down < this.o.swipeTimeThreshold && o.swipeDistance > this.o.swipeThreshold) {
-      let direction = (o.pointer[this.o.direction] < this.down) ? 'forward' : 'backward'
+  _addMomentum(o) {
+    if (!this.o.momentum) return o.target
+
+    //distance to move after release
+    let offset = Math.pow(this.acc, 2) * this.maskLimits[this.o.direction]
+    offset = Math.min(this.maxOffset, offset)
+    offset = (this.diff > 0) ? -this.o.multiplier * offset : this.o.multiplier * offset
+
+    if ((this.o.time.up - this.o.time.move < this.o.flickTimeThreshold) && offset !== 0 && Math.abs(offset) > (this.o.offsetThreshold)) {
+      o.target += offset
+    }
+    return o
+  },
+
+  _addSwiping(o, pointer) {
+    let swipeDistance = Math.abs(this.down - this.current)
+    if (this.o.swipeEnabled && this.o.time.up - this.o.time.down < this.o.swipeTimeThreshold && swipeDistance > this.o.swipeThreshold) {
+      let direction = (pointer[this.o.direction] < this.down) ? 'forward' : 'backward'
 
       if (direction == 'forward') {
         o.target -= this.o.snapStep/2
@@ -235,20 +230,7 @@ Scroller.prototype = Object.create({
     return o
   },
 
-  setDuration(o) {
-    let distance = Math.abs(o.target - this.scrollObject[this.o.direction])
-    o.duration = this.o.duration * distance / this.maxOffset
-    o.duration = Math.max(this.o.minDuration, o.duration)
-    return o
-  },
-
-  limit(o) {
-    o.target = Math.max(o.target, this.min)
-    o.target = Math.min(o.target, this.max)
-    return o
-  },
-
-  snap(o) {
+  _addSnapping(o) {
     if (!this.o.snapping) {
       return o
     }
@@ -256,19 +238,31 @@ Scroller.prototype = Object.create({
     return o
   },
 
-  addMomentum(o) {
-    if (!this.o.momentum) return o.target
-
-    //distance to move after release
-    o.offset = Math.pow(this.acc, 2) * this.maskLimits[this.o.direction]
-    o.offset = Math.min(this.maxOffset, o.offset)
-    o.offset = (this.diff > 0) ? -this.o.multiplier * o.offset : this.o.multiplier * o.offset
-
-    if ((o.touchTime < this.o.flickTimeThreshold) && o.offset !== 0 && Math.abs(o.offset) > (this.o.offsetThreshold)) {
-      o.target += o.offset
-    }
+  _addLimits(o) {
+    o.target = Math.max(o.target, this.min)
+    o.target = Math.min(o.target, this.max)
     return o
   },
+
+  _calculateDuration(o) {
+    let distance = Math.abs(o.target - this.scrollObject[this.o.direction])
+    o.duration = this.o.duration * distance / this.maxOffset
+    o.duration = Math.max(this.o.minDuration, o.duration)
+    return o
+  },
+
+  _requestDiff(diff, target, min, max, overflow) {
+    let scale = 0
+    if (target > max) {
+      scale = (max+overflow-target) / overflow
+      diff *= scale
+    } else if (target < min) {
+      scale = -(min-overflow-target) / overflow
+      diff *= scale
+    }
+    return diff
+  },
+
 
   doTween(duration, target) {
     // console.log('doTween', duration, target)
@@ -293,7 +287,13 @@ Scroller.prototype = Object.create({
     // reset multiplier when finished
     this.o.multiplier = 1
     this.events.onComplete.dispatch()
-  }
+  },
+
+  _updateMinMax() {
+    this.min = Math.min(this.o.from, this.o.to)
+    this.max = Math.max(this.o.from, this.o.to)
+    this.length = Math.abs(this.max - this.min)
+  },
 
 })
 

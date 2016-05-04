@@ -1,11 +1,7 @@
 import _ from 'lodash';
 import MathUtils from './utils/math_utils'
-import 'gsap'
 import Scroller from './scroller'
 
-// Pure logic scroller
-// Originally adapted from http://yusyuslabs.com/tutorial-momentum-scrolling-inside-scrollable-area-with-phaser-js/
-//
 var DirectionalScroller = function(game, clickObject, options = {}) {
   this.maskLimits = {x: clickObject.width, y: clickObject.height}
   Scroller.call(this, game, clickObject, options)
