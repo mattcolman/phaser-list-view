@@ -2,77 +2,72 @@ import _ from 'lodash';
 import MathUtils from './utils/math_utils'
 import 'gsap'
 
+var _ptHelper = new Phaser.Point()
+
 // Pure logic scroller
 // Originally adapted from http://yusyuslabs.com/tutorial-momentum-scrolling-inside-scrollable-area-with-phaser-js/
 //
-class Scroller {
+// TODO
+// Bug with overflow setting to 0
+// Bug with infinite Wheel Scroller
+//
+var Scroller = function(game, clickObject, options = {}) {
 
-  constructor(game, clickObject, options = {}) {
+  this.game        = game
+  this.clickObject = clickObject
 
-    this.game        = game
-    this.clickObject = clickObject
-
-    let defaultOptions = {
-      from : 0,
-      to : 200,
-      direction: 'y',
-      momentum : false,
-      snapping : false,
-      bouncing : false,
-      deceleration: .5, // value between 0 and 1
-      overflow : 20,
-      snapStep : 10,
-      emitMoving : false,
-      duration : 1.5, // (s) duration of the inertial scrolling simulation.
-      speedLimit : 3, // set maximum speed. Higher values will allow faster scroll (which comes down to a bigger offset for the duration of the momentum scroll) note: touch motion determines actual speed, this is just a limit.
-      moveThreshold : 100, // (ms) determines if a swipe occurred: time between last updated movement @ touchmove and time @ touchend, if smaller than this value, trigger inertial scrolling
-      offsetThreshold : 30, // (pixels) determines if calculated offset is above this threshold
-      acceleration : 0.5, // increase the multiplier by this value, each time the user swipes again when still scrolling. The multiplier is used to multiply the offset. Set to 0 to disable.
-      accelerationT : 250, // (ms) time between successive swipes that determines if the multiplier is increased (if lower than this value)
-      maxAcceleration : 4,
-      time : {}, // contains timestamps of the most recent down, up, and move events
-      multiplier : 1, //acceleration multiplier, don't edit here
-      swipeEnabled : false,
-      swipeThreshold: 250
-    }
-
-    this.o = this.options = _.extend(defaultOptions, options)
-
-    this._updateMinMax()
-
-    this.debug          = false
-
-    this.dispatchValues = {step: 0, total: 0, percent: 0}
-
-    this.addListeners()
-
-    this.scrollObject = {}
-    this.scrollObject[this.o.direction] = 0
-
-    this.maskLimits = {x: this.clickObject.width, y: this.clickObject.height}
-    this.maxOffset  = this.maskLimits[this.o.direction] * this.o.speedLimit
-
-    // set tween that will be re-used for moving scrolling sprite
-    this.tweenScroll = TweenMax.to(this.scrollObject, 0, {
-      ease: Quart.easeOut,
-      onUpdate: this.handleUpdate,
-      onUpdateScope: this,
-      onComplete: this.handleComplete,
-      onCompleteScope: this
-    })
+  let defaultOptions = {
+    from : 0,
+    to : 200,
+    direction: 'y',
+    momentum : false,
+    snapping : false,
+    bouncing : false,
+    deceleration: .5, // value between 0 and 1
+    overflow : 20,
+    snapStep : 10,
+    emitMoving : false,
+    duration : 2, // (s) duration of the inertial scrolling simulation.
+    speedLimit : 3, // set maximum speed. Higher values will allow faster scroll (which comes down to a bigger offset for the duration of the momentum scroll) note: touch motion determines actual speed, this is just a limit.
+    flickTimeThreshold : 100, // (ms) determines if a flick occurred: time between last updated movement @ touchmove and time @ touchend, if smaller than this value, trigger inertial scrolling
+    offsetThreshold : 30, // (pixels) determines if calculated offset is above this threshold
+    acceleration : 0.5, // increase the multiplier by this value, each time the user swipes again when still scrolling. The multiplier is used to multiply the offset. Set to 0 to disable.
+    accelerationT : 250, // (ms) time between successive swipes that determines if the multiplier is increased (if lower than this value)
+    maxAcceleration : 4,
+    time : {}, // contains timestamps of the most recent down, up, and move events
+    multiplier : 1, //acceleration multiplier, don't edit here
+    swipeEnabled : false,
+    swipeThreshold: 5, // (pixels) must move this many pixels for a swipe action
+    swipeTimeThreshold: 250, // (ms) determines if a swipe occurred: time between last updated movement @ touchmove and time @ touchend, if smaller than this value, trigger swipe
+    minDuration: .5
   }
 
-  setFromTo(_from, _to) {
-    this.o.from = _from
-    this.o.to = _to
-    this._updateMinMax()
-  }
+  this.o = this.options = _.extend(defaultOptions, options)
 
-  _updateMinMax() {
-    this.min = Math.min(this.o.from, this.o.to)
-    this.max = Math.max(this.o.from, this.o.to)
-    this.length = Math.abs(this.max - this.min)
-  }
+  this._updateMinMax()
+
+  this.debug          = false
+
+  this.dispatchValues = {step: 0, total: 0, percent: 0}
+
+  this.addListeners()
+
+  this.scrollObject = {}
+  this.scrollObject[this.o.direction] = this.o.from
+
+  this.maxOffset  = this.maskLimits[this.o.direction] * this.o.speedLimit
+
+  // set tween that will be re-used for moving scrolling sprite
+  this.tweenScroll = TweenMax.to(this.scrollObject, 0, {
+    ease: Quart.easeOut,
+    onUpdate: this.handleUpdate,
+    onUpdateScope: this,
+    onComplete: this.handleComplete,
+    onCompleteScope: this
+  })
+}
+
+Scroller.prototype = Object.create({
 
   addListeners() {
 
@@ -88,7 +83,7 @@ class Scroller {
     this.clickObject.inputEnabled = true
     this.clickObject.events.onInputDown.add(this.handleDown, this)
     this.clickObject.events.onInputUp.add(this.handleUp, this)
-  }
+  },
 
   removeListeners() {
     this.clickObject.events.onInputDown.remove(this.handleDown, this)
@@ -97,15 +92,20 @@ class Scroller {
     _.forIn(this.events, (signal, key)=> {
       signal.removeAll()
     })
-  }
+  },
 
   // TODO
   destroy() {
-  }
+  },
+
+  setFromTo(_from, _to) {
+    this.o.from = _from
+    this.o.to = _to
+    this._updateMinMax()
+  },
 
   handleDown(target, pointer) {
     // console.log('input down', pointer.y)
-    this.old = this.down = pointer[this.o.direction]
     this.target = this.requested = this.scrollObject[this.o.direction]
     this.o.time.down = pointer.timeDown;
 
@@ -125,46 +125,29 @@ class Scroller {
     this.tweenScroll.pause()
 
     this.events.onInputDown.dispatch({target, pointer})
-  }
+  },
 
   handleMove(pointer, x, y) {
-    let o = {x, y}
-    this.diff = this.old - o[this.o.direction]
+    _ptHelper.set(x, y)
+    this.diff = this.old - _ptHelper[this.o.direction]
 
-    this.diff = this.requestDiff(this.diff, this.target, this.min, this.max, this.o.overflow)
+    this.diff = this._requestDiff(this.diff, this.target, this.min, this.max, this.o.overflow)
 
     this.target -= this.diff
 
-    this.old = o[this.o.direction]
+    this.old = _ptHelper[this.o.direction]
 
     //store timestamp for event
     this.o.time.move = this.game.time.time
 
-    let _distance = this.down - o[this.o.direction]
-
-    // this.acc = Math.abs(_distance / (this.o.time.move - this.o.time.down))
     this.acc = Math.min(Math.abs(this.diff/30), this.o.maxAcceleration)
-    // console.log('distance', this.diff, this.acc)
 
     //go ahead and move the block
     this.scrollObject[this.o.direction] = this.target
     this.handleUpdate()
 
     if (this.o.emitMoving) this.events.onInputMove.dispatch({pointer, x, y})
-  }
-
-  requestDiff(diff, target, min, max, overflow) {
-    let scale = 0
-    if (target > max) {
-      scale = (max+overflow-target) / overflow
-      diff *= scale
-    } else if (target < min) {
-      scale = -(min-overflow-target) / overflow
-      diff *= scale
-    }
-    return diff
-  }
-
+  },
 
   handleUp(target, pointer) {
     // console.log('end')
@@ -177,89 +160,109 @@ class Scroller {
       this.o.multiplier = 1 // reset
     }
 
-    // *** END LIMITS
-    let _distance = this.down - pointer[this.o.direction]
-    let duration = 1
+    var o = {
+      duration: 1,
+      target: this.target
+    }
 
     // *** BOUNCING
-    if (!this.o.bouncing) duration = .1
+    if (!this.o.bouncing) o.duration = .1
 
     if (this.scrollObject[this.o.direction] > this.max) {
       this.target = this.max
-      this.doTween(duration, this.target)
+      this.doTween(o.duration, this.target)
 
     } else if (this.scrollObject[this.o.direction] < this.min) {
       this.target = this.min
-      this.doTween(duration, this.target)
+      this.doTween(o.duration, this.target)
 
     } else {
 
-      //calc for moving
-      var touchTime = this.o.time.up - this.o.time.move;
-
-      //distance to move after release
-      var offset = Math.pow(this.acc, 2) * this.maskLimits[this.o.direction];
-      offset = Math.min(this.maxOffset, offset)
-      offset = (this.diff > 0) ? -this.o.multiplier * offset : this.o.multiplier * offset;
-
       // *** MOMENTUM
-      this.target = this.addMomentum(this.target, touchTime, offset)
+      this._addMomentum(o)
 
       // *** SWIPING
-      if (this.o.swipeEnabled && this.o.time.up - this.o.time.down < this.o.swipeThreshold) {
-        duration = 1
-        let direction = (pointer[this.o.direction] < this.down) ? 'forward' : 'backward'
-
-        if (direction == 'forward') {
-          this.target -= this.o.snapStep/2
-        } else {
-          this.target += this.o.snapStep/2
-        }
-
-        this.events.onSwipe.dispatch(direction)
-      }
+      this._addSwiping(o, pointer)
 
       // *** SNAPPING
-      this.target = this.snap(this.target)
+      this._addSnapping(o)
 
       // *** LIMITS
-      this.target = this.limit(this.target)
+      this._addLimits(o)
 
       // *** DURATION
-      let distance = Math.abs(this.target - this.scrollObject[this.o.direction])
-      duration = this.getDuration(distance)
+      this._calculateDuration(o)
 
-      this.doTween(duration, this.target)
+      this.doTween(o.duration, o.target)
     }
 
     this.events.onInputUp.dispatch({target, pointer})
 
-  }
+  },
 
-  getDuration(distance) {
-    return this.o.duration * distance / this.maxOffset
-  }
+  _addMomentum(o) {
+    if (!this.o.momentum) return o.target
 
-  limit(target) {
-    target = Math.max(target, this.min)
-    target = Math.min(target, this.max)
-    return target
-  }
+    //distance to move after release
+    let offset = Math.pow(this.acc, 2) * this.maskLimits[this.o.direction]
+    offset = Math.min(this.maxOffset, offset)
+    offset = (this.diff > 0) ? -this.o.multiplier * offset : this.o.multiplier * offset
 
-  snap(target) {
+    if ((this.o.time.up - this.o.time.move < this.o.flickTimeThreshold) && offset !== 0 && Math.abs(offset) > (this.o.offsetThreshold)) {
+      o.target += offset
+    }
+    return o
+  },
+
+  _addSwiping(o, pointer) {
+    let swipeDistance = Math.abs(this.down - this.current)
+    if (this.o.swipeEnabled && this.o.time.up - this.o.time.down < this.o.swipeTimeThreshold && swipeDistance > this.o.swipeThreshold) {
+      let direction = (pointer[this.o.direction] < this.down) ? 'forward' : 'backward'
+
+      if (direction == 'forward') {
+        o.target -= this.o.snapStep/2
+      } else {
+        o.target += this.o.snapStep/2
+      }
+
+      this.events.onSwipe.dispatch(direction)
+    }
+    return o
+  },
+
+  _addSnapping(o) {
     if (!this.o.snapping) {
-      return target
+      return o
     }
-    return MathUtils.nearestMultiple(target, this.o.snapStep)
-  }
+    o.target = MathUtils.nearestMultiple(o.target, this.o.snapStep)
+    return o
+  },
 
-  addMomentum(target, touchTime, offset) {
-    if (!this.o.momentum) return target
-    if ((touchTime < this.o.moveThreshold) && offset !== 0 && Math.abs(offset) > (this.o.offsetThreshold)) {
-      target += offset
+  _addLimits(o) {
+    o.target = Math.max(o.target, this.min)
+    o.target = Math.min(o.target, this.max)
+    return o
+  },
+
+  _calculateDuration(o) {
+    let distance = Math.abs(o.target - this.scrollObject[this.o.direction])
+    o.duration = this.o.duration * distance / this.maxOffset
+    o.duration = Math.max(this.o.minDuration, o.duration)
+    return o
+  },
+
+  _requestDiff(diff, target, min, max, overflow) {
+    let scale = 0
+    if (target > max) {
+      scale = (max+overflow-target) / overflow
+      diff *= scale
+    } else if (target < min) {
+      scale = -(min-overflow-target) / overflow
+      diff *= scale
     }
-    return target
-  }
+    return diff
+  },
+
 
   doTween(duration, target) {
     // console.log('doTween', duration, target)
@@ -271,21 +274,29 @@ class Scroller {
     this.tweenScroll.duration(duration)
     this.tweenScroll.updateTo(o, true)
     this.tweenScroll.restart()
-  }
+  },
 
   handleUpdate() {
     this.dispatchValues.step = this.diff // this is currently doesn't work with momentum
     this.dispatchValues.total = this.scrollObject[this.o.direction]
     this.dispatchValues.percent = MathUtils.percentageBetween2(this.scrollObject[this.o.direction], this.o.from, this.o.to)
     this.events.onUpdate.dispatch(this.dispatchValues)
-  }
+  },
 
   handleComplete() {
     // reset multiplier when finished
     this.o.multiplier = 1
     this.events.onComplete.dispatch()
-  }
+  },
 
-}
+  _updateMinMax() {
+    this.min = Math.min(this.o.from, this.o.to)
+    this.max = Math.max(this.o.from, this.o.to)
+    this.length = Math.abs(this.max - this.min)
+  },
+
+})
+
+Scroller.prototype.constructor = Scroller
 
 export default Scroller
