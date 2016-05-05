@@ -30,10 +30,14 @@ class ListViewCore {
       to: 0
     }, this.options))
     this.scroller.events.onUpdate.add((o)=> {
-      this.update(o.total)
+      this._update(o.total)
     })
   }
 
+  /**
+   * [add a child to the list]
+   * @param {DisplayObject} child
+   */
   add(child) {
     let xy = 0
     if (this.grp.children.length > 0) {
@@ -44,10 +48,14 @@ class ListViewCore {
     this.grp.addChild(child)
 
     this.scroller.setFromTo(0, -this.grp[this.p.wh] + this.bounds[this.p.wh])
-    this.update(this.currentPosition)
+    this._update(this.currentPosition)
     if (this.o.autocull) this.cull()
   }
 
+  /**
+   * [addMultiple children to the list]
+   * @param {...[DisplayObjects]} children
+   */
   addMultiple(...children) {
     children.forEach(this.add, this)
   }
@@ -60,12 +68,10 @@ class ListViewCore {
     // TODO
   }
 
-  update(currentPosition) {
-    this.currentPosition = currentPosition
-    this.grp[this.p.xy] = this.bounds[this.p.xy] + currentPosition
-    if (this.o.autocull) this.cull()
-  }
-
+  /**
+   * [cull - culls the off-screen list elements]
+   * mainly called internally with the autoCull property
+   */
   cull() {
     for (var i = 0; i < this.grp.children.length; i++) {
       let child = this.grp.children[i]
@@ -78,6 +84,18 @@ class ListViewCore {
     }
   }
 
+  /**
+   * @private
+   */
+  _update(currentPosition) {
+    this.currentPosition = currentPosition
+    this.grp[this.p.xy] = this.bounds[this.p.xy] + currentPosition
+    if (this.o.autocull) this.cull()
+  }
+
+  /**
+   * @private
+   */
   _addMask(bounds) {
     let mask = this.game.add.graphics()
     mask.beginFill(0xff0000)

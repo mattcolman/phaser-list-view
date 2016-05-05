@@ -6,51 +6,55 @@ var {radToDeg, degToRad} = Phaser.Math
 var _ptHelper = new Phaser.Point()
 
 var WheelScroller = function(game, clickObject, options = {}) {
-  options.direction = 'angle'
+  let defaultOptions = {
+    direction: 'angle',
+    infinite: false,
+    speedLimit: 1.5
+  }
   this.maskLimits = {angle: clickObject.width/2}
-  this.centerPoint = clickObject.toGlobal(new Phaser.Point(0, 0))
-  Scroller.call(this, game, clickObject, options)
+  Scroller.call(this, game, clickObject, _.extend(defaultOptions, options))
 }
 
 WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
 
   handleDown(target, pointer) {
+    this.centerPoint = this.clickObject.toGlobal(new Phaser.Point(0, 0))
     _ptHelper.set(pointer.x, pointer.y)
     this.old = this.down = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
-    this.fullDiffAngle = 0
+    this.fullDiff = 0
 
     Scroller.prototype.handleDown.call(this, target, pointer)
   },
 
   handleMove(pointer, x, y) {
     _ptHelper.set(x, y)
-    var currentRotation = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
-    // console.log('currentRotation is', radToDeg(currentRotation))
-    var rotations = 0
+    let currentRotation = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
+    let rotations = 0
 
-    this.diffRotation = this.old - currentRotation
-    this.diffAngle = radToDeg(this.diffRotation)
+    let diffRotation = this.old - currentRotation
+    this.diff = radToDeg(diffRotation)
 
-    // console.log('currentAngle', Phaser.Math.radToDeg(currentAngle))
-    if (this.diffAngle > 180) {
+    if (this.diff > 180) {
       rotations = 1
-    } else if (this.diffAngle < -180) {
+    } else if (this.diff < -180) {
       rotations = -1
     }
 
     if (rotations != 0) {
       let fullCircle = rotations * degToRad(360)
-      // console.log('rotations', radToDeg(currentRotation), radToDeg(this.diffRotation), rotations)
-      // currentRotation += fullCircle
-      this.diffRotation -= fullCircle
-      this.diffAngle = radToDeg(this.diffRotation)
+      diffRotation -= fullCircle
+      this.diff = radToDeg(diffRotation)
     }
 
-    // this.diff = this.old - currentRotation
-    this.diff = this._requestDiff(this.diffAngle, this.target, this.min, this.max, this.o.overflow)
-    // console.log('currentRotation', radToDeg(currentRotation))
+    this.diff = this._requestDiff(this.diff, this.target, this.min, this.max, this.o.overflow)
+
+    this.fullDiff -= this.diff
 
     this.target -= this.diff
+
+    if (this.o.infinite) {
+      this.target = this._wrapTarget(this.target, this.min, this.max)
+    }
 
     this.old = currentRotation
 
@@ -75,7 +79,19 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
     this.current = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
 
     Scroller.prototype.handleUp.call(this, target, pointer)
-  }
+  },
+
+  _wrapTarget(target, min, max) {
+    let diff = 0
+    if (target > max) {
+      diff = target - max
+      target = min + diff
+    } else if (target < min) {
+      diff = min - target
+      target = max - diff
+    }
+    return target
+  },
 
 })
 

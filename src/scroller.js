@@ -7,10 +7,6 @@ var _ptHelper = new Phaser.Point()
 // Pure logic scroller
 // Originally adapted from http://yusyuslabs.com/tutorial-momentum-scrolling-inside-scrollable-area-with-phaser-js/
 //
-// TODO
-// Bug with overflow setting to 0
-// Bug with infinite Wheel Scroller
-//
 var Scroller = function(game, clickObject, options = {}) {
 
   this.game        = game
@@ -45,8 +41,6 @@ var Scroller = function(game, clickObject, options = {}) {
   this.o = this.options = _.extend(defaultOptions, options)
 
   this._updateMinMax()
-
-  this.debug          = false
 
   this.dispatchValues = {step: 0, total: 0, percent: 0}
 
@@ -94,8 +88,8 @@ Scroller.prototype = Object.create({
     })
   },
 
-  // TODO
   destroy() {
+    this.removeListeners()
   },
 
   setFromTo(_from, _to) {
@@ -104,7 +98,12 @@ Scroller.prototype = Object.create({
     this._updateMinMax()
   },
 
+  isTweening() {
+    return TweenMax.isTweening(this.scrollObject)
+  },
+
   handleDown(target, pointer) {
+    this.isDown = true
     // console.log('input down', pointer.y)
     this.target = this.requested = this.scrollObject[this.o.direction]
     this.o.time.down = pointer.timeDown;
@@ -112,7 +111,7 @@ Scroller.prototype = Object.create({
     this.game.input.addMoveCallback(this.handleMove, this)
 
     //check if block is currently scrolling and set multiplier
-    if (TweenMax.isTweening(this.scrollObject) && (this.o.time.down - this.o.time.up) < this.o.accelerationT) {
+    if (this.isTweening() && (this.o.time.down - this.o.time.up) < this.o.accelerationT) {
         //swipe while animation was happening, increase multiplier
         this.o.multiplier += this.o.acceleration;
         // console.log('swipe while animation is happening', this.o.multiplier)
@@ -124,7 +123,7 @@ Scroller.prototype = Object.create({
     //stop tween for touch-to-stop
     this.tweenScroll.pause()
 
-    this.events.onInputDown.dispatch({target, pointer})
+    this.events.onInputDown.dispatch(target, pointer)
   },
 
   handleMove(pointer, x, y) {
@@ -146,10 +145,11 @@ Scroller.prototype = Object.create({
     this.scrollObject[this.o.direction] = this.target
     this.handleUpdate()
 
-    if (this.o.emitMoving) this.events.onInputMove.dispatch({pointer, x, y})
+    if (this.o.emitMoving) this.events.onInputMove.dispatch(pointer, x, y)
   },
 
   handleUp(target, pointer) {
+    this.isDown = false
     // console.log('end')
     this.game.input.deleteMoveCallback(this.handleMove, this)
 
@@ -166,7 +166,7 @@ Scroller.prototype = Object.create({
     }
 
     // *** BOUNCING
-    if (!this.o.bouncing) o.duration = .1
+    if (!this.o.bouncing) o.duration = .01
 
     if (this.scrollObject[this.o.direction] > this.max) {
       this.target = this.max
@@ -196,7 +196,7 @@ Scroller.prototype = Object.create({
       this.doTween(o.duration, o.target)
     }
 
-    this.events.onInputUp.dispatch({target, pointer})
+    this.events.onInputUp.dispatch(target, pointer)
 
   },
 
@@ -239,6 +239,7 @@ Scroller.prototype = Object.create({
   },
 
   _addLimits(o) {
+    if (this.o.infinite) return o
     o.target = Math.max(o.target, this.min)
     o.target = Math.min(o.target, this.max)
     return o
@@ -252,6 +253,8 @@ Scroller.prototype = Object.create({
   },
 
   _requestDiff(diff, target, min, max, overflow) {
+    if (this.o.infinite) return diff
+
     let scale = 0
     if (target > max) {
       scale = (max+overflow-target) / overflow
@@ -263,6 +266,10 @@ Scroller.prototype = Object.create({
     return diff
   },
 
+  tweenToSnap(duration, snapIndex) {
+    let target = this.o.from - (this.o.snapStep * snapIndex)
+    this.doTween(duration, target)
+  },
 
   doTween(duration, target) {
     // console.log('doTween', duration, target)
@@ -277,10 +284,24 @@ Scroller.prototype = Object.create({
   },
 
   handleUpdate() {
-    this.dispatchValues.step = this.diff // this is currently doesn't work with momentum
-    this.dispatchValues.total = this.scrollObject[this.o.direction]
-    this.dispatchValues.percent = MathUtils.percentageBetween2(this.scrollObject[this.o.direction], this.o.from, this.o.to)
+    if (this.o.infinite) {
+      this.dispatchValues.total = Phaser.Math.wrap(this.scrollObject[this.o.direction], this.min, this.max)
+    } else {
+      this.dispatchValues.total = this.scrollObject[this.o.direction]
+    }
+
+    let step = this.dispatchValues.total - this.previousTotal
+    if (step < -this.length/2) {
+      step = step + this.length
+    } else if (step > this.length/2) {
+      step = step - this.length
+    }
+
+    this.dispatchValues.step = step
+    this.dispatchValues.percent = MathUtils.percentageBetween2(this.dispatchValues.total, this.o.from, this.o.to)
     this.events.onUpdate.dispatch(this.dispatchValues)
+
+    this.previousTotal = this.dispatchValues.total
   },
 
   handleComplete() {
@@ -293,6 +314,7 @@ Scroller.prototype = Object.create({
     this.min = Math.min(this.o.from, this.o.to)
     this.max = Math.max(this.o.from, this.o.to)
     this.length = Math.abs(this.max - this.min)
+    this.previousTotal = this.o.from
   },
 
 })
