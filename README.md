@@ -57,8 +57,11 @@ swipeCarousel.addMultiple(...photos)
 ## Build
 `npm run compile`
 
+## Examples
+https://github.com/mattcolman/phaser-experiments
+http://www.mattcolman.com/labs/phaser-experiments/index.html
+
 ## TODO
 - remove gsap dependancy and use Phaser.Tween instead
 - remove lodash dependancy
 - Mouse wheel support
-- Methods for tweening to next and previous snapStep
