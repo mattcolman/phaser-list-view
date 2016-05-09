@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import ListViewCore from './list_view_core'
+import DirectionalScroller from './directional_scroller'
 
 var ListView = function(game, parent, bounds, options = {}) {
 
@@ -14,6 +15,18 @@ var ListView = function(game, parent, bounds, options = {}) {
   }
 
   ListViewCore.call(this, game, parent, bounds, options)
+
+  // we have to use a new mask instance for the click object or webgl ignores the mask
+  this.scroller = new DirectionalScroller(this.game, this._addMask(bounds), _.extend({
+    from: 0,
+    to: 0
+  }, this.options))
+  this.scroller.events.onUpdate.add((o)=> {
+    this.setPosition(o.total)
+  })
+  this.events.onAdded.add((limit)=>{
+    this.scroller.setFromTo(0, -limit)
+  })
 }
 
 ListView.prototype = Object.assign(Object.create(ListViewCore.prototype))

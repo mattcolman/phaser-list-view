@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import DirectionalScroller from './directional_scroller'
 
 class ListViewCore {
 
@@ -19,19 +18,14 @@ class ListViewCore {
     this.grp = this.game.add.group(parent)
     this.grp.position.set(bounds.x, bounds.y)
 
-    this.currentPosition = 0
+    this.events = {
+      onAdded: new Phaser.Signal()
+    }
+
+    this.position = 0
 
     // [MC] - is masking the fastest option here? Cropping the texture may be faster?
     this.grp.mask = this._addMask(bounds)
-
-    // we have to use a new mask instance for the click object or webgl ignores the mask
-    this.scroller = new DirectionalScroller(this.game, this._addMask(bounds), _.extend({
-      from: 0,
-      to: 0
-    }, this.options))
-    this.scroller.events.onUpdate.add((o)=> {
-      this._update(o.total)
-    })
   }
 
   /**
@@ -46,10 +40,10 @@ class ListViewCore {
     }
     child[this.p.xy] = xy
     this.grp.addChild(child)
+    this.length = this.grp[this.p.wh]
 
-    this.scroller.setFromTo(0, -this.grp[this.p.wh] + this.bounds[this.p.wh])
-    this._update(this.currentPosition)
-    if (this.o.autocull) this.cull()
+    this.setPosition(this.position)
+    this.events.onAdded.dispatch(this.length - this.bounds[this.p.wh])
   }
 
   /**
@@ -85,11 +79,13 @@ class ListViewCore {
   }
 
   /**
-   * @private
+   * [setPosition - set position of the top of the list view. Either the x or y value,
+   *                depending on what you set the direction to]
+   * @param {Number} position
    */
-  _update(currentPosition) {
-    this.currentPosition = currentPosition
-    this.grp[this.p.xy] = this.bounds[this.p.xy] + currentPosition
+  setPosition(position) {
+    this.position = position
+    this.grp[this.p.xy] = this.bounds[this.p.xy] + position
     if (this.o.autocull) this.cull()
   }
 
@@ -104,6 +100,12 @@ class ListViewCore {
     return mask
   }
 
+}
+
+ListViewCore.prototype.defaultOptions = {
+  direction: 'y',
+  autocull: true,
+  padding: 10
 }
 
 export default ListViewCore;
