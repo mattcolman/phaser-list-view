@@ -1,0 +1,206 @@
+import _ from 'lodash';
+import MathUtils from './utils/math_utils'
+import 'gsap'
+
+var _ptHelper = new Phaser.Point()
+
+var BasicSwiper = function(game, clickObject, options = {}) {
+
+  this.game        = game
+  this.clickObject = clickObject
+
+  let defaultOptions = {
+    from: 0,
+    to: 200,
+    direction: 'y',
+    snapStep : 10,
+    duration : 1, // (s) duration of the inertial scrolling simulation.
+    time : {}, // contains timestamps of the most recent down, up, and move events
+    swipeThreshold: 5, // (pixels) must move this many pixels for a swipe action
+    swipeTimeThreshold: 250, // (ms) determines if a swipe occurred: time between last updated movement @ touchmove and time @ touchend, if smaller than this value, trigger swipe
+  }
+
+  this.o = this.options = _.extend(defaultOptions, options)
+
+  this._updateMinMax()
+
+  this.addListeners()
+
+  this.scrollObject = {}
+  this.scrollObject[this.o.direction] = this.o.from
+
+  // set tween that will be re-used for moving scrolling sprite
+  this.tweenScroll = TweenMax.to(this.scrollObject, 0, {
+    ease: Quart.easeOut,
+    onUpdate: this.handleUpdate,
+    onUpdateScope: this,
+    onComplete: this.handleComplete,
+    onCompleteScope: this
+  })
+}
+
+BasicSwiper.prototype = Object.create({
+
+  addListeners() {
+
+    this.events = {
+      onUpdate    : new Phaser.Signal(),
+      onInputUp   : new Phaser.Signal(),
+      onInputDown : new Phaser.Signal(),
+      onInputMove : new Phaser.Signal(),
+      onComplete  : new Phaser.Signal(),
+      onSwipe     : new Phaser.Signal()
+    }
+
+    this.clickObject.inputEnabled = true
+    this.enable()
+    this.clickObject.events.onInputDown.add(this.handleDown, this)
+    this.clickObject.events.onInputUp.add(this.handleUp, this)
+  },
+
+  removeListeners() {
+    this.clickObject.events.onInputDown.remove(this.handleDown, this)
+    this.clickObject.events.onInputUp.remove(this.handleUp, this)
+
+    _.forIn(this.events, (signal, key)=> {
+      signal.removeAll()
+    })
+  },
+
+  destroy() {
+    this.removeListeners()
+  },
+
+  enable() {
+    this.enabled = true
+  },
+
+  disable() {
+    this.enabled = false
+  },
+
+  isTweening() {
+    return TweenMax.isTweening(this.scrollObject)
+  },
+
+  handleDown(target, pointer) {
+    if (!this.enabled) {
+      this.clickBlocked = true
+      return
+    }
+    this.clickBlocked = false
+    console.log('handle down', pointer[this.o.direction])
+    this.isDown = true
+    // console.log('input down', pointer.y)
+    this.old = this.down = pointer[this.o.direction]
+    this.target = 0
+    this.o.time.down = pointer.timeDown;
+
+    this.game.input.addMoveCallback(this.handleMove, this)
+
+    //stop tween for touch-to-stop
+    this.tweenScroll.pause()
+
+    this.events.onInputDown.dispatch(target, pointer)
+  },
+
+  handleMove(pointer, x, y) {
+    if (!this.enabled) return
+    _ptHelper.set(x, y)
+    this.diff = this.old - _ptHelper[this.o.direction]
+    // console.log('diff', this.diff)
+    this.target -= this.diff
+
+    this.old = _ptHelper[this.o.direction]
+
+    //store timestamp for event
+    this.o.time.move = this.game.time.time
+
+    //go ahead and move the block
+    this.scrollObject[this.o.direction] = this.target
+    this.handleUpdate()
+
+    if (this.o.emitMoving) this.events.onInputMove.dispatch(pointer, x, y)
+  },
+
+  handleUp(target, pointer) {
+    if (!this.enabled || this.clickBlocked) return
+    this.isDown = false
+    // console.log('end')
+    this.game.input.deleteMoveCallback(this.handleMove, this)
+
+    //store timestamp for event
+    this.o.time.up = pointer.timeUp
+
+    var o = {
+      duration: this.o.duration,
+      target: this.target
+    }
+
+    // *** SWIPING
+    this._addSwiping(o, pointer)
+
+    // *** SNAPPING
+    this._addSnapping(o)
+
+    this.doTween(o.duration, o.target)
+
+    this.events.onInputUp.dispatch(target, pointer)
+
+  },
+
+  _addSwiping(o, pointer) {
+    let swipeDistance = Math.abs(this.down - this.old)
+    if (this.o.time.up - this.o.time.down < this.o.swipeTimeThreshold && swipeDistance > this.o.swipeThreshold) {
+      let direction = (pointer[this.o.direction] < this.down) ? 'forward' : 'backward'
+
+      if (direction == 'forward') {
+        o.target -= this.o.snapStep/2
+      } else {
+        o.target += this.o.snapStep/2
+      }
+
+      this.events.onSwipe.dispatch(direction)
+    }
+    return o
+  },
+
+  _addSnapping(o) {
+    o.target = MathUtils.nearestMultiple(o.target, this.o.snapStep)
+    return o
+  },
+
+  doTween(duration, target) {
+    // console.log('doTween', duration, target)
+    //stop a tween if it is currently happening
+    let o = {}
+    o[this.o.direction] = target
+
+    this.tweenScroll.pause()
+    this.tweenScroll.duration(duration)
+    this.tweenScroll.updateTo(o, true)
+    this.tweenScroll.restart()
+  },
+
+  handleUpdate() {
+    this.events.onUpdate.dispatch( MathUtils.scaleBetween(-1, 1, MathUtils.percentageBetween2( this.scrollObject[this.o.direction], -this.length, this.length ) ) )
+  },
+
+  handleComplete() {
+    // reset multiplier when finished
+    this.o.multiplier = 1
+    this.events.onComplete.dispatch()
+  },
+
+  _updateMinMax() {
+    this.min = Math.min(this.o.from, this.o.to)
+    this.max = Math.max(this.o.from, this.o.to)
+    this.length = Math.abs(this.max - this.min)
+    this.o.snapStep = this.length
+  },
+
+})
+
+BasicSwiper.prototype.constructor = BasicSwiper
+
+export default BasicSwiper
