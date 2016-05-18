@@ -4,6 +4,16 @@ import 'gsap'
 
 var _ptHelper = new Phaser.Point()
 
+// ** WORK IN PROGRESS **
+//
+// Similar to the Scroller class but there is no focus on a start and end of the scroll surface.
+// For example with Scroller if you swiped left 3 times you would continue to go further left and
+// closer to the end of the limit.
+// With BasicSwiper if you swiped left 3 times, each time you receive values between -1 and 1, depending
+// on the direction you swipe.
+//
+// TODO - consolidate BasicSwiper and Scroller. At least they could share same functions
+//
 var BasicSwiper = function(game, clickObject, options = {}) {
 
   this.game        = game
@@ -182,6 +192,7 @@ BasicSwiper.prototype = Object.create({
     this.tweenScroll.restart()
   },
 
+  // dispatches a value between -1 and 1 depending on the direction of the swipe action.
   handleUpdate() {
     this.events.onUpdate.dispatch( MathUtils.scaleBetween(-1, 1, MathUtils.percentageBetween2( this.scrollObject[this.o.direction], -this.length, this.length ) ) )
   },
