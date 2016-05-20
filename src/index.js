@@ -6,4 +6,12 @@ import WheelScroller from './wheel_scroller'
 import DirectionalScroller from './directional_scroller'
 import BasicSwiper from './basic_swiper'
 
-export {Scroller, ListView, ListViewCore, SwipeCarousel, WheelScroller, DirectionalScroller, BasicSwiper}
+export {
+  Scroller as Scroller,
+  ListView as ListView,
+  ListViewCore as ListViewCore,
+  SwipeCarousel as SwipeCarousel,
+  WheelScroller as WheelScroller,
+  DirectionalScroller as DirectionalScroller,
+  BasicSwiper as BasicSwiper
+}
