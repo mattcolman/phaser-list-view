@@ -9,6 +9,8 @@ class ListViewCore {
 
     this.o = this.options = _.extend(this.defaultOptions, options)
 
+    this.items = []
+
     if (this.o.direction == 'y') {
       this.p = {xy: 'y', wh: 'height'}
     } else {
@@ -33,6 +35,7 @@ class ListViewCore {
    * @param {DisplayObject} child
    */
   add(child) {
+    this.items.push(child)
     let xy = 0
     if (this.grp.children.length > 0) {
       let lastChild = this.grp.getChildAt(this.grp.children.length-1)
