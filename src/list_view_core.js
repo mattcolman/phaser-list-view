@@ -66,12 +66,20 @@ class ListViewCore {
   }
 
   /**
+   * [removeAll]
+   */
+  removeAll() {
+    this.grp.removeAll()
+    this.items = []
+  }
+
+  /**
    * [cull - culls the off-screen list elements]
    * mainly called internally with the autoCull property
    */
   cull() {
-    for (var i = 0; i < this.grp.children.length; i++) {
-      let child = this.grp.children[i]
+    for (var i = 0; i < this.items.length; i++) {
+      let child = this.items[i]
       child.visible = true
       if (child[this.p.xy] + child[this.p.wh] + this.grp[this.p.xy] < this.bounds[this.p.xy]) {
         child.visible = false
@@ -96,7 +104,7 @@ class ListViewCore {
    * @private
    */
   _addMask(bounds) {
-    let mask = this.game.add.graphics()
+    let mask = this.game.add.graphics(0, 0, this.parent)
     mask.beginFill(0xff0000)
         .drawRect(bounds.x, bounds.y, bounds.width, bounds.height)
     mask.alpha = 0
