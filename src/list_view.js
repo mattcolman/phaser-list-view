@@ -29,7 +29,14 @@ var ListView = function(game, parent, bounds, options = {}) {
   })
 }
 
-ListView.prototype = Object.assign(Object.create(ListViewCore.prototype))
+ListView.prototype = Object.assign(Object.create(ListViewCore.prototype), {
+
+  reset() {
+    this.setPosition(0)
+    this.scroller.init()
+  }
+
+})
 ListView.prototype.constructor = ListView
 
 export default ListView;

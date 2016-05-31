@@ -47,9 +47,10 @@ var Scroller = function(game, clickObject, options = {}) {
   this.addListeners()
 
   this.scrollObject = {}
-  this.scrollObject[this.o.direction] = this.o.from
 
   this.maxOffset  = this.maskLimits[this.o.direction] * this.o.speedLimit
+
+  this.init()
 
   // set tween that will be re-used for moving scrolling sprite
   this.tweenScroll = TweenMax.to(this.scrollObject, 0, {
@@ -88,6 +89,10 @@ Scroller.prototype = Object.create({
     })
   },
 
+  init() {
+    this.scrollObject[this.o.direction] = this.o.from
+  },
+
   destroy() {
     this.removeListeners()
   },
@@ -106,6 +111,7 @@ Scroller.prototype = Object.create({
     this.isDown = true
     // console.log('input down', pointer.y)
     this.target = this.requested = this.scrollObject[this.o.direction]
+    this.old = pointer[this.o.direction]
     this.o.time.down = pointer.timeDown;
 
     this.game.input.addMoveCallback(this.handleMove, this)
