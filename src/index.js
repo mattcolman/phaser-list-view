@@ -5,6 +5,8 @@ import SwipeCarousel from './swipe_carousel'
 import WheelScroller from './wheel_scroller'
 import DirectionalScroller from './directional_scroller'
 import BasicSwiper from './basic_swiper'
+import BasicSwiperCore from './basic_swiper_core'
+import BasicScroller from './basic_scroller'
 
 export {
   Scroller as Scroller,
@@ -13,5 +15,7 @@ export {
   SwipeCarousel as SwipeCarousel,
   WheelScroller as WheelScroller,
   DirectionalScroller as DirectionalScroller,
-  BasicSwiper as BasicSwiper
+  BasicSwiper as BasicSwiper,
+  BasicSwiperCore as BasicSwiperCore,
+  BasicScroller as BasicScroller
 }
