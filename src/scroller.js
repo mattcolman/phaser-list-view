@@ -94,12 +94,8 @@ Scroller.prototype = Object.create({
   },
 
   init() {
-    if (this.o.direction == 'auto') {
-      this.scrollObject.x = this.o.from
-      this.scrollObject.y = this.o.from
-    } else {
-      this.scrollObject[this.o.direction] = this.o.from
-    }
+    this.setDirection(this.o.direction)
+    this.scrollObject[this.direction] = this.o.from
   },
 
   destroy() {
@@ -122,14 +118,6 @@ Scroller.prototype = Object.create({
   },
 
   handleDown(target, pointer) {
-    if (!this.direction && this.o.direction == 'auto') {
-      this.autoX = pointer.x
-      this.autoY = pointer.y
-      return
-    } else {
-      this.setDirection( this.o.direction )
-    }
-
     this.isDown = true
     // console.log('input down', pointer.y)
     this.target = this.requested = this.scrollObject[this.direction]
@@ -154,16 +142,6 @@ Scroller.prototype = Object.create({
   },
 
   handleMove(pointer, x, y) {
-    if (!this.direction && this.o.direction == 'auto') {
-      if (Math.abs(this.autoX - x) > this.o.autoDetectThreshold) {
-        this.setDirection('x')
-      } else if (Math.abs(this.autoY - y) > this.o.autoDetectThreshold) {
-        this.setDirection('y')
-      } else {
-        return
-      }
-    }
-
     _ptHelper.set(x, y)
     this.diff = this.old - _ptHelper[this.direction]
 
@@ -186,10 +164,6 @@ Scroller.prototype = Object.create({
   },
 
   handleUp(target, pointer) {
-    if (!this.direction && this.o.direction == 'auto') {
-      return
-    }
-
     this.isDown = false
     // console.log('end')
     if (this.o.addListeners) this.game.input.deleteMoveCallback(this.handleMove, this)
