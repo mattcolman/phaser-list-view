@@ -1,12 +1,10 @@
 import _ from 'lodash';
-import MathUtils from './utils/math_utils'
-import 'gsap'
 
-var _ptHelper = new Phaser.Point()
-
-// ** WORK IN PROGRESS **
+// Scroller Event Dispatcher is a centralized place to listener for events useful for scrollers
+// The main feature of this class is the 'auto detect' for x and y directions.
+// If you set 'direction' to 'auto', events won't dispatch until a direction is detected.
 //
-var BasicScroller = function(game, clickObject, options = {}) {
+var ScrollerEventDispatcher = function(game, clickObject, options = {}) {
   this.game        = game
   this.clickObject = clickObject
 
@@ -20,14 +18,14 @@ var BasicScroller = function(game, clickObject, options = {}) {
   this.addListeners()
 }
 
-BasicScroller.prototype = Object.create({
+ScrollerEventDispatcher.prototype = Object.create({
 
   addListeners() {
 
     this.events = {
       onInputUp      : new Phaser.Signal(),
       onInputDown    : new Phaser.Signal(),
-      onUpdate       : new Phaser.Signal(),
+      onInputMove    : new Phaser.Signal(),
       onDirectionSet : new Phaser.Signal()
     }
 
@@ -77,7 +75,6 @@ BasicScroller.prototype = Object.create({
     }
 
     this.game.input.addMoveCallback(this.handleMove, this)
-
     this.events.onInputDown.dispatch(target, pointer)
   },
 
@@ -94,35 +91,16 @@ BasicScroller.prototype = Object.create({
       }
     }
 
-    _ptHelper.set(x, y)
-    if (this.old == null) this.old = _ptHelper[this.direction]
-    let diff = this.old - _ptHelper[this.direction]
-
-    this.old = _ptHelper[this.direction]
-
-    //go ahead and move the block
-    this.handleUpdate( diff )
+    this.events.onInputMove.dispatch( pointer, x, y )
   },
 
   handleUp(target, pointer) {
-    if (!this.enabled) return
-
-    if (!this.direction && this.o.direction == 'auto') {
-      return
-    }
-
     this.game.input.deleteMoveCallback(this.handleMove, this)
-
     this.events.onInputUp.dispatch(target, pointer)
-  },
-
-  // dispatches a value between -1 and 1 depending on the direction of the swipe action.
-  handleUpdate( diff ) {
-    this.events.onUpdate.dispatch( diff )
   }
 
 })
 
-BasicScroller.prototype.constructor = BasicScroller
+ScrollerEventDispatcher.prototype.constructor = ScrollerEventDispatcher
 
-export default BasicScroller
+export default ScrollerEventDispatcher
