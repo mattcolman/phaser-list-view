@@ -28,6 +28,7 @@ var BasicSwiper = function(game, clickObject, options = {}) {
     time : {}, // contains timestamps of the most recent down, up, and move events
     swipeThreshold: 5, // (pixels) must move this many pixels for a swipe action
     swipeTimeThreshold: 250, // (ms) determines if a swipe occurred: time between last updated movement @ touchmove and time @ touchend, if smaller than this value, trigger swipe
+    addListeners: true
   }
 
   this.o = this.options = _.extend(defaultOptions, options)
@@ -62,15 +63,20 @@ BasicSwiper.prototype = Object.create({
       onSwipe     : new Phaser.Signal()
     }
 
-    this.clickObject.inputEnabled = true
     this.enable()
-    this.clickObject.events.onInputDown.add(this.handleDown, this)
-    this.clickObject.events.onInputUp.add(this.handleUp, this)
+
+    if (this.o.addListeners) {
+      this.clickObject.inputEnabled = true
+      this.clickObject.events.onInputDown.add(this.handleDown, this)
+      this.clickObject.events.onInputUp.add(this.handleUp, this)
+    }
   },
 
   removeListeners() {
-    this.clickObject.events.onInputDown.remove(this.handleDown, this)
-    this.clickObject.events.onInputUp.remove(this.handleUp, this)
+    if (this.o.addListeners) {
+      this.clickObject.events.onInputDown.remove(this.handleDown, this)
+      this.clickObject.events.onInputUp.remove(this.handleUp, this)
+    }
 
     _.forIn(this.events, (signal, key)=> {
       signal.removeAll()
@@ -106,7 +112,7 @@ BasicSwiper.prototype = Object.create({
     this.target = 0
     this.o.time.down = pointer.timeDown;
 
-    this.game.input.addMoveCallback(this.handleMove, this)
+    if (this.o.addListeners) this.game.input.addMoveCallback(this.handleMove, this)
 
     //stop tween for touch-to-stop
     this.tweenScroll.pause()
@@ -137,7 +143,7 @@ BasicSwiper.prototype = Object.create({
     if (!this.enabled || this.clickBlocked) return
     this.isDown = false
     // console.log('end')
-    this.game.input.deleteMoveCallback(this.handleMove, this)
+    if (this.o.addListeners) this.game.input.deleteMoveCallback(this.handleMove, this)
 
     //store timestamp for event
     this.o.time.up = pointer.timeUp
