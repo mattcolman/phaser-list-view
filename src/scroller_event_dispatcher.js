@@ -82,10 +82,11 @@ ScrollerEventDispatcher.prototype = Object.create({
     if (!this.enabled) return
 
     if (!this.direction && this.o.direction == 'auto') {
-      if (Math.abs(this.autoX - x) > this.o.autoDetectThreshold) {
-        this.setDirection('x')
-      } else if (Math.abs(this.autoY - y) > this.o.autoDetectThreshold) {
-        this.setDirection('y')
+      const xDist = Math.abs(this.autoX - x)
+      const yDist = Math.abs(this.autoY - y)
+      if ( xDist > this.o.autoDetectThreshold || yDist > this.o.autoDetectThreshold ) {
+        const direction = (xDist > yDist) ? 'x' : 'y'
+        this.setDirection( direction )
       } else {
         return
       }
