@@ -13,7 +13,6 @@ var WheelScroller = function(game, clickObject, options = {}) {
   }
   this.maskLimits = {angle: clickObject.width/2}
   Scroller.call(this, game, clickObject, _.extend(defaultOptions, options))
-  this.direction = this.o.direction
 }
 
 WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
