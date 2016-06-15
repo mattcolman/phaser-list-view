@@ -18,6 +18,7 @@ var WheelScroller = function(game, clickObject, options = {}) {
 WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
 
   handleDown(target, pointer) {
+    if (!this.enabled) return
     this.centerPoint = this.clickObject.toGlobal(new Phaser.Point(0, 0))
     _ptHelper.set(pointer.x, pointer.y)
     this.old = this.down = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
@@ -27,6 +28,7 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
   },
 
   handleMove(pointer, x, y) {
+    if (!this.enabled) return
     _ptHelper.set(x, y)
     let currentRotation = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
     let rotations = 0

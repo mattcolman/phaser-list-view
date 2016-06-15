@@ -92,6 +92,14 @@ Scroller.prototype = Object.create({
     })
   },
 
+  enable() {
+    this.enabled = true
+  },
+
+  disable() {
+    this.enabled = false
+  },
+
   init() {
     this.scrollObject[this.o.direction] = this.o.from
     this.maxOffset = this.maskLimits[this.o.direction] * this.o.speedLimit
@@ -112,6 +120,7 @@ Scroller.prototype = Object.create({
   },
 
   handleDown(target, pointer) {
+    if (!this.enabled) return
     this.isDown = true
     // console.log('input down', pointer.y)
     this.target = this.requested = this.scrollObject[this.o.direction]
@@ -136,6 +145,7 @@ Scroller.prototype = Object.create({
   },
 
   handleMove(pointer, x, y) {
+    if (!this.enabled) return
     _ptHelper.set(x, y)
     this.diff = this.old - _ptHelper[this.o.direction]
 
@@ -293,6 +303,8 @@ Scroller.prototype = Object.create({
   },
 
   handleUpdate() {
+    if (!this.enabled) return
+
     if (this.o.infinite) {
       this.dispatchValues.total = Phaser.Math.wrap(this.scrollObject[this.o.direction], this.min, this.max)
     } else {
