@@ -37,7 +37,7 @@ ListView.prototype = Object.assign(Object.create(ListViewCore.prototype), {
 
   reset() {
     this.setPosition(0)
-    this.scroller.init()
+    this.scroller.reset()
   }
 
 })

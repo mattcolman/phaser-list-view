@@ -103,6 +103,14 @@ Scroller.prototype = Object.create({
   init() {
     this.scrollObject[this.o.direction] = this.o.from
     this.maxOffset = this.maskLimits[this.o.direction] * this.o.speedLimit
+    this.enable()
+  },
+
+  reset() {
+    this.tweenScroll.pause()
+    this.tweenScroll.progress(0)
+    this.o.multiplier = 1
+    this.init()
   },
 
   destroy() {
@@ -326,6 +334,7 @@ Scroller.prototype = Object.create({
   },
 
   handleComplete() {
+    if (!this.enabled) return
     // reset multiplier when finished
     this.o.multiplier = 1
     this.events.onComplete.dispatch()

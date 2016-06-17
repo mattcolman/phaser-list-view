@@ -76,6 +76,7 @@ class ListViewCore {
   removeAll() {
     this.grp.removeAll()
     this.items = []
+    this.position = 0
   }
 
   /**
