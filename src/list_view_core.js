@@ -48,7 +48,7 @@ class ListViewCore {
     }
     child[this.p.xy] = xy
     this.grp.addChild(child)
-    this.length = this.grp[this.p.wh]
+    this.length = xy + child[this.p.wh]
 
     this.setPosition(this.position)
     this.events.onAdded.dispatch(this.length - this.bounds[this.p.wh])
