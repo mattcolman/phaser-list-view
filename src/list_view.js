@@ -28,7 +28,8 @@ var ListView = function(game, parent, bounds, options = {}) {
     this.setPosition(o.total)
   })
   this.events.onAdded.add((limit)=>{
-    this.scroller.setFromTo(0, -limit)
+    const _to = Math.min(-limit, 0)
+    this.scroller.setFromTo(0, _to)
   })
 }
 
