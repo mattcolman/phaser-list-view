@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {getWidthOrHeight} from './util'
 
 class ListViewCore {
 
@@ -31,7 +32,11 @@ class ListViewCore {
   }
 
   /**
-   * [add a child to the list]
+   * [add a child to the list
+   * stacks them on top of each other by measuring their
+   * height and adding custom padding. Optionally you can
+   * specify nominalHeight or nominalWidth on the display object,
+   * this will take preference over height and width]
    * @param {DisplayObject} child
    */
   add(child) {
@@ -39,7 +44,7 @@ class ListViewCore {
     let xy = 0
     if (this.grp.children.length > 0) {
       let lastChild = this.grp.getChildAt(this.grp.children.length-1)
-      xy = lastChild[this.p.xy] + lastChild[this.p.wh] + this.o.padding
+      xy = lastChild[this.p.xy] + getWidthOrHeight(lastChild, this.p.wh) + this.o.padding
     }
     child[this.p.xy] = xy
     this.grp.addChild(child)

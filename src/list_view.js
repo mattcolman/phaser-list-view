@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import ListViewCore from './list_view_core'
 import DirectionalScroller from './directional_scroller'
+import {parseBounds} from './util'
 
 var ListView = function(game, parent, bounds, options = {}) {
 
@@ -13,6 +14,8 @@ var ListView = function(game, parent, bounds, options = {}) {
     overflow: 100,
     padding: 10
   }
+
+  bounds = parseBounds( bounds )
 
   ListViewCore.call(this, game, parent, bounds, options)
 
