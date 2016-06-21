@@ -108,7 +108,6 @@ Scroller.prototype = Object.create({
 
   reset() {
     this.tweenScroll.pause()
-    this.tweenScroll.progress(0)
     this.o.multiplier = 1
     this.init()
   },
