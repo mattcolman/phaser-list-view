@@ -2,7 +2,18 @@ import _ from 'lodash';
 import MathUtils from './utils/math_utils'
 import 'gsap'
 
-var _ptHelper = new Phaser.Point()
+const _ptHelper = new Phaser.Point()
+const defaultOptions = {
+  from: 0,
+  to: 200,
+  direction: 'y',
+  snapStep : 10,
+  duration : 1, // (s) duration of the inertial scrolling simulation.
+  time : {}, // contains timestamps of the most recent down, up, and move events
+  swipeThreshold: 5, // (pixels) must move this many pixels for a swipe action
+  swipeTimeThreshold: 250, // (ms) determines if a swipe occurred: time between last updated movement @ touchmove and time @ touchend, if smaller than this value, trigger swipe
+  addListeners: true
+}
 
 // ** WORK IN PROGRESS **
 //
@@ -14,43 +25,29 @@ var _ptHelper = new Phaser.Point()
 //
 // TODO - consolidate BasicSwiper and Scroller. At least they could share same functions
 //
-var BasicSwiper = function(game, clickObject, options = {}) {
+export default class BasicSwiper {
+  constructor(game, clickObject, options = {}){
+    this.game        = game
+    this.clickObject = clickObject
 
-  this.game        = game
-  this.clickObject = clickObject
+    this.o = this.options = Object.assign( {}, defaultOptions, options)
 
-  let defaultOptions = {
-    from: 0,
-    to: 200,
-    direction: 'y',
-    snapStep : 10,
-    duration : 1, // (s) duration of the inertial scrolling simulation.
-    time : {}, // contains timestamps of the most recent down, up, and move events
-    swipeThreshold: 5, // (pixels) must move this many pixels for a swipe action
-    swipeTimeThreshold: 250, // (ms) determines if a swipe occurred: time between last updated movement @ touchmove and time @ touchend, if smaller than this value, trigger swipe
-    addListeners: true
+    this._updateMinMax()
+
+    this.addListeners()
+
+    this.scrollObject = {}
+    this.scrollObject[this.o.direction] = this.o.from
+
+    // set tween that will be re-used for moving scrolling sprite
+    this.tweenScroll = TweenMax.to(this.scrollObject, 0, {
+      ease: Quart.easeOut,
+      onUpdate: this.handleUpdate,
+      onUpdateScope: this,
+      onComplete: this.handleComplete,
+      onCompleteScope: this
+    })
   }
-
-  this.o = this.options = _.extend(defaultOptions, options)
-
-  this._updateMinMax()
-
-  this.addListeners()
-
-  this.scrollObject = {}
-  this.scrollObject[this.o.direction] = this.o.from
-
-  // set tween that will be re-used for moving scrolling sprite
-  this.tweenScroll = TweenMax.to(this.scrollObject, 0, {
-    ease: Quart.easeOut,
-    onUpdate: this.handleUpdate,
-    onUpdateScope: this,
-    onComplete: this.handleComplete,
-    onCompleteScope: this
-  })
-}
-
-BasicSwiper.prototype = Object.create({
 
   addListeners() {
 
@@ -70,7 +67,7 @@ BasicSwiper.prototype = Object.create({
       this.clickObject.events.onInputDown.add(this.handleDown, this)
       this.clickObject.events.onInputUp.add(this.handleUp, this)
     }
-  },
+  }
 
   removeListeners() {
     if (this.o.addListeners) {
@@ -81,23 +78,23 @@ BasicSwiper.prototype = Object.create({
     _.forIn(this.events, (signal, key)=> {
       signal.removeAll()
     })
-  },
+  }
 
   destroy() {
     this.removeListeners()
-  },
+  }
 
   enable() {
     this.enabled = true
-  },
+  }
 
   disable() {
     this.enabled = false
-  },
+  }
 
   isTweening() {
     return TweenMax.isTweening(this.scrollObject)
-  },
+  }
 
   handleDown(target, pointer) {
     if (!this.enabled) {
@@ -118,7 +115,7 @@ BasicSwiper.prototype = Object.create({
     this.tweenScroll.pause()
 
     this.events.onInputDown.dispatch(target, pointer)
-  },
+  }
 
   handleMove(pointer, x, y) {
     if (!this.enabled) return
@@ -137,7 +134,7 @@ BasicSwiper.prototype = Object.create({
     this.handleUpdate()
 
     if (this.o.emitMoving) this.events.onInputMove.dispatch(pointer, x, y)
-  },
+  }
 
   handleUp(target, pointer) {
     if (!this.enabled || this.clickBlocked) return
@@ -163,7 +160,7 @@ BasicSwiper.prototype = Object.create({
 
     this.events.onInputUp.dispatch(target, pointer)
 
-  },
+  }
 
   _addSwiping(o, pointer) {
     let swipeDistance = Math.abs(this.down - this.old)
@@ -179,12 +176,12 @@ BasicSwiper.prototype = Object.create({
       this.events.onSwipe.dispatch(direction)
     }
     return o
-  },
+  }
 
   _addSnapping(o) {
     o.target = MathUtils.nearestMultiple(o.target, this.o.snapStep)
     return o
-  },
+  }
 
   doTween(duration, target) {
     // console.log('doTween', duration, target)
@@ -196,28 +193,23 @@ BasicSwiper.prototype = Object.create({
     this.tweenScroll.duration(duration)
     this.tweenScroll.updateTo(o, true)
     this.tweenScroll.restart()
-  },
+  }
 
   // dispatches a value between -1 and 1 depending on the direction of the swipe action.
   handleUpdate() {
     this.events.onUpdate.dispatch( MathUtils.scaleBetween(-1, 1, MathUtils.percentageBetween2( this.scrollObject[this.o.direction], -this.length, this.length ) ) )
-  },
+  }
 
   handleComplete() {
     // reset multiplier when finished
     this.o.multiplier = 1
     this.events.onComplete.dispatch()
-  },
+  }
 
   _updateMinMax() {
     this.min = Math.min(this.o.from, this.o.to)
     this.max = Math.max(this.o.from, this.o.to)
     this.length = Math.abs(this.max - this.min)
     this.o.snapStep = this.length
-  },
-
-})
-
-BasicSwiper.prototype.constructor = BasicSwiper
-
-export default BasicSwiper
+  }
+}

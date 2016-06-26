@@ -2,25 +2,19 @@ import _ from 'lodash';
 import MathUtils from './utils/math_utils'
 import Scroller from './scroller'
 
-var DirectionalScroller = function(game, clickObject, options = {}) {
-  this.maskLimits = {x: clickObject.width, y: clickObject.height}
-  Scroller.call(this, game, clickObject, options)
-}
-
-DirectionalScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
+export default class DirectionalScroller extends Scroller {
+  constructor(game, clickObject, options = {}){
+    super(game, clickObject, {x: clickObject.width, y: clickObject.height}, options)
+  }
 
   handleDown(target, pointer) {
     this.old = this.down = pointer[this.o.direction]
-    Scroller.prototype.handleDown.call(this, target, pointer)
-  },
+    super.handleDown(target, pointer)
+  }
 
   handleUp(target, pointer) {
     this.current = pointer[this.o.direction]
-    Scroller.prototype.handleUp.call(this, target, pointer)
+    super.handleUp(target, pointer)
   }
 
-})
-
-DirectionalScroller.prototype.constructor = DirectionalScroller
-
-export default DirectionalScroller
+}
