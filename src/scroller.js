@@ -329,7 +329,7 @@ Scroller.prototype = Object.create({
     this.tweenScroll.restart()
     this.handleUpdate()
     this.handleComplete()
-  }
+  },
 
   handleUpdate() {
     if (!this.enabled) return
