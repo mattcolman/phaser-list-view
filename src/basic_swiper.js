@@ -159,7 +159,7 @@ BasicSwiper.prototype = Object.create({
     // *** SNAPPING
     this._addSnapping(o)
 
-    this.doTween(o.duration, o.target)
+    this.tweenTo(o.duration, o.target)
 
     this.events.onInputUp.dispatch(target, pointer)
 
@@ -186,8 +186,8 @@ BasicSwiper.prototype = Object.create({
     return o
   },
 
-  doTween(duration, target) {
-    // console.log('doTween', duration, target)
+  tweenTo(duration, target) {
+    // console.log('tweenTo', duration, target)
     //stop a tween if it is currently happening
     let o = {}
     o[this.o.direction] = target
