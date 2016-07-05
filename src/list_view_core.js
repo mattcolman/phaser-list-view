@@ -76,12 +76,12 @@ class ListViewCore {
   }
 
   /**
-   * [removeAll]
+   * [removeAll - removes all children from the group]
+   * @note This does not reset the position of the ListView.
    */
   removeAll() {
     this.grp.removeAll()
     this.items = []
-    this.position = 0
   }
 
   /**
