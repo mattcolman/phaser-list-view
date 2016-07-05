@@ -52,6 +52,7 @@ class ListViewCore {
 
     this.setPosition(this.position)
     this.events.onAdded.dispatch(this.length - this.bounds[this.p.wh])
+    return child
   }
 
   /**
@@ -62,8 +63,12 @@ class ListViewCore {
     children.forEach(this.add, this)
   }
 
-  remove() {
-    // TODO
+  remove(child) {
+    this.grp.removeChild(child)
+    const index = this.items.indexOf( child )
+    if(index == -1) return
+    this.items.splice( index, 1 )
+    return child
   }
 
   destroy() {
