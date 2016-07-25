@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {findChild, detectDrag, dispatchClicks} from './util'
 
 // Scroller Event Dispatcher is a centralized place to listener for events useful for scrollers
 // The main feature of this class is the 'auto detect' for x and y directions.
@@ -14,6 +15,7 @@ var ScrollerEventDispatcher = function(game, clickObject, options = {}) {
   }
 
   this.o = this.options = _.extend(defaultOptions, options)
+  this.clickables = []
 
   this.addListeners()
 }
@@ -61,6 +63,24 @@ ScrollerEventDispatcher.prototype = Object.create({
     this.events.onDirectionSet.dispatch( direction )
   },
 
+  /**
+   * [registerClickables]
+   * If a standard click occurs on the dispatcher surface we want to handle the click.
+   * @param  {Array[DisplayObjects]} clickables - Check these clickables AND their children for standard phaser input events.
+   *                                              e.g. displayObject.events.onInputUp
+   */
+  registerClickables(clickables) {
+    this.clickables = clickables
+  },
+
+  dispatchClicks(pointer, clickables, type) {
+    const found = dispatchClicks(pointer, clickables, type)
+    if (type == 'onInputDown') {
+      this.currentDown = found
+    }
+    return found
+  },
+
   handleDown(target, pointer) {
     if (!this.enabled) return
 
@@ -75,7 +95,11 @@ ScrollerEventDispatcher.prototype = Object.create({
     }
 
     this.game.input.addMoveCallback(this.handleMove, this)
-    this.events.onInputDown.dispatch(target, pointer)
+
+    this.dispatchClicks(pointer, this.clickables, 'onInputDown')
+    this.events.onInputDown.dispatch(target, pointer, (clickables, type)=> {
+      return this.dispatchClicks(pointer, clickables, 'onInputDown')
+    })
   },
 
   handleMove(pointer, x, y) {
@@ -85,6 +109,7 @@ ScrollerEventDispatcher.prototype = Object.create({
       const xDist = Math.abs(this.autoX - x)
       const yDist = Math.abs(this.autoY - y)
       if ( xDist > this.o.autoDetectThreshold || yDist > this.o.autoDetectThreshold ) {
+        this._cancelCurrentDown(pointer)
         const direction = (xDist > yDist) ? 'x' : 'y'
         this.setDirection( direction )
       } else {
@@ -97,7 +122,18 @@ ScrollerEventDispatcher.prototype = Object.create({
 
   handleUp(target, pointer) {
     this.game.input.deleteMoveCallback(this.handleMove, this)
-    this.events.onInputUp.dispatch(target, pointer)
+    this.dispatchClicks(pointer, this.clickables, 'onInputUp')
+    this.events.onInputUp.dispatch(target, pointer, (clickables, type)=> {
+      return this.dispatchClicks(pointer, clickables, 'onInputUp')
+    })
+    this.currentDown = null
+  },
+
+  _cancelCurrentDown(pointer) {
+    if (this.currentDown && this.currentDown.events && this.currentDown.events.onInputUp) {
+      this.currentDown.events.onInputUp.dispatch(this.currentDown, pointer, false)
+    }
+    this.currentDown = null
   }
 
 })

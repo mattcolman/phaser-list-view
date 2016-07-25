@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import MathUtils from './utils/math_utils'
 import 'gsap'
+import {findChild, detectDrag, dispatchClicks} from './util'
 
 var _ptHelper = new Phaser.Point()
 
@@ -48,6 +49,7 @@ var Scroller = function(game, clickObject, options = {}) {
   this.addListeners()
 
   this.scrollObject = {}
+  this.clickables = []
 
   this.init()
 
@@ -124,6 +126,10 @@ Scroller.prototype = Object.create({
 
   isTweening() {
     return TweenMax.isTweening(this.scrollObject)
+  },
+
+  registerClickables(clickables) {
+    this.clickables = clickables
   },
 
   handleDown(target, pointer) {
@@ -222,7 +228,8 @@ Scroller.prototype = Object.create({
       this.tweenTo(o.duration, o.target)
     }
 
-    this.events.onInputUp.dispatch(target, pointer)
+    dispatchClicks(pointer, this.clickables, 'onInputUp')
+    this.events.onInputUp.dispatch(target, pointer, dispatchClicks)
 
   },
 
