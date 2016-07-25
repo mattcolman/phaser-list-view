@@ -1,3 +1,4 @@
+import Config from './config'
 
 export function parseBounds( bounds ) {
   bounds.x = (bounds.x) ? bounds.x : 0
@@ -21,12 +22,12 @@ export function capitalizeFirstLetter(string) {
 
 export function findChild(children, predicate, scope = null) {
   if (!children) return false;
-  for (var i = 0; i < children.length; i++) {
-    let child = children[i];
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
     if (predicate.call(scope, child)) {
       return child;
     }
-    let found = findChild(child.children, predicate, scope);
+    const found = findChild(child.children, predicate, scope);
     if (found) {
       return found;
     }
@@ -35,15 +36,16 @@ export function findChild(children, predicate, scope = null) {
 };
 
 export function detectDrag(pointer) {
-  const distance = pointer.positionDown.distance(pointer.positionUp);
+  const distanceX = Math.abs(pointer.positionDown.x - pointer.positionUp.x)
+  const distanceY = Math.abs(pointer.positionDown.y - pointer.positionUp.y)
   const time = pointer.timeUp - pointer.timeDown;
-  return (distance > 6);
+  return (distanceX > Config.AUTO_DETECT_THRESHOLD || distanceY > Config.AUTO_DETECT_THRESHOLD);
 };
 
 export function dispatchClicks(pointer, clickables, type) {
   if (type == 'onInputUp' && detectDrag(pointer)) return;
   // SEARCH OBJECT UNDER POINT AS THERE IS NO CLICK PROPAGATION SUPPORT IN PHASER
-  let found = findChild(clickables, (clickable) => {
+  const found = findChild(clickables, (clickable) => {
     const pt = clickable.worldPosition
     const {anchor, pivot, width, height, scale} = clickable
     const x = pt.x - ((anchor) ? anchor.x * width : 0) - pivot.x * scale.x

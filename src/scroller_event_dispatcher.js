@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {findChild, detectDrag, dispatchClicks} from './util'
+import Config from './config'
 
 // Scroller Event Dispatcher is a centralized place to listener for events useful for scrollers
 // The main feature of this class is the 'auto detect' for x and y directions.
@@ -11,7 +12,7 @@ var ScrollerEventDispatcher = function(game, clickObject, options = {}) {
 
   let defaultOptions = {
     direction: 'auto',
-    autoDetectThreshold: 6
+    autoDetectThreshold: Config.AUTO_DETECT_THRESHOLD
   }
 
   this.o = this.options = _.extend(defaultOptions, options)
@@ -86,8 +87,6 @@ ScrollerEventDispatcher.prototype = Object.create({
 
     if (this.o.direction == 'auto') {
       this.direction = null
-      this.autoX = pointer.x
-      this.autoY = pointer.y
       this.old = null
     } else {
       this.setDirection( this.o.direction )
@@ -106,8 +105,8 @@ ScrollerEventDispatcher.prototype = Object.create({
     if (!this.enabled) return
 
     if (!this.direction && this.o.direction == 'auto') {
-      const xDist = Math.abs(this.autoX - x)
-      const yDist = Math.abs(this.autoY - y)
+      const xDist = Math.abs(pointer.positionDown.x - x)
+      const yDist = Math.abs(pointer.positionDown.y - y)
       if ( xDist > this.o.autoDetectThreshold || yDist > this.o.autoDetectThreshold ) {
         this._cancelCurrentDown(pointer)
         const direction = (xDist > yDist) ? 'x' : 'y'
