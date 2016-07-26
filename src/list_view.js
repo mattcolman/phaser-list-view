@@ -10,10 +10,12 @@ const defaultOptions = {
   bouncing: true,
   snapping: false,
   overflow: 100,
-  padding: 10
+  padding: 10,
+  searchForClicks: false // if you just click on the list view it will search the list view items for onInputDown and onInputUp events.
 }
 
 export default class ListView extends ListViewCore {
+
   constructor(game, parent, bounds, options = {}){
     super(game, parent, parseBounds( bounds ), Object.assign( {}, defaultOptions, options))
 
@@ -28,7 +30,16 @@ export default class ListView extends ListViewCore {
     this.events.onAdded.add((limit)=>{
       const _to = Math.min(-limit, 0)
       this.scroller.setFromTo(0, _to)
+      if (this.options.searchForClicks) {
+        this.scroller.registerClickables(this.items)
+      }
     })
+  }
+
+  destroy() {
+    this.scroller.destroy()
+    this.scroller = null
+    super.destroy()
   }
 
   reset() {

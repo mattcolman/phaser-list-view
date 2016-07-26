@@ -77,7 +77,13 @@ export default class ListViewCore {
   }
 
   destroy() {
-    // TODO
+    this.events.onAdded.dispose()
+    this.events = null
+    this.grp.destroy()
+    this.grp = null
+    this.game = null
+    this.parent = null
+    this.items = null
   }
 
   /**
