@@ -82,7 +82,11 @@ export default class ScrollerEventDispatcher {
   }
 
   handleDown(target, pointer) {
-    if (!this.enabled) return
+    if (!this.enabled) {
+      this.clickBlocked = true
+      return
+    }
+    this.clickBlocked = false
 
     if (this.o.direction == 'auto') {
       this.direction = null
@@ -119,6 +123,7 @@ export default class ScrollerEventDispatcher {
   }
 
   handleUp(target, pointer) {
+    if (!this.enabled || this.clickBlocked) return
     this.game.input.deleteMoveCallback(this.handleMove, this)
     this.dispatchClicks(pointer, this.clickables, 'onInputUp')
     this.events.onInputUp.dispatch(target, pointer, (clickables, type)=> {
