@@ -12,7 +12,8 @@ var ListView = function(game, parent, bounds, options = {}) {
     bouncing: true,
     snapping: false,
     overflow: 100,
-    padding: 10
+    padding: 10,
+    searchForClicks: true
   }
 
   bounds = parseBounds( bounds )
@@ -20,7 +21,7 @@ var ListView = function(game, parent, bounds, options = {}) {
   ListViewCore.call(this, game, parent, bounds, options)
 
   // we have to use a new mask instance for the click object or webgl ignores the mask
-  this.scroller = new DirectionalScroller(this.game, this._addMask(bounds), _.extend({
+  this.scroller = new DirectionalScroller(this.game, this._addMask(bounds), Object.assign({
     from: 0,
     to: 0
   }, this.options))

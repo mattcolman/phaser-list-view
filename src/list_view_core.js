@@ -8,7 +8,7 @@ class ListViewCore {
     this.parent = parent
     this.bounds = bounds
 
-    this.o = this.options = _.extend(this.defaultOptions, options)
+    this.o = this.options = Object.assign({}, this.defaultOptions, options)
 
     this.items = []
 
@@ -72,7 +72,13 @@ class ListViewCore {
   }
 
   destroy() {
-    // TODO
+    this.events.onAdded.dispose()
+    this.events = null
+    this.grp.destroy()
+    this.grp = null
+    this.game = null
+    this.parent = null
+    this.items = null
   }
 
   /**
