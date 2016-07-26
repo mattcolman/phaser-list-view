@@ -1,14 +1,19 @@
 import _ from 'lodash';
 import {getWidthOrHeight} from './util'
 
-class ListViewCore {
+const defaultOptions = {
+  direction: 'y',
+  autocull: true,
+  padding: 10
+}
 
+export default class ListViewCore {
   constructor(game, parent, bounds, options = {}) {
     this.game = game
     this.parent = parent
     this.bounds = bounds
 
-    this.o = this.options = _.extend(this.defaultOptions, options)
+    this.o = this.options = Object.assign( {}, defaultOptions, options)
 
     this.items = []
 
@@ -121,13 +126,4 @@ class ListViewCore {
     mask.alpha = 0
     return mask
   }
-
 }
-
-ListViewCore.prototype.defaultOptions = {
-  direction: 'y',
-  autocull: true,
-  padding: 10
-}
-
-export default ListViewCore;

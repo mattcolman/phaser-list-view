@@ -2,20 +2,19 @@ import _ from 'lodash';
 import MathUtils from './utils/math_utils'
 import Scroller from './scroller'
 
-var {radToDeg, degToRad} = Phaser.Math
-var _ptHelper = new Phaser.Point()
+const {radToDeg, degToRad} = Phaser.Math
+const _ptHelper = new Phaser.Point()
 
-var WheelScroller = function(game, clickObject, options = {}) {
-  let defaultOptions = {
-    direction: 'angle',
-    infinite: false,
-    speedLimit: 1.5
-  }
-  this.maskLimits = {angle: clickObject.width/2}
-  Scroller.call(this, game, clickObject, _.extend(defaultOptions, options))
+const defaultOptions = {
+  direction: 'angle',
+  infinite: false,
+  speedLimit: 1.5
 }
 
-WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
+export default class WheelScroller extends Scroller {
+  constructor(game, clickObject, options = {}){
+    super(game, clickObject, {angle: clickObject.width/2}, Object.assign( {}, defaultOptions, options))
+  }
 
   handleDown(target, pointer) {
     if (!this.enabled) return
@@ -25,7 +24,7 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
     this.fullDiff = 0
 
     Scroller.prototype.handleDown.call(this, target, pointer)
-  },
+  }
 
   handleMove(pointer, x, y) {
     if (!this.enabled) return
@@ -74,14 +73,14 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
 
     if (this.o.emitMoving) this.events.onInputMove.dispatch({pointer, x, y})
 
-  },
+  }
 
   handleUp(target, pointer) {
     _ptHelper.set(pointer.x, pointer.y)
     this.current = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
 
     Scroller.prototype.handleUp.call(this, target, pointer)
-  },
+  }
 
   _wrapTarget(target, min, max) {
     let diff = 0
@@ -93,10 +92,5 @@ WheelScroller.prototype = Object.assign( Object.create(Scroller.prototype), {
       target = max - diff
     }
     return target
-  },
-
-})
-
-WheelScroller.prototype.constructor = WheelScroller
-
-export default WheelScroller
+  }
+}
