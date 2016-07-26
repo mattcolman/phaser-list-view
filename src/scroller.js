@@ -48,6 +48,8 @@ export default class Scroller {
 
     this.dispatchValues = {step: 0, total: 0, percent: 0}
 
+    this.addListeners()
+
     this.clickables = []
 
     this.scrollObject = {}
