@@ -57,6 +57,7 @@ export default class ListViewCore {
 
     this.setPosition(this.position)
     this.events.onAdded.dispatch(this.length - this.bounds[this.p.wh])
+    return child
   }
 
   /**
@@ -67,8 +68,12 @@ export default class ListViewCore {
     children.forEach(this.add, this)
   }
 
-  remove() {
-    // TODO
+  remove(child) {
+    this.grp.removeChild(child)
+    const index = this.items.indexOf( child )
+    if(index == -1) return
+    this.items.splice( index, 1 )
+    return child
   }
 
   destroy() {
@@ -76,12 +81,12 @@ export default class ListViewCore {
   }
 
   /**
-   * [removeAll]
+   * [removeAll - removes all children from the group]
+   * @note This does not reset the position of the ListView.
    */
   removeAll() {
     this.grp.removeAll()
     this.items = []
-    this.position = 0
   }
 
   /**

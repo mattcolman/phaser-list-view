@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import MathUtils from './utils/math_utils'
 import 'gsap'
+import {findChild, detectDrag, dispatchClicks} from './util'
 
 const _ptHelper = new Phaser.Point()
 
@@ -47,7 +48,7 @@ export default class Scroller {
 
     this.dispatchValues = {step: 0, total: 0, percent: 0}
 
-    this.addListeners()
+    this.clickables = []
 
     this.scrollObject = {}
 
@@ -126,6 +127,10 @@ export default class Scroller {
     return TweenMax.isTweening(this.scrollObject)
   }
 
+  registerClickables(clickables) {
+    this.clickables = clickables
+  }
+
   handleDown(target, pointer) {
     if (!this.enabled) return
     this.isDown = true
@@ -196,11 +201,11 @@ export default class Scroller {
 
     if (this.scrollObject[this.o.direction] > this.max) {
       this.target = this.max
-      this.doTween(o.duration, this.target)
+      this.tweenTo(o.duration, this.target)
 
     } else if (this.scrollObject[this.o.direction] < this.min) {
       this.target = this.min
-      this.doTween(o.duration, this.target)
+      this.tweenTo(o.duration, this.target)
 
     } else {
 
@@ -219,10 +224,11 @@ export default class Scroller {
       // *** DURATION
       this._calculateDuration(o)
 
-      this.doTween(o.duration, o.target)
+      this.tweenTo(o.duration, o.target)
     }
 
-    this.events.onInputUp.dispatch(target, pointer)
+    dispatchClicks(pointer, this.clickables, 'onInputUp')
+    this.events.onInputUp.dispatch(target, pointer, dispatchClicks)
 
   }
 
@@ -294,19 +300,41 @@ export default class Scroller {
 
   tweenToSnap(duration, snapIndex) {
     let target = this.o.from - (this.o.snapStep * snapIndex)
-    this.doTween(duration, target)
+    this.tweenTo(duration, target)
   }
 
-  doTween(duration, target) {
-    // console.log('doTween', duration, target)
+  /**
+   * [tweenTo tween to scroller to the target]
+   * @param  {Number} duration duration in seconds
+   * @param  {Number} target   target relative to the scroller space (usually pixels, but can be angle)
+   */
+  tweenTo(duration, target) {
+    if (duration == 0) return this.setTo(target)
+
     //stop a tween if it is currently happening
     let o = {}
     o[this.o.direction] = target
 
-    this.tweenScroll.pause()
+    // this.tweenScroll.pause()
     this.tweenScroll.duration(duration)
     this.tweenScroll.updateTo(o, true)
     this.tweenScroll.restart()
+  }
+
+  /**
+   * [setTo sets the scroller to the target]
+   * @param  {Number} target   target relative to the scroller space (usually pixels, but can be angle)
+   */
+  setTo(target) {
+    //stop a tween if it is currently happening
+    let o = {}
+    o[this.o.direction] = target
+
+    this.tweenScroll.duration(0)
+    this.tweenScroll.updateTo(o, true)
+    this.tweenScroll.restart()
+    this.handleUpdate()
+    this.handleComplete()
   }
 
   handleUpdate() {
