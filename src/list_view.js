@@ -20,7 +20,7 @@ export default class ListView extends ListViewCore {
     super(game, parent, parseBounds( bounds ), Object.assign( {}, defaultOptions, options))
 
     // we have to use a new mask instance for the click object or webgl ignores the mask
-    this.scroller = new DirectionalScroller(this.game, this._addMask(bounds), _.extend({
+    this.scroller = new DirectionalScroller(this.game, this._addMask(bounds), Object.assign({
       from: 0,
       to: 0
     }, this.options))
