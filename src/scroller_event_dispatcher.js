@@ -71,7 +71,7 @@ export default class ScrollerEventDispatcher {
    */
   registerClickables(clickables) {
     this.clickables = clickables
-  },
+  }
 
   dispatchClicks(pointer, clickables, type) {
     const found = dispatchClicks(pointer, clickables, type)
@@ -79,7 +79,7 @@ export default class ScrollerEventDispatcher {
       this.currentDown = found
     }
     return found
-  },
+  }
 
   handleDown(target, pointer) {
     if (!this.enabled) return
@@ -125,7 +125,7 @@ export default class ScrollerEventDispatcher {
       return this.dispatchClicks(pointer, clickables, 'onInputUp')
     })
     this.currentDown = null
-  },
+  }
 
   _cancelCurrentDown(pointer) {
     if (this.currentDown && this.currentDown.events && this.currentDown.events.onInputUp) {
