@@ -144,12 +144,12 @@ export default class Scroller {
 
     //check if block is currently scrolling and set multiplier
     if (this.isTweening() && (this.o.time.down - this.o.time.up) < this.o.accelerationT) {
-        //swipe while animation was happening, increase multiplier
-        this.o.multiplier += this.o.acceleration;
-        // console.log('swipe while animation is happening', this.o.multiplier)
+      //swipe while animation was happening, increase multiplier
+      this.o.multiplier += this.o.acceleration;
+      // console.log('swipe while animation is happening', this.o.multiplier)
     } else {
-        //reset
-        this.o.multiplier = 1;
+      //reset
+      this.o.multiplier = 1;
     }
 
     //stop tween for touch-to-stop
