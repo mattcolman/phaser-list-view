@@ -52,6 +52,9 @@ export default class Scroller {
 
     this.clickables = []
 
+    this.isDown = false // isDown is true when the down event has fired but the up event has not
+    this.isScrolling = false // isScrolling is true when the down event has fired but the complete event has not
+
     this.scrollObject = {}
 
     this.init()
@@ -67,7 +70,6 @@ export default class Scroller {
   }
 
   addListeners() {
-
     this.events = {
       onUpdate    : new Phaser.Signal(),
       onInputUp   : new Phaser.Signal(),
@@ -160,6 +162,7 @@ export default class Scroller {
 
   handleMove(pointer, x, y) {
     if (!this.enabled) return
+    this.isScrolling = true
     _ptHelper.set(x, y)
     this.diff = this.old - _ptHelper[this.o.direction]
 
@@ -323,6 +326,13 @@ export default class Scroller {
     this.tweenScroll.restart()
   }
 
+  // TODO - not really sure what this cancel method should do.
+  // Obviously it's meant to cancel a currently active scroll...but I'm
+  // not sure what expect from that.
+  cancel() {
+    this.isDown = false
+  }
+
   /**
    * [setTo sets the scroller to the target]
    * @param  {Number} target   target relative to the scroller space (usually pixels, but can be angle)
@@ -364,6 +374,7 @@ export default class Scroller {
 
   handleComplete() {
     if (!this.enabled) return
+    this.isScrolling = false
     // reset multiplier when finished
     this.o.multiplier = 1
     this.events.onComplete.dispatch()

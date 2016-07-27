@@ -16,6 +16,7 @@ export default class WheelScroller extends Scroller {
     super(game, clickObject, {angle: clickObject.width/2}, Object.assign( {}, defaultOptions, options))
   }
 
+  // extends Scroller.handleDown
   handleDown(target, pointer) {
     if (!this.enabled) return
     this.centerPoint = this.clickObject.toGlobal(new Phaser.Point(0, 0))
@@ -23,11 +24,13 @@ export default class WheelScroller extends Scroller {
     this.old = this.down = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
     this.fullDiff = 0
 
-    Scroller.prototype.handleDown.call(this, target, pointer)
+    super.handleDown(target, pointer)
   }
 
+  // overrides Scroller.handleMove
   handleMove(pointer, x, y) {
     if (!this.enabled) return
+    this.isScrolling = true
     _ptHelper.set(x, y)
     let currentRotation = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
     let rotations = 0
@@ -75,11 +78,12 @@ export default class WheelScroller extends Scroller {
 
   }
 
+  // extends Scroller.handleDown
   handleUp(target, pointer) {
     _ptHelper.set(pointer.x, pointer.y)
     this.current = Phaser.Math.normalizeAngle(Phaser.Math.angleBetweenPoints(_ptHelper, this.centerPoint))
 
-    Scroller.prototype.handleUp.call(this, target, pointer)
+    super.handleUp(target, pointer)
   }
 
   _wrapTarget(target, min, max) {
