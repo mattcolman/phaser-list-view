@@ -201,11 +201,11 @@ export default class Scroller {
     // *** BOUNCING
     if (!this.o.bouncing) o.duration = .01
 
-    if (this.scrollObject[this.o.direction] > this.max) {
+    if (!this.o.infinite && this.scrollObject[this.o.direction] > this.max) {
       this.target = this.max
       this.tweenTo(o.duration, this.target)
 
-    } else if (this.scrollObject[this.o.direction] < this.min) {
+    } else if (!this.o.infinite && this.scrollObject[this.o.direction] < this.min) {
       this.target = this.min
       this.tweenTo(o.duration, this.target)
 
