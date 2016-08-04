@@ -24,6 +24,7 @@ export function findChild(children, predicate, scope = null) {
   if (!children) return false;
   for (let i = 0; i < children.length; i++) {
     const child = children[i];
+    if (!child) continue
     if (predicate.call(scope, child)) {
       return child;
     }

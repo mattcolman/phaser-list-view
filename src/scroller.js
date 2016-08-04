@@ -69,6 +69,21 @@ export default class Scroller {
     })
   }
 
+  destroy() {
+    this.tweenScroll.kill()
+    this.removeListeners()
+    this.clickObject.destroy()
+    this.clickables = null
+    this.options = this.o = null
+    this.maskLimits = null
+    this.enabled = false
+    this.game = null
+    this.dispatchValues = null
+    this.isDown = null
+    this.target = null
+    this.destroyed = true
+  }
+
   addListeners() {
     this.events = {
       onUpdate    : new Phaser.Signal(),
@@ -93,7 +108,7 @@ export default class Scroller {
     }
 
     _.forIn(this.events, (signal, key)=> {
-      signal.removeAll()
+      signal.dispose()
     })
   }
 
@@ -115,10 +130,6 @@ export default class Scroller {
     this.tweenScroll.pause()
     this.o.multiplier = 1
     this.init()
-  }
-
-  destroy() {
-    this.removeListeners()
   }
 
   setFromTo(_from, _to) {
