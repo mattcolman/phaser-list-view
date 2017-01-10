@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import forIn from 'lodash/forIn';
 import MathUtils from './utils/math_utils'
 import 'gsap'
 import {findChild, detectDrag, dispatchClicks} from './util'
@@ -107,7 +107,7 @@ export default class Scroller {
       this.clickObject.events.onInputUp.remove(this.handleUp, this)
     }
 
-    _.forIn(this.events, (signal, key)=> {
+    forIn(this.events, (signal, key)=> {
       signal.dispose()
     })
   }
