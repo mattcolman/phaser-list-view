@@ -16,9 +16,9 @@ const compiler = webpack(Object.assign({}, config, {
     path.resolve(__dirname, 'src/example/index.js'),
   ],
   output: {
-    path: path.resolve(__dirname, 'demo'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'example_app.js',
-    publicPath: '/',
+    publicPath: './dist/'
   },
   plugins: [
     ...config.plugins,
@@ -29,7 +29,7 @@ const compiler = webpack(Object.assign({}, config, {
 
 const devServer = new WebpackDevServer(compiler, {
   hot: true,
-  contentBase: 'demo/',
+  contentBase: './',
   publicPath: config.output.publicPath,
   quiet: false,
   stats: { colors: true },

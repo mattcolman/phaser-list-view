@@ -12,7 +12,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'phaser-list-view.js',
-    publicPath: '/',
+    publicPath: './dist/',
   },
   resolve: {
     extensions: ['', '.js'],
