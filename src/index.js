@@ -7,13 +7,18 @@ import DirectionalScroller from './directional_scroller'
 import BasicSwiper from './basic_swiper'
 import ScrollerEventDispatcher from './scroller_event_dispatcher'
 
-export {
-  Scroller as Scroller,
-  ListView as ListView,
-  ListViewCore as ListViewCore,
-  SwipeCarousel as SwipeCarousel,
-  WheelScroller as WheelScroller,
-  DirectionalScroller as DirectionalScroller,
-  BasicSwiper as BasicSwiper,
-  ScrollerEventDispatcher as ScrollerEventDispatcher,
+const PhaserListView = {
+  Scroller,
+  ListView,
+  ListViewCore,
+  SwipeCarousel,
+  WheelScroller,
+  DirectionalScroller,
+  BasicSwiper,
+  ScrollerEventDispatcher,
 }
+
+// NOTE: we should only attach to the window in a production build
+window.PhaserListView = PhaserListView;
+
+export default PhaserListView;

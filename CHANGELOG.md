@@ -1,5 +1,13 @@
 # Change Log
 
+## Version 1.3.0 - 12th Jan 2017
+
+### Bug Fixes
+* Fixed SwipeCarousel, it was completely broken.
+### New Features
+* Allow for install via script tag
+* Add a demo
+
 ## Version 1.2.0 - 26th July 2016
 
 ### Bug Fixes
