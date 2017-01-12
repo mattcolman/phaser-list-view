@@ -12,6 +12,7 @@ Copy dist/phaser-list-view.js into your project and include via script tag
 
 ## Run demo
 `npm i`
+
 `npm start`
 
 ## API
