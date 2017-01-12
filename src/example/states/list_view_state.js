@@ -1,7 +1,8 @@
 import GameState from './game_state';
 import _ from 'lodash';
 import {scaleBetween} from '../utils/math_utils'
-import {ListView} from 'phaser-list-view'
+
+const { ListView } = window.PhaserListView;
 
 class ListViewState extends GameState {
 

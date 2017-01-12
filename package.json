@@ -4,10 +4,11 @@
   "description": "ListView class for Phaser. Great for making high scoreboards!",
   "main": "lib/index.js",
   "scripts": {
+    "start": "npm run run-demos",
     "compile": "babel --presets es2015 -d lib/ src/",
     "prepublish": "npm run compile",
     "build": "APP_ENV=production && NODE_ENV=production && webpack --progress --colors",
-    "run-demo": "export APP_ENV=demo && node devServer.js"
+    "run-demos": "npm run build && export APP_ENV=demo && webpack --config webpack.demos.config.js"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,8 @@
     "babel-polyfill": "^6.20.0",
     "babel-preset-es2015": "^6.6.0",
     "babelify": "^7.3.0",
+    "browser-sync": "^2.18.6",
+    "browser-sync-webpack-plugin": "^1.1.3",
     "es6-promise": "^4.0.5",
     "exports-loader": "^0.6.3",
     "imports-loader": "^0.7.0",

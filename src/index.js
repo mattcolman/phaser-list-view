@@ -18,7 +18,7 @@ const PhaserListView = {
   ScrollerEventDispatcher,
 }
 
-if (APP_ENV === 'production') {
-  window.PhaserListView = PhaserListView;
-}
+// NOTE: we should only attach to the window in a production build
+window.PhaserListView = PhaserListView;
+
 export default PhaserListView;

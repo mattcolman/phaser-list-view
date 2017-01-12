@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import ListViewCore from './list_view_core'
+import ListView from './list_view'
 
 const defaultOptions = {
   direction: 'x',
@@ -15,7 +15,7 @@ const defaultOptions = {
   }
 }
 
-export default class SwipeCarousel extends ListViewCore {
+export default class SwipeCarousel extends ListView {
   constructor(game, parent, bounds, options = {}){
     super(game, parent, bounds, Object.assign( {}, defaultOptions, options))
 

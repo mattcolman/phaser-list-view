@@ -1,7 +1,8 @@
 import GameState from './game_state';
 import _ from 'lodash';
 import {scaleBetween} from '../utils/math_utils'
-import {SwipeCarousel} from 'phaser-list-view'
+
+const { SwipeCarousel } = window.PhaserListView;
 
 class SwipeCarouselState extends GameState {
 
