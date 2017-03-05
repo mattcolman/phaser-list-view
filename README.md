@@ -68,9 +68,8 @@ swipeCarousel.addMultiple(...photos)
 ## Build
 `npm run compile`
 
-## Examples
-- https://github.com/mattcolman/phaser-experiments
-- http://www.mattcolman.com/labs/phaser-experiments/index.html
+## Example
+http://mattcolman.com/labs/phaser-list-view/index.html
 
 ## TODO
 - remove gsap dependancy and use Phaser.Tween instead
