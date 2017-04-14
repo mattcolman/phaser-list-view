@@ -8,7 +8,8 @@
     "compile": "babel --presets es2015 -d lib/ src/",
     "prepublish": "npm run compile",
     "build": "APP_ENV=production && NODE_ENV=production && webpack --progress --colors",
-    "run-demos": "npm run build && export APP_ENV=demo && webpack --config webpack.demos.config.js"
+    "run-demos": "npm run build && export APP_ENV=demo && webpack --config webpack.demos.config.js",
+    "build-demos": "export APP_ENV=demo && NODE_ENV=production && webpack --config webpack.demos.config.js"
   },
   "repository": {
     "type": "git",
