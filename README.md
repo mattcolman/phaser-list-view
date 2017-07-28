@@ -42,6 +42,17 @@ listView.addMultiple(...items)
 ```
 ![](http://i.imgur.com/XgdgqYX.gif)
 
+## ListView Options
+- `direction` direction of scroll  ['x' | 'y'] // default 'y'
+- `autocull` auto hidden elements outside of the viewport for performance [boolean] // default true
+- `momentum` [boolean] // default true
+- `bouncing` when you extend beyond the bounds and release, it bounces back [boolean] // default true
+- `snapping` snaps to snapStep [boolean] // default false
+- `snapStep` [number] // default undefined
+- `overflow`: Amount in pixels you can pull past the bounds. Bouncing occurs when you release inside the overflow [number] // default 100
+- `padding`: Padding between the children [number] // default 10
+- `searchForClicks`: onInputDown and onInputUp events on ListView children will become active when set to true [boolean] // default false
+  
 ## SwipeCarousel Usage
 ```
 import {SwipeCarousel} from 'phaser-list-view'
@@ -59,6 +70,16 @@ let photos = this.getAnArrayOfImages() // [Image, Image, Image, Image]
 swipeCarousel.addMultiple(...photos)
 ```
 ![](http://i.imgur.com/Sp5aE0H.gif)
+
+## SwipeCarousel Options
+- `direction` direction of scroll  ['x' | 'y'] // default 'x'
+- `autocull` auto hidden elements outside of the viewport for performance [boolean] // default true
+- `momentum` [boolean] // default false
+- `bouncing` when you extend beyond the bounds and release, it bounces back [boolean] // default true
+- `snapping` snaps to bounds.width + padding [boolean] // default true
+- `overflow`: Amount in pixels you can pull past the bounds. Bouncing occurs when you release inside the overflow [number] // default 100
+- `padding`: Padding between the children [number] // default 10
+- `searchForClicks`: onInputDown and onInputUp events on ListView children will become active when set to true [boolean] // default false
 
 ## DirectionalScroller Usage
 // TODO
