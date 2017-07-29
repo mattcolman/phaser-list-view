@@ -1,5 +1,11 @@
 # Change Log
 
+## Version 1.3.1 - 29th July 2017
+
+### Bug Fixes
+* Fixed npm imports
+* allow onInputDown events to fire for ListView children
+
 ## Version 1.3.0 - 12th Jan 2017
 
 ### Bug Fixes
