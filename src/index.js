@@ -18,6 +18,17 @@ const PhaserListView = {
   ScrollerEventDispatcher,
 }
 
+export {
+  Scroller,
+  ListView,
+  ListViewCore,
+  SwipeCarousel,
+  WheelScroller,
+  DirectionalScroller,
+  BasicSwiper,
+  ScrollerEventDispatcher,
+}
+
 // NOTE: we should only attach to the window in a production build
 window.PhaserListView = PhaserListView;
 
