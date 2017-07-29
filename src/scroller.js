@@ -168,6 +168,7 @@ export default class Scroller {
     //stop tween for touch-to-stop
     this.tweenScroll.pause()
 
+    dispatchClicks(pointer, this.clickables, 'onInputDown')
     this.events.onInputDown.dispatch(target, pointer)
   }
 
