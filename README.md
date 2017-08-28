@@ -52,7 +52,7 @@ listView.addMultiple(...items)
 - `overflow`: Amount in pixels you can pull past the bounds. Bouncing occurs when you release inside the overflow [number] // default 100
 - `padding`: Padding between the children [number] // default 10
 - `searchForClicks`: onInputDown and onInputUp events on ListView children will become active when set to true [boolean] // default false
-  
+
 ## SwipeCarousel Usage
 ```
 import {SwipeCarousel} from 'phaser-list-view'
@@ -95,3 +95,6 @@ http://mattcolman.com/labs/phaser-list-view/index.html
 ## TODO
 - remove gsap dependancy and use Phaser.Tween instead
 - Mouse wheel support
+
+## Maintainers
+Built by [Matt Colman](https://twitter.com/matt_colman)
