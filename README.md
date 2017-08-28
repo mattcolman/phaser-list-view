@@ -97,4 +97,4 @@ http://mattcolman.com/labs/phaser-list-view/index.html
 - Mouse wheel support
 
 ## Maintainers
-Built by [Matt Colman](https://twitter.com/matt_colman)
+[Matt Colman](https://twitter.com/matt_colman)
