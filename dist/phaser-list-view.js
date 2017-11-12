@@ -19093,6 +19093,7 @@
 	      //stop tween for touch-to-stop
 	      this.tweenScroll.pause();
 
+	      (0, _util.dispatchClicks)(pointer, this.clickables, 'onInputDown');
 	      this.events.onInputDown.dispatch(target, pointer);
 	    }
 	  }, {
@@ -30807,6 +30808,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.ScrollerEventDispatcher = exports.BasicSwiper = exports.DirectionalScroller = exports.WheelScroller = exports.SwipeCarousel = exports.ListViewCore = exports.ListView = exports.Scroller = undefined;
 
 	var _scroller = __webpack_require__(63);
 
@@ -30853,7 +30855,17 @@
 	  ScrollerEventDispatcher: _scroller_event_dispatcher2.default
 	};
 
+	exports.Scroller = _scroller2.default;
+	exports.ListView = _list_view2.default;
+	exports.ListViewCore = _list_view_core2.default;
+	exports.SwipeCarousel = _swipe_carousel2.default;
+	exports.WheelScroller = _wheel_scroller2.default;
+	exports.DirectionalScroller = _directional_scroller2.default;
+	exports.BasicSwiper = _basic_swiper2.default;
+	exports.ScrollerEventDispatcher = _scroller_event_dispatcher2.default;
+
 	// NOTE: we should only attach to the window in a production build
+
 	window.PhaserListView = PhaserListView;
 
 	exports.default = PhaserListView;
