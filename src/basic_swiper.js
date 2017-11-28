@@ -1,5 +1,4 @@
 import MathUtils from './utils/math_utils'
-import 'gsap'
 
 const _ptHelper = new Phaser.Point()
 const defaultOptions = {
@@ -39,13 +38,17 @@ export default class BasicSwiper {
     this.scrollObject[this.o.direction] = this.o.from
 
     // set tween that will be re-used for moving scrolling sprite
-    this.tweenScroll = TweenMax.to(this.scrollObject, 0, {
-      ease: Quart.easeOut,
-      onUpdate: this.handleUpdate,
-      onUpdateScope: this,
-      onComplete: this.handleComplete,
-      onCompleteScope: this
-    })
+    // this.tweenScroll = TweenMax.to(this.scrollObject, 0, {
+    //   ease: Quart.easeOut,
+    //   onUpdate: this.handleUpdate,
+    //   onUpdateScope: this,
+    //   onComplete: this.handleComplete,
+    //   onCompleteScope: this
+    // })
+
+    this.tweenScroll2 = this.game.add.tween(this.scrollObject).to({}, 0, Phaser.Easing.Quartic.Out);
+    this.tweenScroll2.onUpdateCallback(this.handleUpdate, this);
+    this.tweenScroll2.onComplete.add(this.handleComplete, this);
   }
 
   addListeners() {
@@ -95,7 +98,7 @@ export default class BasicSwiper {
   }
 
   isTweening() {
-    return TweenMax.isTweening(this.scrollObject)
+    return this.tweenScroll2.isRunning
   }
 
   handleDown(target, pointer) {
@@ -114,7 +117,9 @@ export default class BasicSwiper {
     if (this.o.addListeners) this.game.input.addMoveCallback(this.handleMove, this)
 
     //stop tween for touch-to-stop
-    this.tweenScroll.pause()
+    // this.tweenScroll.pause()
+    this.tweenScroll2.stop()
+    this.tweenScroll2.pendingDelete = false;
 
     this.events.onInputDown.dispatch(target, pointer)
   }
@@ -191,10 +196,19 @@ export default class BasicSwiper {
     let o = {}
     o[this.o.direction] = target
 
-    this.tweenScroll.pause()
-    this.tweenScroll.duration(duration)
-    this.tweenScroll.updateTo(o, true)
-    this.tweenScroll.restart()
+    // this.tweenScroll.pause()
+    // this.tweenScroll.duration(duration)
+    // this.tweenScroll.updateTo(o, true)
+    // this.tweenScroll.restart()
+
+    this.tweenScroll2.onUpdateCallback(this.handleUpdate, this);
+    this.tweenScroll2.onComplete.add(this.handleComplete, this);
+
+    this.tweenScroll2.updateTweenData('vEnd', o, -1);
+    this.tweenScroll2.updateTweenData('duration', duration * 1000, -1);
+    this.tweenScroll2.updateTweenData('percent ', 0, -1);
+
+    this.tweenScroll2.start();
   }
 
   // dispatches a value between -1 and 1 depending on the direction of the swipe action.
