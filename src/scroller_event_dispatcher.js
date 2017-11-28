@@ -1,4 +1,3 @@
-import forIn from 'lodash/forIn';
 import {findChild, detectDrag, dispatchClicks} from './util'
 import Config from './config'
 
@@ -41,9 +40,11 @@ export default class ScrollerEventDispatcher {
     this.clickObject.events.onInputDown.remove(this.handleDown, this)
     this.clickObject.events.onInputUp.remove(this.handleUp, this)
 
-    forIn(this.events, (signal, key)=> {
-      signal.removeAll()
-    })
+    for (var property in this.events) {
+        if (this.events.hasOwnProperty(property)) {
+            this.events[k].removeAll();
+        }
+    }
   }
 
   destroy() {

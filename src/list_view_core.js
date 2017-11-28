@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {getWidthOrHeight} from './util'
 
 const defaultOptions = {

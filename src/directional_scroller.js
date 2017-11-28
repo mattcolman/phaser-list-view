@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import MathUtils from './utils/math_utils'
 import Scroller from './scroller'
 

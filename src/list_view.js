@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import ListViewCore from './list_view_core'
 import DirectionalScroller from './directional_scroller'
 import {parseBounds} from './util'

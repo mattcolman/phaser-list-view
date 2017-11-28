@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import ListView from './list_view'
 
 const defaultOptions = {
