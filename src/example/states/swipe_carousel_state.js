@@ -10,8 +10,11 @@ class SwipeCarouselState extends GameState {
     this.game.load.crossOrigin = 'anonymous'
   }
 
-  create() {
+  shutdown() {
+    this.carousel.destroy()
+  }
 
+  create() {
     var maskW = 600
     var maskH = 200
     var boxW = maskW
@@ -29,7 +32,7 @@ class SwipeCarouselState extends GameState {
       let txt = this.game.add.text(boxW/2, boxH/2, i, {font: "40px Arial", fill: "#000"}, group)
       txt.anchor.set(.5)
       let img = this.game.add.image(0, 0, group.generateTexture())
-      carousel.add(img)
+      this.carousel.add(img)
     }
 
     super.create()

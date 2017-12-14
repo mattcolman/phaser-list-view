@@ -10,14 +10,17 @@ class ListViewState extends GameState {
     this.game.load.crossOrigin = 'anonymous'
   }
 
-  create() {
+  shutdown() {
+    this.listView.destroy()
+  }
 
+  create() {
     var maskW = 600
     var maskH = 200
     var boxW = maskW
     var boxH = 50
 
-    var listView = new ListView(this.game, this.world, new Phaser.Rectangle(this.world.centerX - maskW/2, 120, maskW, 400), {
+    this.listView = new ListView(this.game, this.world, new Phaser.Rectangle(this.world.centerX - maskW/2, 120, maskW, 400), {
       direction: 'y'
     })
 
@@ -32,7 +35,7 @@ class ListViewState extends GameState {
       let txt = this.game.add.text(boxW/2, h/2, i, {font: "40px Arial", fill: "#000"}, group)
       txt.anchor.set(.5)
       let img = this.game.add.image(0, 0, group.generateTexture())
-      listView.add(img)
+      this.listView.add(img)
     }
 
     super.create()
