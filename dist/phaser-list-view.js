@@ -2011,26 +2011,15 @@
 
 	    this.init();
 
-	    // set tween that will be re-used for moving scrolling sprite
-	    // this.tweenScroll = TweenMax.to(this.scrollObject, 0, {
-	    //   ease: Quart.easeOut,
-	    //   onUpdate: this.handleUpdate,
-	    //   onUpdateScope: this,
-	    //   onComplete: this.handleComplete,
-	    //   onCompleteScope: this
-	    // })
-
-	    this.tweenScroll2 = this.game.add.tween(this.scrollObject).to({}, 0, Phaser.Easing.Quartic.Out);
-	    this.tweenScroll2.onUpdateCallback(this.handleUpdate, this);
-	    this.tweenScroll2.onComplete.add(this.handleComplete, this);
-	    // this.tweenScroll2.start();
+	    this.tweenScroll = this.game.add.tween(this.scrollObject).to({}, 0, Phaser.Easing.Quartic.Out);
+	    this.tweenScroll.onUpdateCallback(this.handleUpdate, this);
+	    this.tweenScroll.onComplete.add(this.handleComplete, this);
 	  }
 
 	  _createClass(Scroller, [{
 	    key: 'destroy',
 	    value: function destroy() {
-	      // this.tweenScroll.kill()
-	      this.tweenScroll2.stop();
+	      this.tweenScroll.stop();
 	      this.removeListeners();
 	      this.clickObject.destroy();
 	      this.clickables = null;
@@ -2071,7 +2060,7 @@
 
 	      for (var property in this.events) {
 	        if (this.events.hasOwnProperty(property)) {
-	          this.events[k].dispose();
+	          this.events[property].dispose();
 	        }
 	      }
 	    }
@@ -2095,8 +2084,7 @@
 	  }, {
 	    key: 'reset',
 	    value: function reset() {
-	      // this.tweenScroll.pause()
-	      this.tweenScroll2.pause();
+	      this.tweenScroll.pause();
 	      this.o.multiplier = 1;
 	      this.init();
 	    }
@@ -2110,8 +2098,7 @@
 	  }, {
 	    key: 'isTweening',
 	    value: function isTweening() {
-	      // return TweenMax.isTweening(this.scrollObject)
-	      return this.tweenScroll2.isRunning;
+	      return this.tweenScroll.isRunning;
 	    }
 	  }, {
 	    key: 'registerClickables',
@@ -2140,10 +2127,8 @@
 	      }
 
 	      //stop tween for touch-to-stop
-	      // this.tweenScroll.pause()
-
-	      this.tweenScroll2.stop();
-	      this.tweenScroll2.pendingDelete = false;
+	      this.tweenScroll.stop();
+	      this.tweenScroll.pendingDelete = false;
 
 	      (0, _util.dispatchClicks)(pointer, this.clickables, 'onInputDown');
 	      this.events.onInputDown.dispatch(target, pointer);
@@ -2317,19 +2302,14 @@
 	      var o = {};
 	      o[this.o.direction] = target;
 
-	      // // this.tweenScroll.pause()
-	      // this.tweenScroll.duration(duration)
-	      // this.tweenScroll.updateTo(o, true)
-	      // this.tweenScroll.restart()
+	      this.tweenScroll.onUpdateCallback(this.handleUpdate, this);
+	      this.tweenScroll.onComplete.add(this.handleComplete, this);
 
-	      this.tweenScroll2.onUpdateCallback(this.handleUpdate, this);
-	      this.tweenScroll2.onComplete.add(this.handleComplete, this);
+	      this.tweenScroll.updateTweenData('vEnd', o, -1);
+	      this.tweenScroll.updateTweenData('duration', duration * 1000, -1);
+	      this.tweenScroll.updateTweenData('percent ', 0, -1);
 
-	      this.tweenScroll2.updateTweenData('vEnd', o, -1);
-	      this.tweenScroll2.updateTweenData('duration', duration * 1000, -1);
-	      this.tweenScroll2.updateTweenData('percent ', 0, -1);
-
-	      this.tweenScroll2.start();
+	      this.tweenScroll.start();
 	    }
 
 	    // TODO - not really sure what this cancel method should do.
@@ -2354,18 +2334,14 @@
 	      var o = {};
 	      o[this.o.direction] = target;
 
-	      // this.tweenScroll.duration(0)
-	      // this.tweenScroll.updateTo(o, true)
-	      // this.tweenScroll.restart()
+	      this.tweenScroll.stop();
+	      this.tweenScroll.pendingDelete = false;
+	      this.tweenScroll.onUpdateCallback(this.handleUpdate, this);
+	      this.tweenScroll.onComplete.add(this.handleComplete, this);
 
-	      this.tweenScroll2.stop();
-	      this.tweenScroll2.pendingDelete = false;
-	      this.tweenScroll2.onUpdateCallback(this.handleUpdate, this);
-	      this.tweenScroll2.onComplete.add(this.handleComplete, this);
-
-	      this.tweenScroll2.updateTweenData('duration', 0, -1);
-	      this.tweenScroll2.updateTweenData('vEnd', o, -1);
-	      this.tweenScroll2.start();
+	      this.tweenScroll.updateTweenData('duration', 0, -1);
+	      this.tweenScroll.updateTweenData('vEnd', o, -1);
+	      this.tweenScroll.start();
 
 	      this.handleUpdate();
 	      this.handleComplete();
@@ -4646,17 +4622,9 @@
 	    this.scrollObject[this.o.direction] = this.o.from;
 
 	    // set tween that will be re-used for moving scrolling sprite
-	    // this.tweenScroll = TweenMax.to(this.scrollObject, 0, {
-	    //   ease: Quart.easeOut,
-	    //   onUpdate: this.handleUpdate,
-	    //   onUpdateScope: this,
-	    //   onComplete: this.handleComplete,
-	    //   onCompleteScope: this
-	    // })
-
-	    this.tweenScroll2 = this.game.add.tween(this.scrollObject).to({}, 0, Phaser.Easing.Quartic.Out);
-	    this.tweenScroll2.onUpdateCallback(this.handleUpdate, this);
-	    this.tweenScroll2.onComplete.add(this.handleComplete, this);
+	    this.tweenScroll = this.game.add.tween(this.scrollObject).to({}, 0, Phaser.Easing.Quartic.Out);
+	    this.tweenScroll.onUpdateCallback(this.handleUpdate, this);
+	    this.tweenScroll.onComplete.add(this.handleComplete, this);
 	  }
 
 	  _createClass(BasicSwiper, [{
@@ -4690,7 +4658,7 @@
 
 	      for (var property in this.events) {
 	        if (this.events.hasOwnProperty(property)) {
-	          this.events[k].removeAll();
+	          this.events[property].removeAll();
 	        }
 	      }
 	    }
@@ -4712,7 +4680,7 @@
 	  }, {
 	    key: 'isTweening',
 	    value: function isTweening() {
-	      return this.tweenScroll2.isRunning;
+	      return this.tweenScroll.isRunning;
 	    }
 	  }, {
 	    key: 'handleDown',
@@ -4732,9 +4700,8 @@
 	      if (this.o.addListeners) this.game.input.addMoveCallback(this.handleMove, this);
 
 	      //stop tween for touch-to-stop
-	      // this.tweenScroll.pause()
-	      this.tweenScroll2.stop();
-	      this.tweenScroll2.pendingDelete = false;
+	      this.tweenScroll.stop();
+	      this.tweenScroll.pendingDelete = false;
 
 	      this.events.onInputDown.dispatch(target, pointer);
 	    }
@@ -4814,19 +4781,14 @@
 	      var o = {};
 	      o[this.o.direction] = target;
 
-	      // this.tweenScroll.pause()
-	      // this.tweenScroll.duration(duration)
-	      // this.tweenScroll.updateTo(o, true)
-	      // this.tweenScroll.restart()
+	      this.tweenScroll.onUpdateCallback(this.handleUpdate, this);
+	      this.tweenScroll.onComplete.add(this.handleComplete, this);
 
-	      this.tweenScroll2.onUpdateCallback(this.handleUpdate, this);
-	      this.tweenScroll2.onComplete.add(this.handleComplete, this);
+	      this.tweenScroll.updateTweenData('vEnd', o, -1);
+	      this.tweenScroll.updateTweenData('duration', duration * 1000, -1);
+	      this.tweenScroll.updateTweenData('percent ', 0, -1);
 
-	      this.tweenScroll2.updateTweenData('vEnd', o, -1);
-	      this.tweenScroll2.updateTweenData('duration', duration * 1000, -1);
-	      this.tweenScroll2.updateTweenData('percent ', 0, -1);
-
-	      this.tweenScroll2.start();
+	      this.tweenScroll.start();
 	    }
 
 	    // dispatches a value between -1 and 1 depending on the direction of the swipe action.
@@ -4999,7 +4961,7 @@
 
 	      for (var property in this.events) {
 	        if (this.events.hasOwnProperty(property)) {
-	          this.events[k].removeAll();
+	          this.events[property].removeAll();
 	        }
 	      }
 	    }

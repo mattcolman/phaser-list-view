@@ -42,7 +42,7 @@ export default class ScrollerEventDispatcher {
 
     for (var property in this.events) {
         if (this.events.hasOwnProperty(property)) {
-            this.events[k].removeAll();
+            this.events[property].removeAll();
         }
     }
   }

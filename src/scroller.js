@@ -102,7 +102,7 @@ export default class Scroller {
 
     for (var property in this.events) {
         if (this.events.hasOwnProperty(property)) {
-            this.events[k].dispose();
+            this.events[property].dispose();
         }
     }
 
