@@ -1,5 +1,4 @@
 import GameState from './game_state';
-import _ from 'lodash';
 import {scaleBetween} from '../utils/math_utils'
 
 const { SwipeCarousel } = window.PhaserListView;
@@ -20,7 +19,7 @@ class SwipeCarouselState extends GameState {
     var boxW = maskW
     var boxH = 200
 
-    var carousel = new SwipeCarousel(this.game, this.world, new Phaser.Rectangle(this.world.centerX - maskW/2, 120, maskW, 400))
+    this.carousel = new SwipeCarousel(this.game, this.world, new Phaser.Rectangle(this.world.centerX - maskW/2, 120, maskW, 400))
 
     for (var i = 0; i < 10; i++) {
       let color = Phaser.Color.getRandomColor()

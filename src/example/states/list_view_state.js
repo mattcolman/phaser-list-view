@@ -1,5 +1,4 @@
 import GameState from './game_state';
-import _ from 'lodash';
 import {scaleBetween} from '../utils/math_utils'
 
 const { ListView } = window.PhaserListView;

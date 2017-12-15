@@ -1,4 +1,3 @@
-import _ from 'lodash'
 
 class Boot extends Phaser.State {
 

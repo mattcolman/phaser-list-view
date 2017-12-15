@@ -1,6 +1,4 @@
-import forIn from 'lodash/forIn';
 import MathUtils from './utils/math_utils'
-import 'gsap'
 import {findChild, detectDrag, dispatchClicks} from './util'
 
 const _ptHelper = new Phaser.Point()
@@ -59,18 +57,13 @@ export default class Scroller {
 
     this.init()
 
-    // set tween that will be re-used for moving scrolling sprite
-    this.tweenScroll = TweenMax.to(this.scrollObject, 0, {
-      ease: Quart.easeOut,
-      onUpdate: this.handleUpdate,
-      onUpdateScope: this,
-      onComplete: this.handleComplete,
-      onCompleteScope: this
-    })
+    this.tweenScroll = this.game.add.tween(this.scrollObject).to({}, 0, Phaser.Easing.Quartic.Out);
+    this.tweenScroll.onUpdateCallback(this.handleUpdate, this);
+    this.tweenScroll.onComplete.add(this.handleComplete, this);
   }
 
   destroy() {
-    this.tweenScroll.kill()
+    this.tweenScroll.stop()
     this.removeListeners()
     this.clickObject.destroy()
     this.clickables = null
@@ -107,9 +100,12 @@ export default class Scroller {
       this.clickObject.events.onInputUp.remove(this.handleUp, this)
     }
 
-    forIn(this.events, (signal, key)=> {
-      signal.dispose()
-    })
+    for (var property in this.events) {
+        if (this.events.hasOwnProperty(property)) {
+            this.events[property].dispose();
+        }
+    }
+
   }
 
   enable() {
@@ -139,7 +135,7 @@ export default class Scroller {
   }
 
   isTweening() {
-    return TweenMax.isTweening(this.scrollObject)
+    return this.tweenScroll.isRunning;
   }
 
   registerClickables(clickables) {
@@ -166,7 +162,8 @@ export default class Scroller {
     }
 
     //stop tween for touch-to-stop
-    this.tweenScroll.pause()
+    this.tweenScroll.stop()
+    this.tweenScroll.pendingDelete = false;
 
     dispatchClicks(pointer, this.clickables, 'onInputDown')
     this.events.onInputDown.dispatch(target, pointer)
@@ -332,10 +329,14 @@ export default class Scroller {
     let o = {}
     o[this.o.direction] = target
 
-    // this.tweenScroll.pause()
-    this.tweenScroll.duration(duration)
-    this.tweenScroll.updateTo(o, true)
-    this.tweenScroll.restart()
+    this.tweenScroll.onUpdateCallback(this.handleUpdate, this);
+    this.tweenScroll.onComplete.add(this.handleComplete, this);
+
+    this.tweenScroll.updateTweenData('vEnd', o, -1);
+    this.tweenScroll.updateTweenData('duration', duration * 1000, -1);
+    this.tweenScroll.updateTweenData('percent ', 0, -1);
+
+    this.tweenScroll.start();
   }
 
   // TODO - not really sure what this cancel method should do.
@@ -354,9 +355,15 @@ export default class Scroller {
     let o = {}
     o[this.o.direction] = target
 
-    this.tweenScroll.duration(0)
-    this.tweenScroll.updateTo(o, true)
-    this.tweenScroll.restart()
+    this.tweenScroll.stop();
+    this.tweenScroll.pendingDelete = false;
+    this.tweenScroll.onUpdateCallback(this.handleUpdate, this);
+    this.tweenScroll.onComplete.add(this.handleComplete, this);
+
+    this.tweenScroll.updateTweenData('duration', 0, -1);
+    this.tweenScroll.updateTweenData('vEnd', o, -1);
+    this.tweenScroll.start();
+
     this.handleUpdate()
     this.handleComplete()
   }
