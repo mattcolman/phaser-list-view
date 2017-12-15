@@ -93,7 +93,6 @@ swipeCarousel.addMultiple(...photos)
 http://mattcolman.com/labs/phaser-list-view/index.html
 
 ## TODO
-- remove gsap dependancy and use Phaser.Tween instead
 - Mouse wheel support
 
 ## Maintainers

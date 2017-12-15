@@ -1,5 +1,8 @@
 # Change Log
 
+## Version 1.4.0 - 15th Dec 2017
+* Removed lodash and gsap dependencies reducing the build from 1.3mb to 363kb (not minified) Thanks @lukz
+
 ## Version 1.3.1 - 29th July 2017
 
 ### Bug Fixes
