@@ -1,5 +1,9 @@
 # Change Log
 
+## Version 1.5.1 - 15th Mar 2018
+
+* Bring back `setPosition` as we didn't bump a major version. So deprecated it instead.
+
 ## Version 1.5.0 - 15th Mar 2018
 
 * Add `moveToPosition` and `moveToItem` to ListViewCore
