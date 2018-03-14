@@ -1,6 +1,6 @@
 {
   "name": "phaser-list-view",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "ListView class for Phaser. Great for making high scoreboards!",
   "main": "lib/index.js",
   "scripts": {
