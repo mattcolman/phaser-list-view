@@ -671,7 +671,7 @@
 	      for (var i = 0; i < this.items.length; i++) {
 	        var child = this.items[i];
 	        child.visible = true;
-	        if (child[this.p.xy] + child[this.p.wh] + this.grp[this.p.xy] < this.bounds[this.p.xy]) {
+	        if (child[this.p.xy] + (0, _util.getWidthOrHeight)(child, this.p.wh) + this.grp[this.p.xy] < this.bounds[this.p.xy]) {
 	          child.visible = false;
 	        } else if (child[this.p.xy] + this.grp[this.p.xy] > this.bounds[this.p.xy] + this.bounds[this.p.wh]) {
 	          child.visible = false;

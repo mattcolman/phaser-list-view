@@ -106,7 +106,9 @@ export default class ListViewCore {
       let child = this.items[i];
       child.visible = true;
       if (
-        child[this.p.xy] + child[this.p.wh] + this.grp[this.p.xy] <
+        child[this.p.xy] +
+          getWidthOrHeight(child, this.p.wh) +
+          this.grp[this.p.xy] <
         this.bounds[this.p.xy]
       ) {
         child.visible = false;
@@ -125,7 +127,7 @@ export default class ListViewCore {
 
   // @deprecated
   setPosition(position) {
-    this.moveToPosition(position)
+    this.moveToPosition(position);
   }
 
   moveToPosition(position) {
