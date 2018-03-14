@@ -1445,14 +1445,14 @@
 	    }
 	  }
 	  return false;
-	};
+	}
 
 	function detectDrag(pointer) {
 	  var distanceX = Math.abs(pointer.positionDown.x - pointer.positionUp.x);
 	  var distanceY = Math.abs(pointer.positionDown.y - pointer.positionUp.y);
 	  var time = pointer.timeUp - pointer.timeDown;
 	  return distanceX > _config2.default.AUTO_DETECT_THRESHOLD || distanceY > _config2.default.AUTO_DETECT_THRESHOLD;
-	};
+	}
 
 	function dispatchClicks(pointer, clickables, type) {
 	  if (type == 'onInputUp' && detectDrag(pointer)) return;
@@ -1483,23 +1483,22 @@
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	var MathUtils = {
+	  nearestMultiple: function nearestMultiple(n, multiple) {
+	    return Math.round(n / multiple) * multiple;
+	  },
 
-	    nearestMultiple: function nearestMultiple(n, multiple) {
-	        return Math.round(n / multiple) * multiple;
-	    },
+	  scaleBetween: function scaleBetween(lo, hi, scale) {
+	    return lo + (hi - lo) * scale;
+	  },
 
-	    scaleBetween: function scaleBetween(lo, hi, scale) {
-	        return lo + (hi - lo) * scale;
-	    },
-
-	    // returns a percentage between hi and lo from a given input
-	    // e.g percentageBetween2(7, 4, 10) -> .5
-	    percentageBetween2: function percentageBetween2(input, lo, hi) {
-	        return (input - lo) / (hi - lo);
-	    }
+	  // returns a percentage between hi and lo from a given input
+	  // e.g percentageBetween2(7, 4, 10) -> .5
+	  percentageBetween2: function percentageBetween2(input, lo, hi) {
+	    return (input - lo) / (hi - lo);
+	  }
 	};
 
 	exports.default = MathUtils;
@@ -1841,6 +1840,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var _ptHelper = new Phaser.Point();
@@ -1852,7 +1853,7 @@
 	  momentum: false,
 	  snapping: false,
 	  bouncing: false,
-	  deceleration: .5, // value between 0 and 1
+	  deceleration: 0.5, // value between 0 and 1
 	  overflow: 20,
 	  snapStep: 10,
 	  emitMoving: false,
@@ -1868,7 +1869,7 @@
 	  swipeEnabled: false,
 	  swipeThreshold: 5, // (pixels) must move this many pixels for a swipe action
 	  swipeTimeThreshold: 250, // (ms) determines if a swipe occurred: time between last updated movement @ touchmove and time @ touchend, if smaller than this value, trigger swipe
-	  minDuration: .5,
+	  minDuration: 0.5,
 	  addListeners: true
 	};
 
@@ -2072,7 +2073,7 @@
 	      };
 
 	      // *** BOUNCING
-	      if (!this.o.bouncing) o.duration = .01;
+	      if (!this.o.bouncing) o.duration = 0.01;
 
 	      if (!this.o.infinite && this.scrollObject[this.o.direction] > this.max) {
 	        this.target = this.max;
@@ -2081,7 +2082,6 @@
 	        this.target = this.min;
 	        this.tweenTo(o.duration, this.target);
 	      } else {
-
 	        // *** MOMENTUM
 	        this._addMomentum(o);
 
@@ -2194,8 +2194,7 @@
 	      if (duration == 0) return this.setTo(target);
 
 	      //stop a tween if it is currently happening
-	      var o = {};
-	      o[this.o.direction] = target;
+	      var o = _defineProperty({}, this.o.direction, target);
 
 	      this.tweenScroll.onUpdateCallback(this.handleUpdate, this);
 	      this.tweenScroll.onComplete.add(this.handleComplete, this);
@@ -2226,17 +2225,8 @@
 	    key: 'setTo',
 	    value: function setTo(target) {
 	      //stop a tween if it is currently happening
-	      var o = {};
-	      o[this.o.direction] = target;
-
+	      this.scrollObject[this.o.direction] = target;
 	      this.tweenScroll.stop();
-	      this.tweenScroll.pendingDelete = false;
-	      this.tweenScroll.onUpdateCallback(this.handleUpdate, this);
-	      this.tweenScroll.onComplete.add(this.handleComplete, this);
-
-	      this.tweenScroll.updateTweenData('duration', 0, -1);
-	      this.tweenScroll.updateTweenData('vEnd', o, -1);
-	      this.tweenScroll.start();
 
 	      this.handleUpdate();
 	      this.handleComplete();
@@ -2245,7 +2235,6 @@
 	    key: 'handleUpdate',
 	    value: function handleUpdate() {
 	      if (!this.enabled) return;
-
 	      if (this.o.infinite) {
 	        this.dispatchValues.total = Phaser.Math.wrap(this.scrollObject[this.o.direction], this.min, this.max);
 	      } else {
@@ -3120,7 +3109,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
 	var Config = {
 	  AUTO_DETECT_THRESHOLD: 8
 	};
@@ -3246,7 +3234,7 @@
 	      to: 0
 	    }, _this.options));
 	    _this.scroller.events.onUpdate.add(function (o) {
-	      _this.setPosition(o.total);
+	      _this._setPosition(o.total);
 	    });
 	    _this.events.onAdded.add(function (limit) {
 	      var _to = Math.min(-limit, 0);
@@ -3268,7 +3256,7 @@
 	  }, {
 	    key: 'reset',
 	    value: function reset() {
-	      this.setPosition(0);
+	      this._setPosition(0);
 	      this.scroller.reset();
 	    }
 	  }]);
@@ -3282,7 +3270,7 @@
 /* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -3295,7 +3283,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var defaultOptions = {
-	  direction: "y",
+	  direction: 'y',
 	  autocull: true,
 	  padding: 10
 	};
@@ -3314,10 +3302,10 @@
 
 	    this.items = [];
 
-	    if (this.o.direction == "y") {
-	      this.p = { xy: "y", wh: "height" };
+	    if (this.o.direction == 'y') {
+	      this.p = { xy: 'y', wh: 'height' };
 	    } else {
-	      this.p = { xy: "x", wh: "width" };
+	      this.p = { xy: 'x', wh: 'width' };
 	    }
 
 	    this.grp = this.game.add.group(parent);
@@ -3344,7 +3332,7 @@
 
 
 	  _createClass(ListViewCore, [{
-	    key: "add",
+	    key: 'add',
 	    value: function add(child) {
 	      this.items.push(child);
 	      var xy = 0;
@@ -3356,7 +3344,7 @@
 	      this.grp.addChild(child);
 	      this.length = xy + child[this.p.wh];
 
-	      // this.setPosition(this.position)
+	      // this._setPosition(this.position)
 	      this.events.onAdded.dispatch(this.length - this.bounds[this.p.wh]);
 	      return child;
 	    }
@@ -3367,7 +3355,7 @@
 	     */
 
 	  }, {
-	    key: "addMultiple",
+	    key: 'addMultiple',
 	    value: function addMultiple() {
 	      for (var _len = arguments.length, children = Array(_len), _key = 0; _key < _len; _key++) {
 	        children[_key] = arguments[_key];
@@ -3376,7 +3364,7 @@
 	      children.forEach(this.add, this);
 	    }
 	  }, {
-	    key: "remove",
+	    key: 'remove',
 	    value: function remove(child) {
 	      this.grp.removeChild(child);
 	      var index = this.items.indexOf(child);
@@ -3385,7 +3373,7 @@
 	      return child;
 	    }
 	  }, {
-	    key: "destroy",
+	    key: 'destroy',
 	    value: function destroy() {
 	      this.events.onAdded.dispose();
 	      this.events = null;
@@ -3402,7 +3390,7 @@
 	     */
 
 	  }, {
-	    key: "removeAll",
+	    key: 'removeAll',
 	    value: function removeAll() {
 	      this.grp.removeAll();
 	      this.items = [];
@@ -3414,7 +3402,7 @@
 	     */
 
 	  }, {
-	    key: "cull",
+	    key: 'cull',
 	    value: function cull() {
 	      for (var i = 0; i < this.items.length; i++) {
 	        var child = this.items[i];
@@ -3434,16 +3422,20 @@
 	     */
 
 	  }, {
-	    key: "setPosition",
+	    key: 'setPosition',
 	    value: function setPosition(position) {
-	      // this.position = position
-	      // this.grp[this.p.xy] = this.bounds[this.p.xy] + position
-	      // if (this.o.autocull) this.cull()
-	      // this.scroller.setTo(position)
+	      this.scroller.setTo(position);
 	    }
 	  }, {
-	    key: "tweenTo",
-	    value: function tweenTo(index) {
+	    key: 'tweenToPosition',
+	    value: function tweenToPosition(position) {
+	      var duration = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+
+	      this.scroller.tweenTo(duration, position);
+	    }
+	  }, {
+	    key: 'tweenToItem',
+	    value: function tweenToItem(index) {
 	      var duration = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
 
 	      this.scroller.tweenTo(duration, -this.items[index][this.p.xy]);
@@ -3454,7 +3446,19 @@
 	     */
 
 	  }, {
-	    key: "_addMask",
+	    key: '_setPosition',
+	    value: function _setPosition(position) {
+	      this.position = position;
+	      this.grp[this.p.xy] = this.bounds[this.p.xy] + position;
+	      if (this.o.autocull) this.cull();
+	    }
+
+	    /**
+	     * @private
+	     */
+
+	  }, {
+	    key: '_addMask',
 	    value: function _addMask(bounds) {
 	      var mask = this.game.add.graphics(0, 0, this.parent);
 	      mask.beginFill(0xff0000).drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -5617,7 +5621,6 @@
 	  _createClass(BasicSwiper, [{
 	    key: 'addListeners',
 	    value: function addListeners() {
-
 	      this.events = {
 	        onUpdate: new Phaser.Signal(),
 	        onInputUp: new Phaser.Signal(),
@@ -5677,7 +5680,7 @@
 	        return;
 	      }
 	      this.clickBlocked = false;
-	      console.log('handle down', pointer[this.o.direction]);
+	      // console.log('handle down', pointer[this.o.direction])
 	      this.isDown = true;
 	      // console.log('input down', pointer.y)
 	      this.old = this.down = pointer[this.o.direction];
@@ -5929,7 +5932,6 @@
 	  _createClass(ScrollerEventDispatcher, [{
 	    key: 'addListeners',
 	    value: function addListeners() {
-
 	      this.events = {
 	        onInputUp: new Phaser.Signal(),
 	        onInputDown: new Phaser.Signal(),

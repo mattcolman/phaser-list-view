@@ -51,7 +51,7 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var _game = __webpack_require__(2);
 
@@ -61,12 +61,12 @@
 
 	var init = function init() {
 	  var config = {
-	    "width": 1366,
-	    "height": 768,
-	    "renderer": Phaser.AUTO,
-	    "parent": 'content',
-	    "resolution": 1, //window.devicePixelRatio,
-	    "state": _game2.default.prototype.states[0][1]
+	    width: 1366,
+	    height: 768,
+	    renderer: Phaser.AUTO,
+	    parent: 'content',
+	    resolution: 1, //window.devicePixelRatio,
+	    state: _game2.default.prototype.states[0][1]
 	  };
 	  var game = new _game2.default(config);
 	};
@@ -99,7 +99,7 @@
 
 	var _list_view_state2 = _interopRequireDefault(_list_view_state);
 
-	var _swipe_carousel_state = __webpack_require__(7);
+	var _swipe_carousel_state = __webpack_require__(14);
 
 	var _swipe_carousel_state2 = _interopRequireDefault(_swipe_carousel_state);
 
@@ -123,7 +123,6 @@
 	  _createClass(Game, [{
 	    key: 'setupStage',
 	    value: function setupStage() {
-
 	      this.input.maxPointers = 1;
 	      this.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
 	      this.scale.setMinMax(this.width / 2, this.height / 2, this.width, this.height);
@@ -205,7 +204,7 @@
 	        var klass = _a[1];
 
 
-	        var option = document.createElement("option");
+	        var option = document.createElement('option');
 	        option.text = name;
 	        document.getElementById('selector').add(option);
 	      });
@@ -229,7 +228,7 @@
 /* 3 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -253,19 +252,19 @@
 	  }
 
 	  _createClass(GameState, [{
-	    key: "create",
+	    key: 'create',
 	    value: function create() {
 	      this.game.time.advancedTiming = true;
-	      this.stage.backgroundColor = "#4488AA";
-	      this.fpsTxt = this.game.add.text(50, 20, this.game.time.fps || "--", {
-	        font: "24px Arial",
-	        fill: "#00ff00"
+	      this.stage.backgroundColor = '#4488AA';
+	      this.fpsTxt = this.game.add.text(50, 20, this.game.time.fps || '--', {
+	        font: '24px Arial',
+	        fill: '#00ff00'
 	      });
-	      var txt = this.add.text(this.world.centerX, 50, this.name || this.game.state.current, { font: "30px Arial", fill: "#fff" });
+	      var txt = this.add.text(this.world.centerX, 50, this.name || this.game.state.current, { font: '30px Arial', fill: '#fff' });
 	      txt.anchor.set(0.5);
 	    }
 	  }, {
-	    key: "update",
+	    key: 'update',
 	    value: function update() {
 	      this.fpsTxt.text = this.game.time.fps; // debug text doesn't work with the canvas renderer??
 	      this.fpsTxt.bringToTop();
@@ -281,7 +280,7 @@
 /* 4 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -305,14 +304,14 @@
 	  }
 
 	  _createClass(Boot, [{
-	    key: "preload",
+	    key: 'preload',
 	    value: function preload() {
-	      this.game.load.crossOrigin = "anonymous";
+	      this.game.load.crossOrigin = 'anonymous';
 	    }
 	  }, {
-	    key: "create",
+	    key: 'create',
 	    value: function create() {
-	      console.log("boot me up");
+	      console.log('boot me up');
 	      this.game.addDropDownMenu();
 	      this.game.setupStage();
 	      this.game.addStates();
@@ -329,7 +328,7 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -345,7 +344,7 @@
 
 	var _math_utils = __webpack_require__(6);
 
-	var _list_view = __webpack_require__(8);
+	var _list_view = __webpack_require__(7);
 
 	var _list_view2 = _interopRequireDefault(_list_view);
 
@@ -367,17 +366,17 @@
 	  }
 
 	  _createClass(ListViewState, [{
-	    key: "preload",
+	    key: 'preload',
 	    value: function preload() {
-	      this.game.load.crossOrigin = "anonymous";
+	      this.game.load.crossOrigin = 'anonymous';
 	    }
 	  }, {
-	    key: "shutdown",
+	    key: 'shutdown',
 	    value: function shutdown() {
 	      this.listView.destroy();
 	    }
 	  }, {
-	    key: "create",
+	    key: 'create',
 	    value: function create() {
 	      var maskW = 600;
 	      var maskH = 200;
@@ -385,7 +384,7 @@
 	      var boxH = 50;
 
 	      this.listView = new _list_view2.default(this.game, this.world, new Phaser.Rectangle(this.world.centerX - maskW / 2, 120, maskW, 400), {
-	        direction: "y"
+	        direction: 'y'
 	      });
 
 	      for (var i = 0; i < 500; i++) {
@@ -395,13 +394,13 @@
 	        var h = boxH + Math.floor(Math.random() * 100);
 	        g.beginFill(color).drawRect(0, 0, boxW, h);
 
-	        var txt = this.game.add.text(boxW / 2, h / 2, i, { font: "40px Arial", fill: "#000" }, group);
+	        var txt = this.game.add.text(boxW / 2, h / 2, i, { font: '40px Arial', fill: '#000' }, group);
 	        txt.anchor.set(0.5);
 	        var img = this.game.add.image(0, 0, group.generateTexture());
 	        this.listView.add(img);
 	      }
 
-	      _get(Object.getPrototypeOf(ListViewState.prototype), "create", this).call(this);
+	      _get(Object.getPrototypeOf(ListViewState.prototype), 'create', this).call(this);
 	    }
 	  }]);
 
@@ -417,23 +416,22 @@
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	var MathUtils = {
+	  nearestMultiple: function nearestMultiple(n, multiple) {
+	    return Math.round(n / multiple) * multiple;
+	  },
 
-	    nearestMultiple: function nearestMultiple(n, multiple) {
-	        return Math.round(n / multiple) * multiple;
-	    },
+	  scaleBetween: function scaleBetween(lo, hi, scale) {
+	    return lo + (hi - lo) * scale;
+	  },
 
-	    scaleBetween: function scaleBetween(lo, hi, scale) {
-	        return lo + (hi - lo) * scale;
-	    },
-
-	    // returns a percentage between hi and lo from a given input
-	    // e.g percentageBetween2(7, 4, 10) -> .5
-	    percentageBetween2: function percentageBetween2(input, lo, hi) {
-	        return (input - lo) / (hi - lo);
-	    }
+	  // returns a percentage between hi and lo from a given input
+	  // e.g percentageBetween2(7, 4, 10) -> .5
+	  percentageBetween2: function percentageBetween2(input, lo, hi) {
+	    return (input - lo) / (hi - lo);
+	  }
 	};
 
 	window.MathUtils = MathUtils;
@@ -444,7 +442,7 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -454,97 +452,15 @@
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-	var _game_state = __webpack_require__(3);
-
-	var _game_state2 = _interopRequireDefault(_game_state);
-
-	var _math_utils = __webpack_require__(6);
-
-	var _swipe_carousel = __webpack_require__(15);
-
-	var _swipe_carousel2 = _interopRequireDefault(_swipe_carousel);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SwipeCarouselState = function (_GameState) {
-	  _inherits(SwipeCarouselState, _GameState);
-
-	  function SwipeCarouselState() {
-	    _classCallCheck(this, SwipeCarouselState);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SwipeCarouselState).apply(this, arguments));
-	  }
-
-	  _createClass(SwipeCarouselState, [{
-	    key: "preload",
-	    value: function preload() {
-	      this.game.load.crossOrigin = "anonymous";
-	    }
-	  }, {
-	    key: "shutdown",
-	    value: function shutdown() {
-	      this.carousel.destroy();
-	    }
-	  }, {
-	    key: "create",
-	    value: function create() {
-	      var maskW = 600;
-	      var maskH = 200;
-	      var boxW = maskW;
-	      var boxH = 200;
-
-	      this.carousel = new _swipe_carousel2.default(this.game, this.world, new Phaser.Rectangle(this.world.centerX - maskW / 2, 120, maskW, 400));
-
-	      for (var i = 0; i < 10; i++) {
-	        var color = Phaser.Color.getRandomColor();
-	        var group = this.game.make.group(null);
-	        var g = this.game.add.graphics(0, 0, group);
-	        g.beginFill(color).drawRect(0, 0, boxW, boxH);
-
-	        var txt = this.game.add.text(boxW / 2, boxH / 2, i, { font: "40px Arial", fill: "#000" }, group);
-	        txt.anchor.set(0.5);
-	        var img = this.game.add.image(0, 0, group.generateTexture());
-	        this.carousel.add(img);
-	      }
-
-	      _get(Object.getPrototypeOf(SwipeCarouselState.prototype), "create", this).call(this);
-	    }
-	  }]);
-
-	  return SwipeCarouselState;
-	}(_game_state2.default);
-
-	exports.default = SwipeCarouselState;
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _list_view_core = __webpack_require__(9);
+	var _list_view_core = __webpack_require__(8);
 
 	var _list_view_core2 = _interopRequireDefault(_list_view_core);
 
-	var _directional_scroller = __webpack_require__(12);
+	var _directional_scroller = __webpack_require__(11);
 
 	var _directional_scroller2 = _interopRequireDefault(_directional_scroller);
 
-	var _util = __webpack_require__(10);
+	var _util = __webpack_require__(9);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -555,7 +471,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var defaultOptions = {
-	  direction: "y",
+	  direction: 'y',
 	  autocull: true,
 	  momentum: true,
 	  bouncing: true,
@@ -594,14 +510,14 @@
 	  }
 
 	  _createClass(ListView, [{
-	    key: "destroy",
+	    key: 'destroy',
 	    value: function destroy() {
 	      this.scroller.destroy();
 	      this.scroller = null;
-	      _get(Object.getPrototypeOf(ListView.prototype), "destroy", this).call(this);
+	      _get(Object.getPrototypeOf(ListView.prototype), 'destroy', this).call(this);
 	    }
 	  }, {
-	    key: "reset",
+	    key: 'reset',
 	    value: function reset() {
 	      this._setPosition(0);
 	      this.scroller.reset();
@@ -614,10 +530,10 @@
 	exports.default = ListView;
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -625,12 +541,12 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _util = __webpack_require__(10);
+	var _util = __webpack_require__(9);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var defaultOptions = {
-	  direction: "y",
+	  direction: 'y',
 	  autocull: true,
 	  padding: 10
 	};
@@ -649,10 +565,10 @@
 
 	    this.items = [];
 
-	    if (this.o.direction == "y") {
-	      this.p = { xy: "y", wh: "height" };
+	    if (this.o.direction == 'y') {
+	      this.p = { xy: 'y', wh: 'height' };
 	    } else {
-	      this.p = { xy: "x", wh: "width" };
+	      this.p = { xy: 'x', wh: 'width' };
 	    }
 
 	    this.grp = this.game.add.group(parent);
@@ -679,7 +595,7 @@
 
 
 	  _createClass(ListViewCore, [{
-	    key: "add",
+	    key: 'add',
 	    value: function add(child) {
 	      this.items.push(child);
 	      var xy = 0;
@@ -702,7 +618,7 @@
 	     */
 
 	  }, {
-	    key: "addMultiple",
+	    key: 'addMultiple',
 	    value: function addMultiple() {
 	      for (var _len = arguments.length, children = Array(_len), _key = 0; _key < _len; _key++) {
 	        children[_key] = arguments[_key];
@@ -711,7 +627,7 @@
 	      children.forEach(this.add, this);
 	    }
 	  }, {
-	    key: "remove",
+	    key: 'remove',
 	    value: function remove(child) {
 	      this.grp.removeChild(child);
 	      var index = this.items.indexOf(child);
@@ -720,7 +636,7 @@
 	      return child;
 	    }
 	  }, {
-	    key: "destroy",
+	    key: 'destroy',
 	    value: function destroy() {
 	      this.events.onAdded.dispose();
 	      this.events = null;
@@ -737,7 +653,7 @@
 	     */
 
 	  }, {
-	    key: "removeAll",
+	    key: 'removeAll',
 	    value: function removeAll() {
 	      this.grp.removeAll();
 	      this.items = [];
@@ -749,7 +665,7 @@
 	     */
 
 	  }, {
-	    key: "cull",
+	    key: 'cull',
 	    value: function cull() {
 	      for (var i = 0; i < this.items.length; i++) {
 	        var child = this.items[i];
@@ -769,19 +685,19 @@
 	     */
 
 	  }, {
-	    key: "setPosition",
+	    key: 'setPosition',
 	    value: function setPosition(position) {
 	      this.scroller.setTo(position);
 	    }
 	  }, {
-	    key: "tweenToPosition",
+	    key: 'tweenToPosition',
 	    value: function tweenToPosition(position) {
 	      var duration = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
 
 	      this.scroller.tweenTo(duration, position);
 	    }
 	  }, {
-	    key: "tweenToItem",
+	    key: 'tweenToItem',
 	    value: function tweenToItem(index) {
 	      var duration = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
 
@@ -793,7 +709,7 @@
 	     */
 
 	  }, {
-	    key: "_setPosition",
+	    key: '_setPosition',
 	    value: function _setPosition(position) {
 	      this.position = position;
 	      this.grp[this.p.xy] = this.bounds[this.p.xy] + position;
@@ -805,7 +721,7 @@
 	     */
 
 	  }, {
-	    key: "_addMask",
+	    key: '_addMask',
 	    value: function _addMask(bounds) {
 	      var mask = this.game.add.graphics(0, 0, this.parent);
 	      mask.beginFill(0xff0000).drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -820,7 +736,7 @@
 	exports.default = ListViewCore;
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -835,7 +751,7 @@
 	exports.detectDrag = detectDrag;
 	exports.dispatchClicks = dispatchClicks;
 
-	var _config = __webpack_require__(11);
+	var _config = __webpack_require__(10);
 
 	var _config2 = _interopRequireDefault(_config);
 
@@ -877,14 +793,14 @@
 	    }
 	  }
 	  return false;
-	};
+	}
 
 	function detectDrag(pointer) {
 	  var distanceX = Math.abs(pointer.positionDown.x - pointer.positionUp.x);
 	  var distanceY = Math.abs(pointer.positionDown.y - pointer.positionUp.y);
 	  var time = pointer.timeUp - pointer.timeDown;
 	  return distanceX > _config2.default.AUTO_DETECT_THRESHOLD || distanceY > _config2.default.AUTO_DETECT_THRESHOLD;
-	};
+	}
 
 	function dispatchClicks(pointer, clickables, type) {
 	  if (type == 'onInputUp' && detectDrag(pointer)) return;
@@ -909,7 +825,7 @@
 	}
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -924,10 +840,10 @@
 	exports.default = Config;
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -937,11 +853,11 @@
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-	var _math_utils = __webpack_require__(13);
+	var _math_utils = __webpack_require__(12);
 
 	var _math_utils2 = _interopRequireDefault(_math_utils);
 
-	var _scroller = __webpack_require__(14);
+	var _scroller = __webpack_require__(13);
 
 	var _scroller2 = _interopRequireDefault(_scroller);
 
@@ -965,16 +881,16 @@
 	  }
 
 	  _createClass(DirectionalScroller, [{
-	    key: "handleDown",
+	    key: 'handleDown',
 	    value: function handleDown(target, pointer) {
 	      this.old = this.down = pointer[this.o.direction];
-	      _get(Object.getPrototypeOf(DirectionalScroller.prototype), "handleDown", this).call(this, target, pointer);
+	      _get(Object.getPrototypeOf(DirectionalScroller.prototype), 'handleDown', this).call(this, target, pointer);
 	    }
 	  }, {
-	    key: "handleUp",
+	    key: 'handleUp',
 	    value: function handleUp(target, pointer) {
 	      this.current = pointer[this.o.direction];
-	      _get(Object.getPrototypeOf(DirectionalScroller.prototype), "handleUp", this).call(this, target, pointer);
+	      _get(Object.getPrototypeOf(DirectionalScroller.prototype), 'handleUp', this).call(this, target, pointer);
 	    }
 	  }]);
 
@@ -984,38 +900,37 @@
 	exports.default = DirectionalScroller;
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	var MathUtils = {
+	  nearestMultiple: function nearestMultiple(n, multiple) {
+	    return Math.round(n / multiple) * multiple;
+	  },
 
-	    nearestMultiple: function nearestMultiple(n, multiple) {
-	        return Math.round(n / multiple) * multiple;
-	    },
+	  scaleBetween: function scaleBetween(lo, hi, scale) {
+	    return lo + (hi - lo) * scale;
+	  },
 
-	    scaleBetween: function scaleBetween(lo, hi, scale) {
-	        return lo + (hi - lo) * scale;
-	    },
-
-	    // returns a percentage between hi and lo from a given input
-	    // e.g percentageBetween2(7, 4, 10) -> .5
-	    percentageBetween2: function percentageBetween2(input, lo, hi) {
-	        return (input - lo) / (hi - lo);
-	    }
+	  // returns a percentage between hi and lo from a given input
+	  // e.g percentageBetween2(7, 4, 10) -> .5
+	  percentageBetween2: function percentageBetween2(input, lo, hi) {
+	    return (input - lo) / (hi - lo);
+	  }
 	};
 
 	exports.default = MathUtils;
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -1023,11 +938,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _math_utils = __webpack_require__(13);
+	var _math_utils = __webpack_require__(12);
 
 	var _math_utils2 = _interopRequireDefault(_math_utils);
 
-	var _util = __webpack_require__(10);
+	var _util = __webpack_require__(9);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1040,7 +955,7 @@
 	var defaultOptions = {
 	  from: 0,
 	  to: 200,
-	  direction: "y",
+	  direction: 'y',
 	  momentum: false,
 	  snapping: false,
 	  bouncing: false,
@@ -1103,7 +1018,7 @@
 	  }
 
 	  _createClass(Scroller, [{
-	    key: "destroy",
+	    key: 'destroy',
 	    value: function destroy() {
 	      this.tweenScroll.stop();
 	      this.removeListeners();
@@ -1119,7 +1034,7 @@
 	      this.destroyed = true;
 	    }
 	  }, {
-	    key: "addListeners",
+	    key: 'addListeners',
 	    value: function addListeners() {
 	      this.events = {
 	        onUpdate: new Phaser.Signal(),
@@ -1137,7 +1052,7 @@
 	      }
 	    }
 	  }, {
-	    key: "removeListeners",
+	    key: 'removeListeners',
 	    value: function removeListeners() {
 	      if (this.o.addListeners) {
 	        this.clickObject.events.onInputDown.remove(this.handleDown, this);
@@ -1151,48 +1066,48 @@
 	      }
 	    }
 	  }, {
-	    key: "enable",
+	    key: 'enable',
 	    value: function enable() {
 	      this.enabled = true;
 	    }
 	  }, {
-	    key: "disable",
+	    key: 'disable',
 	    value: function disable() {
 	      this.enabled = false;
 	    }
 	  }, {
-	    key: "init",
+	    key: 'init',
 	    value: function init() {
 	      this.scrollObject[this.o.direction] = this.o.from;
 	      this.maxOffset = this.maskLimits[this.o.direction] * this.o.speedLimit;
 	      this.enable();
 	    }
 	  }, {
-	    key: "reset",
+	    key: 'reset',
 	    value: function reset() {
 	      this.tweenScroll.pause();
 	      this.o.multiplier = 1;
 	      this.init();
 	    }
 	  }, {
-	    key: "setFromTo",
+	    key: 'setFromTo',
 	    value: function setFromTo(_from, _to) {
 	      this.o.from = _from;
 	      this.o.to = _to;
 	      this._updateMinMax();
 	    }
 	  }, {
-	    key: "isTweening",
+	    key: 'isTweening',
 	    value: function isTweening() {
 	      return this.tweenScroll.isRunning;
 	    }
 	  }, {
-	    key: "registerClickables",
+	    key: 'registerClickables',
 	    value: function registerClickables(clickables) {
 	      this.clickables = clickables;
 	    }
 	  }, {
-	    key: "handleDown",
+	    key: 'handleDown',
 	    value: function handleDown(target, pointer) {
 	      if (!this.enabled) return;
 	      this.isDown = true;
@@ -1216,11 +1131,11 @@
 	      this.tweenScroll.stop();
 	      this.tweenScroll.pendingDelete = false;
 
-	      (0, _util.dispatchClicks)(pointer, this.clickables, "onInputDown");
+	      (0, _util.dispatchClicks)(pointer, this.clickables, 'onInputDown');
 	      this.events.onInputDown.dispatch(target, pointer);
 	    }
 	  }, {
-	    key: "handleMove",
+	    key: 'handleMove',
 	    value: function handleMove(pointer, x, y) {
 	      if (!this.enabled) return;
 	      this.isScrolling = true;
@@ -1245,7 +1160,7 @@
 	      if (this.o.emitMoving) this.events.onInputMove.dispatch(pointer, x, y);
 	    }
 	  }, {
-	    key: "handleUp",
+	    key: 'handleUp',
 	    value: function handleUp(target, pointer) {
 	      this.isDown = false;
 	      // console.log('end')
@@ -1291,11 +1206,11 @@
 	        this.tweenTo(o.duration, o.target);
 	      }
 
-	      (0, _util.dispatchClicks)(pointer, this.clickables, "onInputUp");
+	      (0, _util.dispatchClicks)(pointer, this.clickables, 'onInputUp');
 	      this.events.onInputUp.dispatch(target, pointer, _util.dispatchClicks);
 	    }
 	  }, {
-	    key: "_addMomentum",
+	    key: '_addMomentum',
 	    value: function _addMomentum(o) {
 	      if (!this.o.momentum) return o.target;
 
@@ -1310,13 +1225,13 @@
 	      return o;
 	    }
 	  }, {
-	    key: "_addSwiping",
+	    key: '_addSwiping',
 	    value: function _addSwiping(o, pointer) {
 	      var swipeDistance = Math.abs(this.down - this.current);
 	      if (this.o.swipeEnabled && this.o.time.up - this.o.time.down < this.o.swipeTimeThreshold && swipeDistance > this.o.swipeThreshold) {
-	        var direction = pointer[this.o.direction] < this.down ? "forward" : "backward";
+	        var direction = pointer[this.o.direction] < this.down ? 'forward' : 'backward';
 
-	        if (direction == "forward") {
+	        if (direction == 'forward') {
 	          o.target -= this.o.snapStep / 2;
 	        } else {
 	          o.target += this.o.snapStep / 2;
@@ -1327,7 +1242,7 @@
 	      return o;
 	    }
 	  }, {
-	    key: "_addSnapping",
+	    key: '_addSnapping',
 	    value: function _addSnapping(o) {
 	      if (!this.o.snapping) {
 	        return o;
@@ -1336,7 +1251,7 @@
 	      return o;
 	    }
 	  }, {
-	    key: "_addLimits",
+	    key: '_addLimits',
 	    value: function _addLimits(o) {
 	      if (this.o.infinite) return o;
 	      o.target = Math.max(o.target, this.min);
@@ -1344,7 +1259,7 @@
 	      return o;
 	    }
 	  }, {
-	    key: "_calculateDuration",
+	    key: '_calculateDuration',
 	    value: function _calculateDuration(o) {
 	      var distance = Math.abs(o.target - this.scrollObject[this.o.direction]);
 	      o.duration = this.o.duration * distance / this.maxOffset;
@@ -1352,7 +1267,7 @@
 	      return o;
 	    }
 	  }, {
-	    key: "_requestDiff",
+	    key: '_requestDiff',
 	    value: function _requestDiff(diff, target, min, max, overflow) {
 	      if (this.o.infinite) return diff;
 
@@ -1367,7 +1282,7 @@
 	      return diff;
 	    }
 	  }, {
-	    key: "tweenToSnap",
+	    key: 'tweenToSnap',
 	    value: function tweenToSnap(duration, snapIndex) {
 	      var target = this.o.from - this.o.snapStep * snapIndex;
 	      this.tweenTo(duration, target);
@@ -1380,7 +1295,7 @@
 	     */
 
 	  }, {
-	    key: "tweenTo",
+	    key: 'tweenTo',
 	    value: function tweenTo(duration, target) {
 	      if (duration == 0) return this.setTo(target);
 
@@ -1390,9 +1305,9 @@
 	      this.tweenScroll.onUpdateCallback(this.handleUpdate, this);
 	      this.tweenScroll.onComplete.add(this.handleComplete, this);
 
-	      this.tweenScroll.updateTweenData("vEnd", o, -1);
-	      this.tweenScroll.updateTweenData("duration", duration * 1000, -1);
-	      this.tweenScroll.updateTweenData("percent ", 0, -1);
+	      this.tweenScroll.updateTweenData('vEnd', o, -1);
+	      this.tweenScroll.updateTweenData('duration', duration * 1000, -1);
+	      this.tweenScroll.updateTweenData('percent ', 0, -1);
 
 	      this.tweenScroll.start();
 	    }
@@ -1402,7 +1317,7 @@
 	    // not sure what expect from that.
 
 	  }, {
-	    key: "cancel",
+	    key: 'cancel',
 	    value: function cancel() {
 	      this.isDown = false;
 	    }
@@ -1413,7 +1328,7 @@
 	     */
 
 	  }, {
-	    key: "setTo",
+	    key: 'setTo',
 	    value: function setTo(target) {
 	      //stop a tween if it is currently happening
 	      this.scrollObject[this.o.direction] = target;
@@ -1423,7 +1338,7 @@
 	      this.handleComplete();
 	    }
 	  }, {
-	    key: "handleUpdate",
+	    key: 'handleUpdate',
 	    value: function handleUpdate() {
 	      if (!this.enabled) return;
 	      if (this.o.infinite) {
@@ -1446,7 +1361,7 @@
 	      this.previousTotal = this.dispatchValues.total;
 	    }
 	  }, {
-	    key: "handleComplete",
+	    key: 'handleComplete',
 	    value: function handleComplete() {
 	      if (!this.enabled) return;
 	      this.isScrolling = false;
@@ -1455,7 +1370,7 @@
 	      this.events.onComplete.dispatch();
 	    }
 	  }, {
-	    key: "_updateMinMax",
+	    key: '_updateMinMax',
 	    value: function _updateMinMax() {
 	      this.min = Math.min(this.o.from, this.o.to);
 	      this.max = Math.max(this.o.from, this.o.to);
@@ -1470,6 +1385,88 @@
 	exports.default = Scroller;
 
 /***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _game_state = __webpack_require__(3);
+
+	var _game_state2 = _interopRequireDefault(_game_state);
+
+	var _math_utils = __webpack_require__(6);
+
+	var _swipe_carousel = __webpack_require__(15);
+
+	var _swipe_carousel2 = _interopRequireDefault(_swipe_carousel);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SwipeCarouselState = function (_GameState) {
+	  _inherits(SwipeCarouselState, _GameState);
+
+	  function SwipeCarouselState() {
+	    _classCallCheck(this, SwipeCarouselState);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SwipeCarouselState).apply(this, arguments));
+	  }
+
+	  _createClass(SwipeCarouselState, [{
+	    key: 'preload',
+	    value: function preload() {
+	      this.game.load.crossOrigin = 'anonymous';
+	    }
+	  }, {
+	    key: 'shutdown',
+	    value: function shutdown() {
+	      this.carousel.destroy();
+	    }
+	  }, {
+	    key: 'create',
+	    value: function create() {
+	      var maskW = 600;
+	      var maskH = 200;
+	      var boxW = maskW;
+	      var boxH = 200;
+
+	      this.carousel = new _swipe_carousel2.default(this.game, this.world, new Phaser.Rectangle(this.world.centerX - maskW / 2, 120, maskW, 400));
+
+	      for (var i = 0; i < 10; i++) {
+	        var color = Phaser.Color.getRandomColor();
+	        var group = this.game.make.group(null);
+	        var g = this.game.add.graphics(0, 0, group);
+	        g.beginFill(color).drawRect(0, 0, boxW, boxH);
+
+	        var txt = this.game.add.text(boxW / 2, boxH / 2, i, { font: '40px Arial', fill: '#000' }, group);
+	        txt.anchor.set(0.5);
+	        var img = this.game.add.image(0, 0, group.generateTexture());
+	        this.carousel.add(img);
+	      }
+
+	      _get(Object.getPrototypeOf(SwipeCarouselState.prototype), 'create', this).call(this);
+	    }
+	  }]);
+
+	  return SwipeCarouselState;
+	}(_game_state2.default);
+
+	exports.default = SwipeCarouselState;
+
+/***/ },
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1479,7 +1476,7 @@
 	  value: true
 	});
 
-	var _list_view = __webpack_require__(8);
+	var _list_view = __webpack_require__(7);
 
 	var _list_view2 = _interopRequireDefault(_list_view);
 
