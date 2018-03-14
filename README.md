@@ -71,7 +71,7 @@ listView.addMultiple(...items)
 | `position` | number (READONLY)    | position in pixels (x or y axis depends on the direction you specify) |
 | `scroller` | Scroller             | access the Scroller for advanced tuning (Scroller API below)          |
 
-| Methods           | Params: Return                                 | Description                                                                                       |
+| Methods           | Params                                         | Description                                                                                       |
 | :---------------- | :--------------------------------------------- | :------------------------------------------------------------------------------------------------ |
 | `add`             | (child: DisplayObject): void                   | add a child to the list view                                                                      |
 | `addMultiple`     | (...children: DisplayObjects): void            | add multiple children to the list view. Pass through multiple arguments, not an array of children |
@@ -128,13 +128,11 @@ The same as ListView above.
 | `position` | number (READONLY) | position in pixels (x or y axis depends on the direction you specify) |
 | `scroller` | Scroller          | access the Scroller for advanced tuning                               |
 
-| Methods       | Params: Return                              | Description                                                                                                                                                                        |
-| :------------ | :------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tweenTo`     | (duration: number, position: number): void  | Tween the list to a new position in pixels                                                                                                                                         |
-| `tweenToSnap` | (duration: number, snapIndex: number): void | Tween the list to a new position based on snapIndex. E.g. if your snapStep is set to 100 then tweenToSnap(1, 2) will tween to pixel 200. (You must have snapping and snapStep set) |
-| `enable`      | (): void                                    | Enables the scroller                                                                                                                                                               |
-| `disable`     | (): void                                    | Disables the scroller                                                                                                                                                              |
-| `isTweening`  | (): boolean                                 | Is the scroller tweening?                                                                                                                                                          |
+| Methods      | Params: Return | Description               |
+| :----------- | :------------- | :------------------------ |
+| `enable`     | (): void       | Enables the scroller      |
+| `disable`    | (): void       | Disables the scroller     |
+| `isTweening` | (): boolean    | Is the scroller tweening? |
 
 | Events (Phaser.Signals) |
 | :---------------------- |
