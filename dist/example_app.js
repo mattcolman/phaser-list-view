@@ -400,6 +400,7 @@
 	        this.listView.add(img);
 	      }
 
+	      this.listView.moveToItem(3);
 	      _get(Object.getPrototypeOf(ListViewState.prototype), 'create', this).call(this);
 	    }
 	  }]);
@@ -677,17 +678,20 @@
 	        }
 	      }
 	    }
-
-	    /**
-	     * [setPosition - set position of the top of the list view. Either the x or y value,
-	     *                depending on what you set the direction to]
-	     * @param {Number} position
-	     */
-
 	  }, {
-	    key: 'setPosition',
-	    value: function setPosition(position) {
+	    key: 'getPositionByItemIndex',
+	    value: function getPositionByItemIndex(index) {
+	      return -this.items[index][this.p.xy];
+	    }
+	  }, {
+	    key: 'moveToPosition',
+	    value: function moveToPosition(position) {
 	      this.scroller.setTo(position);
+	    }
+	  }, {
+	    key: 'moveToItem',
+	    value: function moveToItem(index) {
+	      this.scroller.setTo(this.getPositionByItemIndex(index));
 	    }
 	  }, {
 	    key: 'tweenToPosition',
@@ -701,7 +705,7 @@
 	    value: function tweenToItem(index) {
 	      var duration = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
 
-	      this.scroller.tweenTo(duration, -this.items[index][this.p.xy]);
+	      this.scroller.tweenTo(duration, this.getPositionByItemIndex(index));
 	    }
 
 	    /**

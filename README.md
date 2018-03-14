@@ -77,7 +77,8 @@ listView.addMultiple(...items)
 | `addMultiple`     | (...children: DisplayObjects): void            | add multiple children to the list view. Pass through multiple arguments, not an array of children |
 | `remove`          | (child: DisplayObject): void                   | remove a child                                                                                    |
 | `removeAll`       | (): void                                       | remove all children from the list view                                                            |
-| `setPosition`     | (position: number): void                       | set position of the list view in pixels                                                           |
+| `moveToPosition`  | (position: number): void                       | set position of the list view in pixels                                                           |
+| `moveToItem`      | (index: number): void                          | move to the item index in the list view.                                                          |
 | `tweenToPosition` | (position: number, duration = 1: number): void | tween to position in pixels. Duration in seconds.                                                 |
 | `tweenToItem`     | (index: number, duration = 1: number): void    | tween to the item index in the list view. Duration in seconds.                                    |
 | `reset`           | (): void                                       | resets the position and scroller                                                                  |

@@ -45,6 +45,7 @@ class ListViewState extends GameState {
       this.listView.add(img);
     }
 
+    this.listView.moveToItem(3);
     super.create();
   }
 }

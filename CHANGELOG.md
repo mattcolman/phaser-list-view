@@ -1,5 +1,10 @@
 # Change Log
 
+## Version 1.5.0 - 15th Mar 2018
+
+* Add `moveToPosition` and `moveToItem` to ListViewCore
+* Remove `setPosition` from ListViewCore
+
 ## Version 1.4.1 - 14th Mar 2018
 
 * Add `tweenToPosition` and `tweenToItem` to ListViewCore

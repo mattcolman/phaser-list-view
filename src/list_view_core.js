@@ -119,13 +119,16 @@ export default class ListViewCore {
     }
   }
 
-  /**
-   * [setPosition - set position of the top of the list view. Either the x or y value,
-   *                depending on what you set the direction to]
-   * @param {Number} position
-   */
-  setPosition(position) {
+  getPositionByItemIndex(index) {
+    return -this.items[index][this.p.xy];
+  }
+
+  moveToPosition(position) {
     this.scroller.setTo(position);
+  }
+
+  moveToItem(index) {
+    this.scroller.setTo(this.getPositionByItemIndex(index));
   }
 
   tweenToPosition(position, duration = 1) {
@@ -133,7 +136,7 @@ export default class ListViewCore {
   }
 
   tweenToItem(index, duration = 1) {
-    this.scroller.tweenTo(duration, -this.items[index][this.p.xy]);
+    this.scroller.tweenTo(duration, this.getPositionByItemIndex(index));
   }
 
   /**
