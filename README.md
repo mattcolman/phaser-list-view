@@ -35,17 +35,20 @@ Copy dist/phaser-list-view.js into your project and include via script tag
 ```
 import {ListView} from 'phaser-list-view'
 
-let parent = this.world
-let bounds = new Phaser.Rectangle(0, 0, 300, 400)
-let options = {
+const parent = this.world
+const bounds = new Phaser.Rectangle(0, 0, 300, 400)
+const options = {
   direction: 'y',
   overflow: 100,
   padding: 10
 }
 
-let listView = new ListView(this.game, parent, bounds, options)
-let items = this.createSomeDisplayObjectsAndReturnAnArray() // [Graphics, Image, Sprite, Group]
+const listView = new ListView(this.game, parent, bounds, options)
+const items = this.createSomeDisplayObjectsAndReturnAnArray() // [Graphics, Image, Sprite, Group]
 listView.addMultiple(...items)
+const newItem = this.createGroup();
+newItem.nominalHeight = 120; // listView calculates items width and height. You can set your own width or height to save calculating it using nominalWidth or nominalHeight (note this is mainly useful for Phaser.Groups)
+listView.add(newItem)
 ```
 
 ![](http://i.imgur.com/XgdgqYX.gif)
@@ -91,16 +94,16 @@ listView.addMultiple(...items)
 ```
 import {SwipeCarousel} from 'phaser-list-view'
 
-let parent = this.world
-let bounds = new Phaser.Rectangle(0, 0, 300, 400)
-let options = {
+const parent = this.world
+const bounds = new Phaser.Rectangle(0, 0, 300, 400)
+const options = {
   direction: 'x',
   overflow: 100,
   padding: 10
 }
 
-let swipeCarousel = new SwipeCarousel(this.game, parent, bounds, options)
-let photos = this.getAnArrayOfImages() // [Image, Image, Image, Image]
+const swipeCarousel = new SwipeCarousel(this.game, parent, bounds, options)
+const photos = this.getAnArrayOfImages() // [Image, Image, Image, Image]
 swipeCarousel.addMultiple(...photos)
 ```
 
