@@ -1,4 +1,4 @@
-import ListView from './list_view'
+import ListView from './list_view';
 
 const defaultOptions = {
   direction: 'x',
@@ -12,12 +12,12 @@ const defaultOptions = {
   offset: {
     x: 100
   }
-}
+};
 
 export default class SwipeCarousel extends ListView {
-  constructor(game, parent, bounds, options = {}){
-    super(game, parent, bounds, Object.assign( {}, defaultOptions, options))
+  constructor(game, parent, bounds, options = {}) {
+    super(game, parent, bounds, Object.assign({}, defaultOptions, options));
 
-    this.scroller.options.snapStep = bounds.width + this.o.padding
+    this.scroller.options.snapStep = bounds.width + this.o.padding;
   }
 }

@@ -1,11 +1,11 @@
-import Scroller from './scroller'
-import ListView from './list_view'
-import ListViewCore from './list_view_core'
-import SwipeCarousel from './swipe_carousel'
-import WheelScroller from './wheel_scroller'
-import DirectionalScroller from './directional_scroller'
-import BasicSwiper from './basic_swiper'
-import ScrollerEventDispatcher from './scroller_event_dispatcher'
+import Scroller from './scroller';
+import ListView from './list_view';
+import ListViewCore from './list_view_core';
+import SwipeCarousel from './swipe_carousel';
+import WheelScroller from './wheel_scroller';
+import DirectionalScroller from './directional_scroller';
+import BasicSwiper from './basic_swiper';
+import ScrollerEventDispatcher from './scroller_event_dispatcher';
 
 const PhaserListView = {
   Scroller,
@@ -15,8 +15,8 @@ const PhaserListView = {
   WheelScroller,
   DirectionalScroller,
   BasicSwiper,
-  ScrollerEventDispatcher,
-}
+  ScrollerEventDispatcher
+};
 
 export {
   Scroller,
@@ -26,8 +26,8 @@ export {
   WheelScroller,
   DirectionalScroller,
   BasicSwiper,
-  ScrollerEventDispatcher,
-}
+  ScrollerEventDispatcher
+};
 
 // NOTE: we should only attach to the window in a production build
 window.PhaserListView = PhaserListView;
