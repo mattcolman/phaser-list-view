@@ -123,6 +123,11 @@ export default class ListViewCore {
     return -this.items[index][this.p.xy];
   }
 
+  // @deprecated
+  setPosition(position) {
+    this.moveToPosition(position)
+  }
+
   moveToPosition(position) {
     this.scroller.setTo(position);
   }

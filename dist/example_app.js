@@ -683,6 +683,14 @@
 	    value: function getPositionByItemIndex(index) {
 	      return -this.items[index][this.p.xy];
 	    }
+
+	    // @deprecated
+
+	  }, {
+	    key: 'setPosition',
+	    value: function setPosition(position) {
+	      this.moveToPosition(position);
+	    }
 	  }, {
 	    key: 'moveToPosition',
 	    value: function moveToPosition(position) {
