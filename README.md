@@ -44,7 +44,7 @@ let options = {
 }
 
 let listView = new ListView(this.game, parent, bounds, options)
-let items = this.createSomeDisplayObjectsAndReturnAnArray() // [Graphics, Image, Sprite]
+let items = this.createSomeDisplayObjectsAndReturnAnArray() // [Graphics, Image, Sprite, Group]
 listView.addMultiple(...items)
 ```
 
@@ -64,23 +64,28 @@ listView.addMultiple(...items)
 
 ### API
 
-| Members    | Type              | Description                                                           |
-| :--------- | :---------------- | :-------------------------------------------------------------------- |
-| `grp`      | Phaser.Group      | The parent of all list view items                                     |
-| `position` | number (READONLY) | position in pixels (x or y axis depends on the direction you specify) |
-| `scroller` | Scroller          | access the Scroller for advanced tuning                               |
+| Members    | Type                 | Description                                                           |
+| :--------- | :------------------- | :-------------------------------------------------------------------- |
+| `items`    | Array<DisplayObject> | A list of all the listView items                                      |
+| `grp`      | Phaser.Group         | The parent of all list view items                                     |
+| `position` | number (READONLY)    | position in pixels (x or y axis depends on the direction you specify) |
+| `scroller` | Scroller             | access the Scroller for advanced tuning (Scroller API below)          |
 
-| Methods       | Params: Return                      | Description                                                                                       |
-| :------------ | :---------------------------------- | :------------------------------------------------------------------------------------------------ |
-| `add`         | (child: DisplayObject): void        | add a child to the list view                                                                      |
-| `addMultiple` | (...children: DisplayObjects): void | add multiple children to the list view. Pass through multiple arguments, not an array of children |
-| `remove`      | (child: DisplayObject): void        | remove a child                                                                                    |
-| `removeAll`   | (): void                            | remove all children from the list view                                                            |
-| `setPosition` | (position: number): void            | set position of the list view                                                                     |
-| `reset`       | (): void                            | resets the position and scroller                                                                  |
-| `destroy`     | (): void                            | destroy the list view and clean up all event listeners                                            |
+| Methods           | Params: Return                                 | Description                                                                                       |
+| :---------------- | :--------------------------------------------- | :------------------------------------------------------------------------------------------------ |
+| `add`             | (child: DisplayObject): void                   | add a child to the list view                                                                      |
+| `addMultiple`     | (...children: DisplayObjects): void            | add multiple children to the list view. Pass through multiple arguments, not an array of children |
+| `remove`          | (child: DisplayObject): void                   | remove a child                                                                                    |
+| `removeAll`       | (): void                                       | remove all children from the list view                                                            |
+| `setPosition`     | (position: number): void                       | set position of the list view in pixels                                                           |
+| `tweenToPosition` | (position: number, duration = 1: number): void | tween to position in pixels. Duration in seconds.                                                 |
+| `tweenToItem`     | (index: number, duration = 1: number): void    | tween to the item index in the list view. Duration in seconds.                                    |
+| `reset`           | (): void                                       | resets the position and scroller                                                                  |
+| `destroy`         | (): void                                       | destroy the list view and clean up all event listeners                                            |
 
-## SwipeCarousel Usage
+## SwipeCarousel (extends ListView)
+
+### Usage
 
 ```
 import {SwipeCarousel} from 'phaser-list-view'
@@ -100,7 +105,7 @@ swipeCarousel.addMultiple(...photos)
 
 ![](http://i.imgur.com/Sp5aE0H.gif)
 
-## SwipeCarousel Options
+### Options
 
 * `direction` direction of scroll ['x' | 'y'] // default 'x'
 * `autocull` auto hidden elements outside of the viewport for performance [boolean] // default true
@@ -110,6 +115,35 @@ swipeCarousel.addMultiple(...photos)
 * `overflow`: Amount in pixels you can pull past the bounds. Bouncing occurs when you release inside the overflow [number] // default 100
 * `padding`: Padding between the children [number] // default 10
 * `searchForClicks`: onInputDown and onInputUp events on ListView children will become active when set to true [boolean] // default false
+
+### API
+
+The same as ListView above.
+
+## Scroller API (access via listView.scroller)
+
+| Members    | Type              | Description                                                           |
+| :--------- | :---------------- | :-------------------------------------------------------------------- |
+| `grp`      | Phaser.Group      | The parent of all list view items                                     |
+| `position` | number (READONLY) | position in pixels (x or y axis depends on the direction you specify) |
+| `scroller` | Scroller          | access the Scroller for advanced tuning                               |
+
+| Methods       | Params: Return                              | Description                                                                                                                                                                        |
+| :------------ | :------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tweenTo`     | (duration: number, position: number): void  | Tween the list to a new position in pixels                                                                                                                                         |
+| `tweenToSnap` | (duration: number, snapIndex: number): void | Tween the list to a new position based on snapIndex. E.g. if your snapStep is set to 100 then tweenToSnap(1, 2) will tween to pixel 200. (You must have snapping and snapStep set) |
+| `enable`      | (): void                                    | Enables the scroller                                                                                                                                                               |
+| `disable`     | (): void                                    | Disables the scroller                                                                                                                                                              |
+| `isTweening`  | (): boolean                                 | Is the scroller tweening?                                                                                                                                                          |
+
+| Events (Phaser.Signals) |
+| :---------------------- |
+| `onUpdate`              |
+| `onInputUp`             |
+| `onInputDown`           |
+| `onInputMove`           |
+| `onComplete`            |
+| `onSwipe`               |
 
 ## DirectionalScroller Usage
 
