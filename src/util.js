@@ -73,6 +73,13 @@ export function dispatchClicks(pointer, clickables, type) {
     found.events[type].dispatch
   ) {
     found.events[type].dispatch(found, pointer, true);
+
+    if (type == 'onInputDown' && found.parent && found.parent.onChildInputDown) {
+      found.parent.onChildInputDown.dispatch(found, pointer);
+
+    } else if (type == 'onInputUp' && found.parent && found.parent.onChildInputDown) {
+      found.parent.onChildInputUp.dispatch(found, pointer);
+    }
   }
   return found;
 }

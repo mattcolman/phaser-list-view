@@ -1,6 +1,7 @@
 import GameState from './states/game_state';
 import Boot from './states/boot';
 import ListViewExample from './states/list_view_state';
+import ListViewGroupExample from './states/list_view_group_state';
 import SwipeCarouselExample from './states/swipe_carousel_state';
 
 class Game extends Phaser.Game {
@@ -83,6 +84,7 @@ class Game extends Phaser.Game {
 
 Game.prototype.experiments = [
   ['ListView Example', ListViewExample],
+  ['ListView Nested Group Example', ListViewGroupExample],
   ['SwipeCarousel Example', SwipeCarouselExample]
 ];
 
