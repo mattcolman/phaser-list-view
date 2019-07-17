@@ -25,7 +25,7 @@ export function capitalizeFirstLetter(string) {
 
 export function findChild(children, predicate, scope = null) {
   if (!children) return false;
-  for (let i = 0; i < children.length; i++) {
+  for (let i = children.length - 1; i >= 0; i--) {
     const child = children[i];
     if (!child) continue;
     if (predicate.call(scope, child)) {
