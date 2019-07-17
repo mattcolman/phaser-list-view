@@ -42,14 +42,14 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(1);
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -73,9 +73,9 @@
 
 	init();
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -99,7 +99,11 @@
 
 	var _list_view_state2 = _interopRequireDefault(_list_view_state);
 
-	var _swipe_carousel_state = __webpack_require__(14);
+	var _list_view_group_state = __webpack_require__(14);
+
+	var _list_view_group_state2 = _interopRequireDefault(_list_view_group_state);
+
+	var _swipe_carousel_state = __webpack_require__(15);
 
 	var _swipe_carousel_state2 = _interopRequireDefault(_swipe_carousel_state);
 
@@ -117,7 +121,7 @@
 	  function Game() {
 	    _classCallCheck(this, Game);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Game).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).apply(this, arguments));
 	  }
 
 	  _createClass(Game, [{
@@ -159,10 +163,9 @@
 	      var _this2 = this;
 
 	      this.states.forEach(function (_ref) {
-	        var _ref2 = _slicedToArray(_ref, 2);
-
-	        var name = _ref2[0];
-	        var stateClass = _ref2[1];
+	        var _ref2 = _slicedToArray(_ref, 2),
+	            name = _ref2[0],
+	            stateClass = _ref2[1];
 
 	        _this2.state.add(name, stateClass);
 	      });
@@ -198,11 +201,9 @@
 	      var _this3 = this;
 
 	      this.experiments.forEach(function (a) {
-	        var _a = _slicedToArray(a, 2);
-
-	        var name = _a[0];
-	        var klass = _a[1];
-
+	        var _a = _slicedToArray(a, 2),
+	            name = _a[0],
+	            klass = _a[1];
 
 	        var option = document.createElement('option');
 	        option.text = name;
@@ -218,15 +219,15 @@
 	  return Game;
 	}(Phaser.Game);
 
-	Game.prototype.experiments = [['ListView Example', _list_view_state2.default], ['SwipeCarousel Example', _swipe_carousel_state2.default]];
+	Game.prototype.experiments = [['ListView Example', _list_view_state2.default], ['ListView Nested Group Example', _list_view_group_state2.default], ['SwipeCarousel Example', _swipe_carousel_state2.default]];
 
 	Game.prototype.states = [['boot', _boot2.default]].concat(Game.prototype.experiments);
 
 	exports.default = Game;
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -248,7 +249,7 @@
 	  function GameState() {
 	    _classCallCheck(this, GameState);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(GameState).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (GameState.__proto__ || Object.getPrototypeOf(GameState)).apply(this, arguments));
 	  }
 
 	  _createClass(GameState, [{
@@ -276,9 +277,9 @@
 
 	exports.default = GameState;
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -300,7 +301,7 @@
 	  function Boot() {
 	    _classCallCheck(this, Boot);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Boot).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (Boot.__proto__ || Object.getPrototypeOf(Boot)).apply(this, arguments));
 	  }
 
 	  _createClass(Boot, [{
@@ -324,9 +325,9 @@
 
 	exports.default = Boot;
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -362,7 +363,7 @@
 	  function ListViewState() {
 	    _classCallCheck(this, ListViewState);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ListViewState).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (ListViewState.__proto__ || Object.getPrototypeOf(ListViewState)).apply(this, arguments));
 	  }
 
 	  _createClass(ListViewState, [{
@@ -401,7 +402,7 @@
 	      }
 
 	      this.listView.moveToItem(3);
-	      _get(Object.getPrototypeOf(ListViewState.prototype), 'create', this).call(this);
+	      _get(ListViewState.prototype.__proto__ || Object.getPrototypeOf(ListViewState.prototype), 'create', this).call(this);
 	    }
 	  }]);
 
@@ -410,9 +411,9 @@
 
 	exports.default = ListViewState;
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -439,9 +440,9 @@
 
 	exports.default = MathUtils;
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -486,12 +487,12 @@
 	  _inherits(ListView, _ListViewCore);
 
 	  function ListView(game, parent, bounds) {
-	    var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+	    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
 	    _classCallCheck(this, ListView);
 
 	    // we have to use a new mask instance for the click object or webgl ignores the mask
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ListView).call(this, game, parent, (0, _util.parseBounds)(bounds), Object.assign({}, defaultOptions, options)));
+	    var _this = _possibleConstructorReturn(this, (ListView.__proto__ || Object.getPrototypeOf(ListView)).call(this, game, parent, (0, _util.parseBounds)(bounds), Object.assign({}, defaultOptions, options)));
 
 	    _this.scroller = new _directional_scroller2.default(_this.game, _this._addMask(bounds), Object.assign({
 	      from: 0,
@@ -515,7 +516,7 @@
 	    value: function destroy() {
 	      this.scroller.destroy();
 	      this.scroller = null;
-	      _get(Object.getPrototypeOf(ListView.prototype), 'destroy', this).call(this);
+	      _get(ListView.prototype.__proto__ || Object.getPrototypeOf(ListView.prototype), 'destroy', this).call(this);
 	    }
 	  }, {
 	    key: 'reset',
@@ -530,9 +531,9 @@
 
 	exports.default = ListView;
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -554,7 +555,7 @@
 
 	var ListViewCore = function () {
 	  function ListViewCore(game, parent, bounds) {
-	    var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+	    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
 	    _classCallCheck(this, ListViewCore);
 
@@ -704,14 +705,14 @@
 	  }, {
 	    key: 'tweenToPosition',
 	    value: function tweenToPosition(position) {
-	      var duration = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+	      var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
 
 	      this.scroller.tweenTo(duration, position);
 	    }
 	  }, {
 	    key: 'tweenToItem',
 	    value: function tweenToItem(index) {
-	      var duration = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+	      var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
 
 	      this.scroller.tweenTo(duration, this.getPositionByItemIndex(index));
 	    }
@@ -747,9 +748,9 @@
 
 	exports.default = ListViewCore;
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -790,7 +791,7 @@
 	}
 
 	function findChild(children, predicate) {
-	  var scope = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+	  var scope = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
 	  if (!children) return false;
 	  for (var i = 0; i < children.length; i++) {
@@ -819,11 +820,11 @@
 	  // SEARCH OBJECT UNDER POINT AS THERE IS NO CLICK PROPAGATION SUPPORT IN PHASER
 	  var found = findChild(clickables, function (clickable) {
 	    var pt = clickable.worldPosition;
-	    var anchor = clickable.anchor;
-	    var pivot = clickable.pivot;
-	    var width = clickable.width;
-	    var height = clickable.height;
-	    var scale = clickable.scale;
+	    var anchor = clickable.anchor,
+	        pivot = clickable.pivot,
+	        width = clickable.width,
+	        height = clickable.height,
+	        scale = clickable.scale;
 
 	    var x = pt.x - (anchor ? anchor.x * width : 0) - pivot.x * scale.x;
 	    var y = pt.y - (anchor ? anchor.y * height : 0) - pivot.y * scale.y;
@@ -832,13 +833,19 @@
 	  });
 	  if (found && found.events && found.events[type] && found.events[type].dispatch) {
 	    found.events[type].dispatch(found, pointer, true);
+
+	    if (type == 'onInputDown' && found.parent && found.parent.onChildInputDown) {
+	      found.parent.onChildInputDown.dispatch(found, pointer);
+	    } else if (type == 'onInputUp' && found.parent && found.parent.onChildInputDown) {
+	      found.parent.onChildInputUp.dispatch(found, pointer);
+	    }
 	  }
 	  return found;
 	}
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -851,9 +858,9 @@
 
 	exports.default = Config;
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -885,24 +892,24 @@
 	  _inherits(DirectionalScroller, _Scroller);
 
 	  function DirectionalScroller(game, clickObject) {
-	    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
 	    _classCallCheck(this, DirectionalScroller);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(DirectionalScroller).call(this, game, clickObject, { x: clickObject.width, y: clickObject.height }, options));
+	    return _possibleConstructorReturn(this, (DirectionalScroller.__proto__ || Object.getPrototypeOf(DirectionalScroller)).call(this, game, clickObject, { x: clickObject.width, y: clickObject.height }, options));
 	  }
 
 	  _createClass(DirectionalScroller, [{
 	    key: 'handleDown',
 	    value: function handleDown(target, pointer) {
 	      this.old = this.down = pointer[this.o.direction];
-	      _get(Object.getPrototypeOf(DirectionalScroller.prototype), 'handleDown', this).call(this, target, pointer);
+	      _get(DirectionalScroller.prototype.__proto__ || Object.getPrototypeOf(DirectionalScroller.prototype), 'handleDown', this).call(this, target, pointer);
 	    }
 	  }, {
 	    key: 'handleUp',
 	    value: function handleUp(target, pointer) {
 	      this.current = pointer[this.o.direction];
-	      _get(Object.getPrototypeOf(DirectionalScroller.prototype), 'handleUp', this).call(this, target, pointer);
+	      _get(DirectionalScroller.prototype.__proto__ || Object.getPrototypeOf(DirectionalScroller.prototype), 'handleUp', this).call(this, target, pointer);
 	    }
 	  }]);
 
@@ -911,9 +918,9 @@
 
 	exports.default = DirectionalScroller;
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -938,9 +945,9 @@
 
 	exports.default = MathUtils;
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -997,8 +1004,8 @@
 
 	var Scroller = function () {
 	  function Scroller(game, clickObject) {
-	    var maskLimits = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-	    var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+	    var maskLimits = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+	    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
 	    _classCallCheck(this, Scroller);
 
@@ -1396,9 +1403,9 @@
 
 	exports.default = Scroller;
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1416,7 +1423,119 @@
 
 	var _math_utils = __webpack_require__(6);
 
-	var _swipe_carousel = __webpack_require__(15);
+	var _list_view = __webpack_require__(7);
+
+	var _list_view2 = _interopRequireDefault(_list_view);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ListViewGroupState = function (_GameState) {
+	  _inherits(ListViewGroupState, _GameState);
+
+	  function ListViewGroupState() {
+	    _classCallCheck(this, ListViewGroupState);
+
+	    return _possibleConstructorReturn(this, (ListViewGroupState.__proto__ || Object.getPrototypeOf(ListViewGroupState)).apply(this, arguments));
+	  }
+
+	  _createClass(ListViewGroupState, [{
+	    key: 'preload',
+	    value: function preload() {
+	      this.game.load.crossOrigin = 'anonymous';
+	    }
+	  }, {
+	    key: 'shutdown',
+	    value: function shutdown() {
+	      this.listView.destroy();
+	    }
+	  }, {
+	    key: 'create',
+	    value: function create() {
+
+	      var text = this.add.text(50, 100, 'Click Result', { "font": "bold 40px Arial" });
+
+	      var maskW = 600;
+	      var maskH = 200;
+	      var boxW = maskW;
+	      var boxH = 50;
+
+	      this.listView = new _list_view2.default(this.game, this.world, new Phaser.Rectangle(this.world.centerX - maskW / 2, 120, maskW, 400), {
+	        direction: 'y',
+	        searchForClicks: true
+	      });
+
+	      for (var i = 0; i < 5; i++) {
+	        var color = Phaser.Color.getRandomColor();
+	        var group = this.game.make.group(null);
+	        var g = this.game.add.graphics(0, 0, group);
+	        var h = boxH + Math.floor(Math.random() * 100);
+	        g.beginFill(color).drawRect(0, 0, boxW, h);
+
+	        var txt = this.game.add.text(boxW / 2, h / 2, i + ' Groups', { font: '40px Arial', fill: '#000' }, group);
+	        txt.anchor.set(0.5);
+
+	        var sprite = this.game.add.sprite(0, 0, group.generateTexture());
+	        sprite.inputEnabled = true;
+	        sprite.events.onInputDown.add(function () {
+	          console.log('Click', this.index);
+	          text.text = 'Click ' + this.index;
+	        }, { index: i });
+
+	        var parentObj = sprite;
+	        var childObj = sprite;
+
+	        for (var n = 0; n < i; n++) {
+	          var nestedGroup = this.game.add.group();
+	          nestedGroup.add(childObj);
+
+	          nestedGroup.inputEnableChildren = true;
+	          nestedGroup.onChildInputDown.add(function () {
+	            console.log('Click Group', this.index, 'groupIndex:', this.groupIndex);
+	          }, { index: i, groupIndex: n });
+
+	          parentObj = nestedGroup;
+	          childObj = nestedGroup;
+	        }
+
+	        this.listView.add(parentObj);
+	      }
+
+	      _get(ListViewGroupState.prototype.__proto__ || Object.getPrototypeOf(ListViewGroupState.prototype), 'create', this).call(this);
+	    }
+	  }]);
+
+	  return ListViewGroupState;
+	}(_game_state2.default);
+
+	exports.default = ListViewGroupState;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _game_state = __webpack_require__(3);
+
+	var _game_state2 = _interopRequireDefault(_game_state);
+
+	var _math_utils = __webpack_require__(6);
+
+	var _swipe_carousel = __webpack_require__(16);
 
 	var _swipe_carousel2 = _interopRequireDefault(_swipe_carousel);
 
@@ -1434,7 +1553,7 @@
 	  function SwipeCarouselState() {
 	    _classCallCheck(this, SwipeCarouselState);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SwipeCarouselState).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (SwipeCarouselState.__proto__ || Object.getPrototypeOf(SwipeCarouselState)).apply(this, arguments));
 	  }
 
 	  _createClass(SwipeCarouselState, [{
@@ -1469,7 +1588,7 @@
 	        this.carousel.add(img);
 	      }
 
-	      _get(Object.getPrototypeOf(SwipeCarouselState.prototype), 'create', this).call(this);
+	      _get(SwipeCarouselState.prototype.__proto__ || Object.getPrototypeOf(SwipeCarouselState.prototype), 'create', this).call(this);
 	    }
 	  }]);
 
@@ -1478,9 +1597,9 @@
 
 	exports.default = SwipeCarouselState;
 
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1518,11 +1637,11 @@
 	  _inherits(SwipeCarousel, _ListView);
 
 	  function SwipeCarousel(game, parent, bounds) {
-	    var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+	    var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
 	    _classCallCheck(this, SwipeCarousel);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SwipeCarousel).call(this, game, parent, bounds, Object.assign({}, defaultOptions, options)));
+	    var _this = _possibleConstructorReturn(this, (SwipeCarousel.__proto__ || Object.getPrototypeOf(SwipeCarousel)).call(this, game, parent, bounds, Object.assign({}, defaultOptions, options)));
 
 	    _this.scroller.options.snapStep = bounds.width + _this.o.padding;
 	    return _this;
@@ -1533,5 +1652,5 @@
 
 	exports.default = SwipeCarousel;
 
-/***/ }
+/***/ })
 /******/ ]);
