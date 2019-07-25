@@ -62,6 +62,21 @@ export default class ListViewCore {
     return child;
   }
 
+  updateItemsPosition() {
+    this.items.forEach((child, i) => {
+      let xy = 0;
+      if (i > 0) {
+        let lastChild = this.grp.getChildAt(i - 1);
+        xy =
+          lastChild[this.p.xy] +
+          getWidthOrHeight(lastChild, this.p.wh) +
+          this.o.padding;
+      }
+      child[this.p.xy] = xy;
+      this.length = xy + child[this.p.wh];
+    }); 
+  }
+
   /**
    * [addMultiple children to the list]
    * @param {...[DisplayObjects]} children
