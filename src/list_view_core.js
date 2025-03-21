@@ -1,4 +1,5 @@
 import { getWidthOrHeight } from './util';
+import Scroller from './scroller';
 
 const defaultOptions = {
   direction: 'y',
@@ -33,6 +34,17 @@ export default class ListViewCore {
 
     // [MC] - is masking the fastest option here? Cropping the texture may be faster?
     this.grp.mask = this._addMask(bounds);
+
+    // Initialize scroller for handling position changes
+    this.scroller = new Scroller(this.game, {
+      bounds: this.bounds,
+      direction: this.o.direction
+    });
+    
+    // Connect scroller to position updates
+    this.scroller.onUpdate.add((position) => {
+      this._setPosition(position);
+    });
   }
 
   /**

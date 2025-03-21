@@ -1,5 +1,10 @@
 # Change Log
 
+## Version 1.5.3 - TBD
+
+* Fixed scroller integration in ListViewCore
+* Fixed position methods not working due to missing scroller initialization
+
 ## Version 1.5.2 - 15th Mar 2018
 
 * Bug fix
