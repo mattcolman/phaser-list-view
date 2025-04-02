@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background circle -->
+    <circle cx="100" cy="100" r="90" fill="#46469C" />
+    
+    <!-- Scrolling list items represented by rounded rectangles -->
+    <g transform="translate(60, 50)">
+        <!-- Top item -->
+        <rect x="0" y="0" width="80" height="20" rx="4" fill="#FFFFFF" opacity="0.4" />
+        <!-- Middle item (highlighted) -->
+        <rect x="0" y="30" width="80" height="20" rx="4" fill="#FFFFFF" />
+        <!-- Bottom item -->
+        <rect x="0" y="60" width="80" height="20" rx="4" fill="#FFFFFF" opacity="0.4" />
+        
+        <!-- Scroll indicator -->
+        <rect x="85" y="5" width="4" height="70" rx="2" fill="#FFFFFF" opacity="0.3" />
+        <rect x="85" y="25" width="4" height="20" rx="2" fill="#FFFFFF" />
+    </g>
+    
+    <!-- Swipe arrows suggesting motion -->
+    <g transform="translate(45, 100)" fill="none" stroke="#FFFFFF" stroke-width="3">
+        <path d="M0,0 L15,-8 L15,8 Z" fill="#FFFFFF" opacity="0.6" />
+    </g>
+    <g transform="translate(155, 100)" fill="none" stroke="#FFFFFF" stroke-width="3">
+        <path d="M0,-8 L15,0 L0,8 Z" fill="#FFFFFF" opacity="0.6" />
+    </g>
+</svg>
