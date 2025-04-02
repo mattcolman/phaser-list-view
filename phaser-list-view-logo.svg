@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="400" height="120" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background rounded rectangle -->
+    <rect x="10" y="10" width="380" height="100" rx="15" fill="#2c3e50"/>
+    
+    <!-- List items -->
+    <g transform="translate(30, 25)">
+        <rect x="0" y="0" width="120" height="20" rx="5" fill="#3498db" opacity="0.8"/>
+        <rect x="0" y="30" width="120" height="20" rx="5" fill="#3498db" opacity="0.9"/>
+        <rect x="0" y="60" width="120" height="20" rx="5" fill="#3498db"/>
+    </g>
+    
+    <!-- Scroll indicator -->
+    <g transform="translate(160, 25)">
+        <path d="M 10,0 C 40,20 40,60 10,80" stroke="#e74c3c" stroke-width="4" fill="none"/>
+        <circle cx="10" cy="40" r="6" fill="#e74c3c"/>
+    </g>
+    
+    <!-- Text -->
+    <text x="200" y="65" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#ecf0f1" text-anchor="start">
+        PHASER LIST VIEW
+    </text>
+</svg>
