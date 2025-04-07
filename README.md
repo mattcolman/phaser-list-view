@@ -1,5 +1,7 @@
 # List View classes for Phaser
 
+<img src="logo.svg" width="200" height="200" alt="Phaser List View Logo"/>
+
 ## Install via npm
 
 `npm install phaser-list-view --save`
