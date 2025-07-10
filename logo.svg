@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for the main container -->
+    <linearGradient id="containerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for list items -->
+    <linearGradient id="itemGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F5F7FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C3CFE2;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Motion blur effect -->
+    <filter id="motionBlur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0,1"/>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="url(#containerGradient)" stroke="#2C5282" stroke-width="2"/>
+  
+  <!-- Container representing the viewport -->
+  <rect x="40" y="50" width="120" height="100" rx="8" ry="8" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.8"/>
+  
+  <!-- List items - showing scrollable content -->
+  <!-- Item 1 (partially visible - scrolled out) -->
+  <rect x="50" y="35" width="100" height="12" rx="6" ry="6" fill="url(#itemGradient)" opacity="0.4" filter="url(#motionBlur)"/>
+  
+  <!-- Item 2 -->
+  <rect x="50" y="60" width="100" height="12" rx="6" ry="6" fill="url(#itemGradient)"/>
+  
+  <!-- Item 3 -->
+  <rect x="50" y="80" width="100" height="12" rx="6" ry="6" fill="url(#itemGradient)"/>
+  
+  <!-- Item 4 -->
+  <rect x="50" y="100" width="100" height="12" rx="6" ry="6" fill="url(#itemGradient)"/>
+  
+  <!-- Item 5 -->
+  <rect x="50" y="120" width="100" height="12" rx="6" ry="6" fill="url(#itemGradient)"/>
+  
+  <!-- Item 6 (partially visible - scrolled out) -->
+  <rect x="50" y="140" width="100" height="12" rx="6" ry="6" fill="url(#itemGradient)" opacity="0.4" filter="url(#motionBlur)"/>
+  
+  <!-- Item 7 (partially visible - scrolled out) -->
+  <rect x="50" y="160" width="100" height="12" rx="6" ry="6" fill="url(#itemGradient)" opacity="0.2" filter="url(#motionBlur)"/>
+  
+  <!-- Scroll indicator/motion lines -->
+  <g opacity="0.6">
+    <path d="M 170 70 L 175 75 L 170 80" stroke="#FFFFFF" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M 170 90 L 175 95 L 170 100" stroke="#FFFFFF" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M 170 110 L 175 115 L 170 120" stroke="#FFFFFF" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Phaser-style accent -->
+  <circle cx="100" cy="170" r="8" fill="#FF6B6B" opacity="0.8"/>
+  <circle cx="100" cy="170" r="4" fill="#FFFFFF"/>
+  
+  <!-- Text label -->
+  <text x="100" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2C5282">ListView</text>
+</svg>

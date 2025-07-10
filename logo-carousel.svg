@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for the main background -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667EEA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764BA2;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for carousel items -->
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F8F9FA;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Shadow filter -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" rx="20" ry="20" fill="url(#bgGradient)"/>
+  
+  <!-- Viewport container -->
+  <rect x="30" y="60" width="140" height="80" rx="10" ry="10" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.7"/>
+  
+  <!-- Carousel cards -->
+  <!-- Card 1 (left, partially visible) -->
+  <rect x="10" y="75" width="50" height="50" rx="8" ry="8" fill="url(#cardGradient)" filter="url(#shadow)" opacity="0.6" transform="rotate(-5 35 100)"/>
+  
+  <!-- Card 2 (center, main focus) -->
+  <rect x="75" y="70" width="50" height="60" rx="8" ry="8" fill="url(#cardGradient)" filter="url(#shadow)"/>
+  
+  <!-- Card 3 (right, partially visible) -->
+  <rect x="140" y="75" width="50" height="50" rx="8" ry="8" fill="url(#cardGradient)" filter="url(#shadow)" opacity="0.6" transform="rotate(5 165 100)"/>
+  
+  <!-- Content indicators on cards -->
+  <rect x="80" y="80" width="40" height="4" rx="2" ry="2" fill="#667EEA" opacity="0.7"/>
+  <rect x="80" y="90" width="30" height="4" rx="2" ry="2" fill="#667EEA" opacity="0.5"/>
+  <rect x="80" y="100" width="35" height="4" rx="2" ry="2" fill="#667EEA" opacity="0.5"/>
+  <rect x="80" y="110" width="25" height="4" rx="2" ry="2" fill="#667EEA" opacity="0.5"/>
+  
+  <!-- Swipe indicators -->
+  <g opacity="0.8">
+    <!-- Left swipe arrow -->
+    <path d="M 50 40 L 45 45 L 50 50" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <line x1="45" y1="45" x2="35" y2="45" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Right swipe arrow -->
+    <path d="M 150 40 L 155 45 L 150 50" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <line x1="155" y1="45" x2="165" y2="45" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Page indicators -->
+  <g transform="translate(100, 155)">
+    <circle cx="-15" cy="0" r="4" fill="#FFFFFF" opacity="0.5"/>
+    <circle cx="0" cy="0" r="4" fill="#FFFFFF"/>
+    <circle cx="15" cy="0" r="4" fill="#FFFFFF" opacity="0.5"/>
+  </g>
+  
+  <!-- Phaser logo accent -->
+  <g transform="translate(100, 25)">
+    <circle cx="0" cy="0" r="12" fill="#FF6B6B" opacity="0.9"/>
+    <polygon points="-6,-3 6,-3 0,6" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="100" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Phaser ListView</text>
+</svg>

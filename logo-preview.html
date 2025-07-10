@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phaser List View - Logo Preview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+        
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .logo-card {
+            text-align: center;
+            padding: 30px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .logo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        
+        .logo-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .logo-card img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-description {
+            color: #6c757d;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .size-demo {
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .size-demo h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .size-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .size-label {
+            min-width: 100px;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .dark-bg {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .usage-examples {
+            margin-top: 40px;
+            padding: 30px;
+            background: #e8f4f8;
+            border-radius: 12px;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Phaser List View</h1>
+        <p class="subtitle">Logo Design Variations</p>
+        
+        <div class="logo-grid">
+            <div class="logo-card">
+                <h3>Primary Logo</h3>
+                <img src="logo.svg" alt="Primary Logo">
+                <div class="logo-description">
+                    <strong>Theme:</strong> List View Focus<br>
+                    Circular design with scrollable list items and motion indicators. 
+                    Perfect for main repository display and documentation.
+                </div>
+            </div>
+            
+            <div class="logo-card">
+                <h3>Carousel Logo</h3>
+                <img src="logo-carousel.svg" alt="Carousel Logo">
+                <div class="logo-description">
+                    <strong>Theme:</strong> Swipe Carousel & Interactive Elements<br>
+                    Card-based carousel with 3D perspective and swipe indicators. 
+                    Great for marketing materials and demo showcases.
+                </div>
+            </div>
+            
+            <div class="logo-card">
+                <h3>Minimal Logo</h3>
+                <img src="logo-minimal.svg" alt="Minimal Logo">
+                <div class="logo-description">
+                    <strong>Theme:</strong> Performance & Technical Excellence<br>
+                    Clean technical interface with performance indicators. 
+                    Ideal for technical documentation and developer presentations.
+                </div>
+            </div>
+        </div>
+        
+        <div class="size-demo">
+            <h3>Size Demonstrations</h3>
+            
+            <div class="size-row">
+                <span class="size-label">Large (200px):</span>
+                <img src="logo.svg" alt="Logo" style="width: 200px; height: 200px;">
+            </div>
+            
+            <div class="size-row">
+                <span class="size-label">Medium (100px):</span>
+                <img src="logo.svg" alt="Logo" style="width: 100px; height: 100px;">
+            </div>
+            
+            <div class="size-row">
+                <span class="size-label">Small (64px):</span>
+                <img src="logo.svg" alt="Logo" style="width: 64px; height: 64px;">
+            </div>
+            
+            <div class="size-row">
+                <span class="size-label">Icon (32px):</span>
+                <img src="logo.svg" alt="Logo" style="width: 32px; height: 32px;">
+            </div>
+            
+            <div class="dark-bg">
+                <h4 style="color: white; margin-top: 0;">Dark Background Test</h4>
+                <img src="logo.svg" alt="Logo" style="width: 100px; height: 100px; margin-right: 20px;">
+                <img src="logo-carousel.svg" alt="Carousel Logo" style="width: 100px; height: 100px; margin-right: 20px;">
+                <img src="logo-minimal.svg" alt="Minimal Logo" style="width: 100px; height: 100px;">
+            </div>
+        </div>
+        
+        <div class="usage-examples">
+            <h3>Usage Examples</h3>
+            
+            <h4>HTML Implementation:</h4>
+            <div class="code-block">
+&lt;!-- For web usage --&gt;<br>
+&lt;img src="logo.svg" alt="Phaser List View" width="100" height="100"&gt;<br><br>
+&lt;!-- For favicon --&gt;<br>
+&lt;link rel="icon" type="image/svg+xml" href="logo-minimal.svg"&gt;
+            </div>
+            
+            <h4>Markdown Implementation:</h4>
+            <div class="code-block">
+![Phaser List View Logo](logo.svg)
+            </div>
+            
+            <h4>Recommended Usage:</h4>
+            <ul>
+                <li><strong>GitHub Repository:</strong> Use <code>logo.svg</code> as the main logo</li>
+                <li><strong>npm Package:</strong> Use <code>logo-minimal.svg</code> for clean, professional appearance</li>
+                <li><strong>Documentation:</strong> Any variation depending on the section focus</li>
+                <li><strong>Social Media:</strong> Use <code>logo-carousel.svg</code> for more engaging visual appeal</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
