@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="120" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for the main elements -->
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for accent elements -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#06B6D4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Shadow filter -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  
+  <!-- Background circle for context -->
+  <circle cx="60" cy="60" r="45" fill="url(#primaryGradient)" opacity="0.1" />
+  
+  <!-- List view container -->
+  <rect x="20" y="25" width="80" height="70" rx="8" ry="8" fill="none" stroke="url(#primaryGradient)" stroke-width="2" opacity="0.3"/>
+  
+  <!-- List items with scrolling effect -->
+  <g id="listItems">
+    <!-- Item 1 -->
+    <rect x="25" y="30" width="70" height="8" rx="4" ry="4" fill="url(#primaryGradient)" opacity="0.9">
+      <animate attributeName="opacity" values="0.9;0.6;0.9" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Item 2 -->
+    <rect x="25" y="42" width="60" height="8" rx="4" ry="4" fill="url(#primaryGradient)" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.9;0.6;0.8" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Item 3 -->
+    <rect x="25" y="54" width="65" height="8" rx="4" ry="4" fill="url(#primaryGradient)" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.8;0.9;0.6;0.7" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Item 4 -->
+    <rect x="25" y="66" width="55" height="8" rx="4" ry="4" fill="url(#primaryGradient)" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;0.7;0.8;0.9;0.6" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Item 5 (partially visible) -->
+    <rect x="25" y="78" width="70" height="8" rx="4" ry="4" fill="url(#primaryGradient)" opacity="0.4">
+      <animate attributeName="opacity" values="0.4;0.6;0.7;0.8;0.9;0.4" dur="2s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  
+  <!-- Scroll indicator -->
+  <g id="scrollIndicator">
+    <rect x="102" y="35" width="3" height="20" rx="1.5" ry="1.5" fill="url(#accentGradient)" opacity="0.8">
+      <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="2s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  
+  <!-- Motion lines -->
+  <g id="motionLines" opacity="0.4">
+    <line x1="110" y1="35" x2="125" y2="35" stroke="url(#accentGradient)" stroke-width="2" stroke-linecap="round">
+      <animate attributeName="opacity" values="0;0.6;0" dur="1.5s" repeatCount="indefinite"/>
+    </line>
+    <line x1="110" y1="45" x2="120" y2="45" stroke="url(#accentGradient)" stroke-width="2" stroke-linecap="round">
+      <animate attributeName="opacity" values="0;0.6;0" dur="1.5s" begin="0.3s" repeatCount="indefinite"/>
+    </line>
+    <line x1="110" y1="55" x2="130" y2="55" stroke="url(#accentGradient)" stroke-width="2" stroke-linecap="round">
+      <animate attributeName="opacity" values="0;0.6;0" dur="1.5s" begin="0.6s" repeatCount="indefinite"/>
+    </line>
+  </g>
+  
+  <!-- Text -->
+  <g id="text">
+    <!-- "phaser" text -->
+    <text x="150" y="45" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="url(#primaryGradient)">
+      phaser
+    </text>
+    
+    <!-- "list-view" text -->
+    <text x="150" y="75" font-family="Arial, sans-serif" font-size="28" font-weight="300" fill="#374151">
+      list-view
+    </text>
+    
+    <!-- Accent dot -->
+    <circle cx="245" cy="40" r="3" fill="url(#accentGradient)">
+      <animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Subtle background pattern -->
+  <defs>
+    <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="1" fill="url(#primaryGradient)" opacity="0.1"/>
+    </pattern>
+  </defs>
+  <rect x="0" y="0" width="400" height="120" fill="url(#dots)"/>
+</svg>

@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="logo-simple.svg" alt="Phaser List View" width="300" height="80">
+</div>
+
 # List View classes for Phaser
 
 ## Install via npm
